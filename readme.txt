@@ -60,7 +60,8 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 
 == Screenshots ==
-http://plugins.elliotcondon.com/advanced-custom-fields/
+Video Tutorials
+http://plugins.elliotcondon.com/advanced-custom-fields/user-guide/
 
 
 == Changelog ==
