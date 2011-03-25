@@ -1,4 +1,4 @@
-=== Custom Field Matrix ===
+=== Advanced Custom Fields ===
 Contributors: Elliot Condon
 Donate link: https://www.paypal.com/au/cgi-bin/webscr?cmd=_flow&SESSION=-B2MHZ-ioHQb-z1o22AMmhjSI08rxFqQdljyfqVa1R-4QrbQWPNcfL37jYi&dispatch=5885d80a13c0db1f8e263663d3faee8d5fa8ff279e37c3d9d4e38bdbee0ede69
 Tags: custom, field, custom field, advanced, simple fields, magic fields, more fields, post, type, text, textarea, file, image, edit, admin
