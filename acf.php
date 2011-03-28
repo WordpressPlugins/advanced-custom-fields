@@ -36,7 +36,7 @@ class Acf
 		$this->dir = plugins_url('',__FILE__);
 		$this->siteurl = get_bloginfo('url');
 		$this->wpadminurl = admin_url();
-		$this->version = '1.0.0';
+		$this->version = '1.0.1';
 		
 		// set text domain
 		load_plugin_textdomain('acf', false, $this->path.'/lang' );
