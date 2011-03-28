@@ -43,38 +43,76 @@ function get_acf()
 	}
 	
 	$results = array();
-    $acf_id = get_post_meta($post_id, '_acf_id', true);
+    $acf_id = explode(',',get_post_meta($post_id, '_acf_id', true));
     
-    $fields = $acf->get_fields($acf_id);
-	
-	if($fields)
+    $fields = array();
+    
+    // checkpoint
+    
+    if(empty($acf_id)){return null;}
+    
+    foreach($acf_id as $id)
 	{
-		$variables = array();
-		
-		foreach($fields as $field)
+		$this_fields = $acf->get_fields($id);
+		if(empty($this_fields)){return null;}
+		foreach($this_fields as $this_field)
 		{
-			// get value
-			$field['value'] = get_post_meta($post_id, '_acf_'.$field['name'], true);
-			
-			// if field has a format function, format the value
-			if($acf->fields[$field['type']]->has_format_value())
-			{
-				$field['value'] = $acf->fields[$field['type']]->format_value($field['value']);
-			}
-			
-			// add name + value to variables array
-			$variables[$field['name']] = $field['value'];
-			
+			$fields[] = $this_field;
+		}
+	}
+	
+	// checkpoint
+	if(empty($fields)){return null;}
+
+	$variables = array();
+	
+	foreach($fields as $field)
+	{
+		// get value
+		$field['value'] = get_post_meta($post_id, '_acf_'.$field['name'], true);
+		
+		// if field has a format function, format the value
+		if($acf->fields[$field['type']]->has_format_value())
+		{
+			$field['value'] = $acf->fields[$field['type']]->format_value($field['value']);
 		}
 		
-		return new acf_object($variables);
+		// add name + value to variables array
+		$variables[$field['name']] = $field['value'];
 		
 	}
-	else
-	{
-		return null;
-	}    
+	
+	return new acf_object($variables);
+	
+	  
 }
+
+// get fields
+function get_fields()
+{
+	return get_acf();
+}
+
+// get field
+function get_field($field_name)
+{
+	global $acf_fields;
+	
+	if(empty($acf_fields))
+	{
+		//echo 'acf_fields is empty';
+		$acf_fields = get_acf();
+	}
+	
+	return $acf_fields->$field_name;
+}
+
+// the field
+function the_field($field_name)
+{
+	echo get_field($field_name);
+}
+
 
 
 ?>

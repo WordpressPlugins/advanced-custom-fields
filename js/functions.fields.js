@@ -43,7 +43,7 @@ jQuery(document).ready(function($){
 		fields.append(new_field);
 		
 		new_field.find('select.type').trigger('change');
-		
+		new_field.find('input.label').focus();
 		
 		// update order numbers
 		update_order_numbers();
@@ -112,6 +112,7 @@ jQuery(document).ready(function($){
 			
 			// remove preivous field option button
 			td.find('a.field_options_button').remove();
+			_this.removeClass('options_open');
 			_this.find('div.field_options div.field_option').hide();
 			_this.find('div.field_options div.field_option [name]').attr('disabled', true);
 			

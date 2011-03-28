@@ -32,6 +32,7 @@ table.acf_input > tbody > tr > td > textarea {
     width: 99.8%;
 }
 
+/* image upload */
 .acf_image_uploader {
 	position: relative;
 	float: left;
@@ -41,7 +42,7 @@ table.acf_input > tbody > tr > td > textarea {
 	display: block;
 	overflow: hidden;
 	height: 40px;
-	width: 245px;
+	width: 100%;
 	float: left;
 }
 
@@ -88,6 +89,57 @@ table.acf_input > tbody > tr > td > textarea {
 	background: #FFF;
 	border: #d8d8d8 solid 1px;
 }
+
+/* File upload */
+.acf_file_uploader {
+	position: relative;
+	float: left;
+}
+
+.acf_file_uploader iframe {
+	display: block;
+	overflow: hidden;
+	height: 40px;
+	width: 100%;
+	float: left;
+}
+
+.acf_file_uploader .loading {
+	float: left;
+	height: 16px;
+	width: 16px;
+	margin: 3px 0 0;
+	background: url(../images/loading.gif) 50% 50% no-repeat;
+}
+
+.acf_file_uploader iframe.hide {
+	display: none;
+}
+
+.acf_file_uploader a.remove_file {
+	width: 16px;
+	height: 16px;
+	background: url(../images/button_remove.png) 0 0 no-repeat;
+	position: absolute;
+	top:0;
+	left: 0;
+	cursor: pointer;
+	margin: -3px 0 0 -3px;
+	display: none;
+}
+
+.acf_file_uploader:hover a.remove_file {
+	display: block;
+}
+
+.acf_file_uploader:hover a.remove_file.hide {
+	display: none;
+}
+
+.acf_file_uploader a.remove_file:hover  {
+	background-position: 0% 100%;
+}
+
 
 table.acf_input {
 	border: 0 none;

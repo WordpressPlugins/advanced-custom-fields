@@ -23,11 +23,12 @@ Advanced Custom Fields is the perfect solution for any wordpress website which n
 * Text (type text, api returns text)
 * Text Area (type text, api returns text with `<br />` tags)
 * WYSIWYG (a wordpress wysiwyg editor, api returns html)
-* Image / File (upload an image, api returns the url)
+* Image (upload an image, api returns the url)
+* File (upload a file, api returns the url)
 * Select (drop down list of choices, api returns chosen item)
 * Checkbox (tick for a list of choices, api returns array of choices)
 * Page Link (select a page, post or custom post type form a drop down menu, api returns the url)
-*
+* Date Picker (jquery date picker, options for format, api returns string)
 
 = Tested on =
 * Mac Firefox 	:)
@@ -66,6 +67,13 @@ http://plugins.elliotcondon.com/advanced-custom-fields/user-guide/
 
 == Changelog ==
 
+= 1.0.1 =
+* New Api Functions: get_fields(), get_field(), the_field()
+* New Field Type: Date Picker
+* New Field Type: File
+* Bug Fixes
+* You can now add multiple ACF's to an edit page
+* Minor CSS + JS improvements
 
 = 1.0.0 =
 * Advanced Custom Fields.

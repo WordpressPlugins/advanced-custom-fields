@@ -24,12 +24,26 @@ jQuery(document).ready(function($){
 	});
 	
 	
+	// create datepickers
+	table.find('.acf_datepicker').each(function()
+	{
+		var format = 'dd/mm/yy';
+		if($(this).siblings('input[name="date_format"]').val() != '')
+		{
+			format = $(this).siblings('input[name="date_format"]').val();
+		}
+		
+		$(this).datepicker({ 
+			dateFormat: format 
+		});
+	});
+	
 	// hide meta boxes
 	
 	var screen_options = $('#screen-meta');
 	
 	// hide content_editor
-	if(!div.find('input[name=show_content_editor]').exists())
+	if(!div.find('input[name=show_the_content]').exists())
 	{
 		$('#postdivrich').hide();
 	}
@@ -77,6 +91,7 @@ jQuery(document).ready(function($){
 	function setup_iframes()
 	{
 	
+	// setup images
 	table.find('.acf_image_uploader').each(function(){
 		
 		var div = $(this);
@@ -128,6 +143,63 @@ jQuery(document).ready(function($){
 		{
 			div.find('input[type=hidden]').val('');
 			div.find('img').remove();
+			div.find('iframe').removeClass('hide');
+			$(this).addClass('hide');
+		
+			return false;
+		});
+	});
+	
+	// setup files
+	table.find('.acf_file_uploader').each(function(){
+		
+		var div = $(this);
+		var iframe = div.find('iframe');
+
+		iframe.contents().find('input#acf_image').unbind('change').change(function(){
+			
+			// set up load event
+			iframe.unbind("load").load(function(){
+			
+				var result = $(this).contents().find('body .result').html();
+			
+				if(result == null)
+				{
+					//alert('null');
+				}
+				else if(result == '0')
+				{
+					//alert('0');
+					//window.history.back();
+				}
+				else
+				{
+					//alert(result);
+					div.children('input[type=hidden]').attr('value',result);
+					
+					div.append('<span>'+result+'</span>');
+					div.children('a.remove_file').removeClass('hide');
+
+					//iframe.history.back();
+					div.find('iframe').addClass('hide');
+				}
+				
+				div.find('.loading').remove();
+				setup_iframes();
+				
+			});
+			
+			// send image
+			iframe.contents().find('form').submit();
+			
+			// add loading div
+			div.append('<div class="loading"></div>');
+		});
+		
+		div.find('a.remove_file').unbind('click').click(function()
+		{
+			div.find('input[type=hidden]').val('');
+			div.find('span').remove();
 			div.find('iframe').removeClass('hide');
 			$(this).addClass('hide');
 		

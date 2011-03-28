@@ -3,7 +3,7 @@
 global $post;
 		
 // shows hidden custom fields
-echo "<style type='text/css'>#postcustom .hidden { display: table-row; }</style>\n";
+//echo "<style type='text/css'>#postcustom .hidden { display: table-row; }</style>";
 
 // add metabox, style and javascript to acf page
 //if($_GET['post_type'] == 'acf')
@@ -37,10 +37,14 @@ elseif(get_post_type($post) == 'acf')
 else
 {
 	// any other edit page
-	$acfs = get_posts(array(
+	$acfs = get_pages(array(
 		'numberposts' 	=> 	-1,
-		'post_type'		=>	'acf'
+		'post_type'		=>	'acf',
+		'sort_column' 	=>	'menu_order',
 	));
+	
+	// blank array to hold acfs
+	$add_acf = array();
 	
 	if($acfs)
 	{
@@ -90,19 +94,23 @@ else
 			
 			if($add_box == true)
 			{
-				echo '<link rel="stylesheet" type="text/css" href="'.$this->dir.'/css/style.global.css" />';
-				echo '<link rel="stylesheet" type="text/css" href="'.$this->dir.'/css/style.input.css" />';
-				
-				echo '<script type="text/javascript" src="'.$this->dir.'/js/functions.input.js" ></script>';
-				
-				add_meta_box('acf_input', get_the_title($acf->ID), array($this, '_input_meta_box'), get_post_type($post), 'normal', 'high', array('acf' => $acf));
-				
-				// only add 1 metabox
-				break;
+				// add acf to array
+				$add_acf[] = $acf;
 			}
+			
+		}// end foreach
+		
+		if(!empty($add_acf))
+		{
+			// add these acf's to the page
+			echo '<link rel="stylesheet" type="text/css" href="'.$this->dir.'/css/style.global.css" />';
+			echo '<link rel="stylesheet" type="text/css" href="'.$this->dir.'/css/style.input.css" />';
+			echo '<script type="text/javascript" src="'.$this->dir.'/js/functions.input.js" ></script>';
+				
+			add_meta_box('acf_input', 'ACF Fields', array($this, '_input_meta_box'), get_post_type($post), 'normal', 'high', array('acfs' => $add_acf));
 		}
 		
-	}
+	}// end if
 }
 
 ?>

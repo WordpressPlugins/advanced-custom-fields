@@ -3,7 +3,7 @@
 Plugin Name: Advanced Custom Fields
 Plugin URI: http://plugins.elliotcondon.com/advanced-custom-fields/
 Description: Completely Customise your edit pages with an assortment of field types: Wysiwyg, text, image, select, checkbox and more! Hide unwanted metaboxes and assign to any edit page!
-Version: 1.0.0
+Version: 1.0.1
 Author: Elliot Condon
 Author URI: http://www.elliotcondon.com/
 License: GPL
@@ -201,17 +201,21 @@ class Acf
 		include('core/fields/textarea.php');
 		include('core/fields/wysiwyg.php');
 		include('core/fields/image.php');
+		include('core/fields/file.php');
 		include('core/fields/select.php');
 		include('core/fields/checkbox.php');
 		include('core/fields/page_link.php');
+		include('core/fields/date_picker/date_picker.php');
 		
 		$array['text'] = new Text(); 
 		$array['textarea'] = new Textarea(); 
 		$array['wysiwyg'] = new Wysiwyg(); 
 		$array['image'] = new Image($this->dir); 
+		$array['file'] = new File($this->dir); 
 		$array['select'] = new Select(); 
 		$array['checkbox'] = new Checkbox();
 		$array['page_link'] = new Page_link();
+		$array['date_picker'] = new Date_picker($this->dir);
 		
 		return $array;
 	}
@@ -506,6 +510,7 @@ class Acf
 	{
 		if($_GET['post_type'] != 'acf'){return false;}
 		
+		echo "<style type='text/css'>.row-actions span.inline, .row-actions span.view { display: none; }</style>";
 		echo '<link rel="stylesheet" href="'.$this->dir.'/css/style.info.css" type="text/css" media="all" />';
 		echo '<script type="text/javascript" src="'.$this->dir.'/js/functions.info.js"></script>';
 		include('core/info_meta_box.php');

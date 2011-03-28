@@ -16,7 +16,8 @@ $labels = array(
 $supports = array(
 	'title',
 	'revisions',
-	'custom-fields'
+	'custom-fields',
+	'page-attributes'
 );
 
 register_post_type('acf', array(
@@ -24,8 +25,8 @@ register_post_type('acf', array(
 	'public' => false,
 	'show_ui' => true,
 	'_builtin' =>  false,
-	'capability_type' => 'post',
-	'hierarchical' => false,
+	'capability_type' => 'page',
+	'hierarchical' => true,
 	'rewrite' => array("slug" => "acf"),
 	'query_var' => "acf",
 	'supports' => $supports,
