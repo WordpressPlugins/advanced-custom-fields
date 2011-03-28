@@ -1,0 +1,121 @@
+.postbox#acf_input {
+	border: #DFDFDF solid 0px;
+	overflow: hidden;
+	background: transparent;
+}
+
+.postbox#acf_input  h3.hndle{
+	display: none;
+}
+
+.postbox#acf_input  .inside {
+	margin: 0;
+}
+
+
+.postbox#acf_input .handlediv {
+	display: none;
+	height: 0;
+	width: 0;
+}
+.acf_wysiwyg {
+	border: #DFDFDF solid 1px;
+	overflow: hidden;
+}
+
+#post-body .acf_wysiwyg .wp_themeSkin .mceStatusbar a.mceResize {
+	top: -2px !important;
+}
+
+table.acf_input > tbody > tr > td > input[type="text"], 
+table.acf_input > tbody > tr > td > textarea {
+    width: 99.8%;
+}
+
+.acf_image_uploader {
+	position: relative;
+	float: left;
+}
+
+.acf_image_uploader iframe {
+	display: block;
+	overflow: hidden;
+	height: 40px;
+	width: 245px;
+	float: left;
+}
+
+.acf_image_uploader .loading {
+	float: left;
+	height: 16px;
+	width: 16px;
+	margin: 3px 0 0;
+	background: url(../images/loading.gif) 50% 50% no-repeat;
+}
+
+.acf_image_uploader iframe.hide {
+	display: none;
+}
+
+.acf_image_uploader a.remove_image {
+	width: 16px;
+	height: 16px;
+	background: url(../images/button_remove.png) 0 0 no-repeat;
+	position: absolute;
+	top:0;
+	left: 0;
+	cursor: pointer;
+	margin: -3px 0 0 -3px;
+	display: none;
+}
+
+.acf_image_uploader:hover a.remove_image {
+	display: block;
+}
+
+.acf_image_uploader:hover a.remove_image.hide {
+	display: none;
+}
+
+.acf_image_uploader a.remove_image:hover  {
+	background-position: 0% 100%;
+}
+
+.acf_image_uploader img {
+	height: 100px;
+	width: auto;
+	padding: 3px;
+	background: #FFF;
+	border: #d8d8d8 solid 1px;
+}
+
+table.acf_input {
+	border: 0 none;
+	border-top: 1px solid #eeeeee;
+    border-bottom: 1px solid #FFFFFF;
+}
+
+table.acf_input {
+	background: transparent;
+}
+
+table.acf_input > tbody > tr > td {
+    border-bottom: 1px solid #eeeeee;
+    border-top: 1px solid #FFFFFF;
+    padding: 8px;
+}
+
+table.acf_input > tbody > tr > td > label {
+	color: #21759B;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0 0 8px;
+    text-shadow: 0 1px 0 #FFFFFF;
+}
+table.acf_input > tbody > tr:last-child td {
+	border-bottom: 1px solid #eeeeee;
+}
+
+table.acf_input > tbody > tr > td > label {
+	width: auto;
+}

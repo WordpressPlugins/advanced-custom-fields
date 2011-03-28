@@ -1,0 +1,31 @@
+/*.postbox#acf_location {
+	border: none;
+}
+
+.postbox#acf_location h3 {
+	background: transparent none;
+}
+
+.postbox#acf_location .hndlediv {
+	display: none;
+}
+
+
+.postbox#acf_location .inside {
+	background: transparent;
+	margin: 0;
+}*/
+
+.postbox#acf_location h3 span.description {
+	font-size: 11px;
+	color: #666;
+	font-weight: normal;
+	font-style: normal;
+	padding-left: 4px;
+}
+
+table.acf_input > tbody > tr > td > select[multiple="multiple"] {
+    float: left;
+    width: 300px;
+    height: auto !important;
+}
