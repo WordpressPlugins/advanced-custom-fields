@@ -31,7 +31,7 @@ class acf_object
  * @since 1.0.0
  * 
  ---------------------------------------------------------------------------------------------*/
-function get_acf()
+function get_acf($post_id = false)
 {
 	global $acf;
 	global $wpdb;
@@ -97,14 +97,17 @@ function get_fields()
 function get_field($field_name)
 {
 	global $acf_fields;
+	global $post;
 	
 	if(empty($acf_fields))
 	{
+		$acf_fields = array();
+		
 		//echo 'acf_fields is empty';
-		$acf_fields = get_acf();
+		$acf_fields[$post->ID] = get_acf();
 	}
 	
-	return $acf_fields->$field_name;
+	return $acf_fields[$post->ID]->$field_name;
 }
 
 // the field
