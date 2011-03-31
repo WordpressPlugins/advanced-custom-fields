@@ -122,6 +122,9 @@ jQuery(document).ready(function($){
 				var a = $('<a class="field_options_button" href="javascript:;"></a>');
 				td.append(a);
 				
+				// all options are disabled, make the chosen one abled!
+				selected_option.find('[name]').removeAttr('disabled');
+				
 				a.click(function(){
 					if(!$(this).parents('.field').is('.options_open'))
 					{
