@@ -67,6 +67,10 @@ http://plugins.elliotcondon.com/advanced-custom-fields/user-guide/
 
 == Changelog ==
 
+= 1.0.2 =
+* Bug Fix: Stopped Field Options from loosing data
+* Bug Fix: API will now work with looped posts
+
 = 1.0.1 =
 * New Api Functions: get_fields(), get_field(), the_field()
 * New Field Type: Date Picker
