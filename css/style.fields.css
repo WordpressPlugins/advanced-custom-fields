@@ -25,6 +25,7 @@
 .fields {
 	position: relative;
 	overflow: hidden;
+	background: #eaeaea;
 }
 
 .fields .field {
@@ -33,6 +34,9 @@
 	border-top: #fff solid 1px;
 	border-bottom: #eaeaea solid 1px;
 	background: #f6f6f6;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa', endColorstr='#f6f6f6'); /* for IE */
+	background: -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#f6f6f6)); /* for webkit browsers */
+	background: -moz-linear-gradient(top,  #fafafa,  #f6f6f6); /* for firefox 3.6+ */
 }
 
 .fields .field:hover {
@@ -90,7 +94,7 @@
 	text-align: center;
 	vertical-align: middle;
 	border-right: 0 none;
-	color: #CCC;
+	color: #aaa;
 	text-shadow: #fff 0 1px 0;
 	padding: 8px 0 8px 8px;
 }
@@ -284,4 +288,19 @@ a.field_options_button:hover {
 .field_options .field_option textarea {
 	width: 300px;
 
+}
+
+/*---------------------------------------------------------------------------------------------
+	Repeater
+---------------------------------------------------------------------------------------------*/
+.repeater {
+	border: #CCCCCC solid 1px;
+	-moz-border-radius: 5px; -webkit-border-radius: 5px; -khtml-border-radius: 5px; border-radius: 5px; 
+	position: relative;
+	overflow: hidden;
+}
+
+.field_options .field_option .repeater table {
+	border: 0 none;
+	-moz-border-radius: 0; -webkit-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; 
 }

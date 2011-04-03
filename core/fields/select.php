@@ -13,6 +13,7 @@ class Select
 	
 	function html($options)
 	{
+		
 		//$options['choices'] = explode("\n",$options['choices']);
 		if($options['options']['multiple'] == 'true')
 		{
@@ -33,8 +34,14 @@ class Select
 		foreach($options['options']['choices'] as $key => $value)
 		{
 			$selected = '';
-			if(is_array($options['value']))
+			if($options['options']['multiple'] == 'true' && empty($options['value']))
 			{
+				// 1. If it is multiple select & there are no values selected, make all options selected
+				$selected = 'selected="selected"';
+			}
+			elseif(is_array($options['value']))
+			{
+				// 2. If the value is an array (multiple select), loop through values and check if it is selected
 				if(in_array($key, $options['value']))
 				{
 					$selected = 'selected="selected"';
@@ -42,6 +49,7 @@ class Select
 			}
 			else
 			{
+				// 3. this is not a multiple select, just check normaly
 				if($key == $options['value'])
 				{
 					$selected = 'selected="selected"';
@@ -84,6 +92,12 @@ class Select
 	function has_format_value()
 	{
 		return false;
+	}
+	
+	function save_field($post_id, $field_name, $field_value)
+	{
+		// this is a normal text save
+		add_post_meta($post_id, '_acf_'.$field_name, $field_value);
 	}
 	
 }

@@ -1,123 +1,121 @@
-jQuery(document).ready(function($){
-   	
-   	// exists
-   	$.fn.exists = function(){return jQuery(this).length>0;}
-   	
-   	
-   	// elements
-   	var div = $('div.postbox#acf_fields');
-   	var fields = div.find('.fields');
+(function($){
+	// exists
+	$.fn.exists = function(){return jQuery(this).length>0;}
 
-
-	// vars
-	var total_fields = parseInt(div.find('input[name=total_fields]').attr('value')) - 1;
-	var fields_limit = parseInt(div.find('input[name=fields_limit]').attr('value')) -1;
 	
-
-	div.find('a#add_field').unbind("click").click(function(){
-		
-		// limit fields
-		if(total_fields >= fields_limit)
-		{
-			alert('Field limit reached!');
-			return false;
-		}
-		
-		// increase total fields
-		total_fields++;
-
-		// clone last tr
-		var new_field = fields.find('.field:last-child').clone(true);
-		
-		// update names of input, textarea and all other elements that have name
-		new_field.find('[name]').each(function()
-		{
-			var name = $(this).attr('name').replace('[fields]['+(total_fields-1)+']','[fields]['+(total_fields)+']');
-			$(this).attr('name', name);
-			$(this).val('');
-			$(this).attr('checked','');
-			$(this).attr('selected','');
-		});
-		
-		// append to table
-		fields.append(new_field);
-		
-		new_field.find('select.type').trigger('change');
-		new_field.find('input.label').focus();
-		
-		// update order numbers
-		update_order_numbers();
-		
-		return false;
-	});
-	
-	// update order numbers
-	function update_order_numbers(){
-		fields.find('.field').each(function(i){
-			$(this).find('td.order').html(i+1);
-		});
-	}
-	
-	// sortable tr
-	fields.sortable({
-		update: function(event, ui){update_order_numbers();},
-		handle: 'table'
-	});
-	
-	
-	// add default names
-	fields.find('.field').each(function(){
-		
-		var _this = $(this);
-		
-		// auto complete name
-		_this.find('input.name').unbind('focus').focus(function()
-		{
-			var _this = $(this).parents('.field');
-			if($(this).val() == "")
+	$.fn.make_acf = function()
+	{
+		// vars
+		var fields = $(this); // .fields
+		var add_field = fields.siblings('.table_footer').children('a#add_field');
+		var fields_limit = parseInt(fields.siblings('input[name=fields_limit]').val()) - 1;
+				
+		/*-------------------------------------------
+			Add Field Button
+		-------------------------------------------*/
+		add_field.unbind("click").click(function(){
+			
+			var total_fields = fields.children('.field').length-1;
+			
+			// limit fields
+			if(total_fields >= fields_limit)
 			{
-				var label = _this.find('input.label').val();
-				label = label.toLowerCase().split(' ').join('_').split('\'').join('');
-				$(this).val(label);
+				alert('Field limit reached!');
+				return false;
+			}
+			
+			// clone last tr
+			var new_field = fields.children('.field').last().clone(true);
+			
+			// reset new field
+			new_field.reset_values();
+			new_field.update_names(total_fields, (total_fields+1));
+			
+			// append to table
+			fields.append(new_field);
+			
+			// close options
+			new_field.find('select.type').trigger('change');
+			new_field.find('input.label').focus();
+			
+			// update order numbers
+			fields.update_order_numbers();
+		
+			return false;
+			
+			
+		});
+		
+		
+		/*-------------------------------------------
+			Sortable
+		-------------------------------------------*/
+		fields.sortable({
+			update: function(event, ui){fields.update_order_numbers();},
+			handle: 'table'
+		});
+		
+		
+		/*-------------------------------------------
+			Auto Fill Name
+		-------------------------------------------*/
+		fields.children('.field').children('table').find('input.label').unbind('blur').blur(function()
+		{
+			var label = $(this);
+			var name = $(this).parent().siblings('td.name').children('input');
+			
+			if(name.val() == '')
+			{
+				var val = label.val().toLowerCase().split(' ').join('_').split('\'').join('');
+				name.val(val);
 			}
 		});
 		
-		// add remove button functionality
-		_this.find('a.remove_field').unbind('click').click(function()
+		
+		/*-------------------------------------------
+			Remove Field Button
+		-------------------------------------------*/
+		fields.children('.field').children('table').find('a.remove_field').unbind('click').click(function()
 		{	
-			if(fields.find('.field').length <= 1)
+			// needs at least one
+			if(fields.children('.field').length <= 1)
 			{
 				return false;
 			}
 			
-			var _this = $(this).parents('.field');
-			_this.fadeTo(300,0,function(){
-				_this.animate({'height':0}, 300, function(){
-					_this.remove();
-					update_order_numbers();
+			var field = $(this).parents('.field').first();
+			field.fadeTo(300,0,function(){
+				field.animate({'height':0}, 300, function(){
+					field.remove();
+					fields.update_order_numbers();
 				});
 			});
 			
 			return false;
 		});
 		
-		// show options for type
-		_this.find('select.type').change(function()
+		
+		/*-------------------------------------------
+			Field Options
+		-------------------------------------------*/
+		fields.children('.field').children('table').find('select.type').change(function()
 		{
-			var _this = $(this).parents('.field');
-			
-			// store selected value
 			var selected = $(this).val();
-			var td = $(this).parent();
+			var td = $(this).parent('td');
+			
+			var field = $(this).parents('.field').first();
+			var field_options = field.children('.field_options');
+			var selected_option = field_options.children('.field_option#'+selected);
 			
 			// remove preivous field option button
-			td.find('a.field_options_button').remove();
-			_this.removeClass('options_open');
-			_this.find('div.field_options div.field_option').hide();
-			_this.find('div.field_options div.field_option [name]').attr('disabled', true);
+			td.children('a.field_options_button').remove();
+			field.removeClass('options_open');
+			field_options.children('.field_option').hide();
+			field_options.children('.field_option').find('[name]').attr('disabled', 'true');
+			
 			
 			// if options...
-			if(_this.find('div.field_options').find('div.field_option#'+selected).exists())
+			if(selected_option.exists())
 			{
 				var a = $('<a class="field_options_button" href="javascript:;"></a>');
 				td.append(a);
@@ -126,54 +124,67 @@ jQuery(document).ready(function($){
 				selected_option.find('[name]').removeAttr('disabled');
 				
 				a.click(function(){
-					if(!$(this).parents('.field').is('.options_open'))
+					if(!field.is('.options_open'))
 					{
-						$(this).parents('.field').addClass('options_open');
-						$(this).parents('.field').find('div.field_options div.field_option#'+selected).animate({'height':'toggle'}, 500);
+						field.addClass('options_open');
+						selected_option.animate({'height':'toggle', 'padding-top':'toggle', 'padding-bottom':'toggle'}, 500);
 					}
 					else
 					{
-						$(this).parents('.field').find('div.field_options div.field_option#'+selected).animate({'height':'toggle'}, 500, function(){
-							$(this).parents('.field').removeClass('options_open');
+						selected_option.animate({'height':'toggle', 'padding-top':'toggle', 'padding-bottom':'toggle'}, 500, function(){
+							field.removeClass('options_open');
 						});
 					}
 					
-					$(this).parents('.field').find('div.field_options div.field_option#'+selected+' [name]').removeAttr('disabled');
+					selected_option.find('[name]').removeAttr('disabled');
 				});
-				/*var inline_div = td.find('div.field_option#'+selected);
-				
-				
-				
-				a.click(function(){
-				
-					inline_div.attr('id','acf_inline_option');
-					
-					$.fancybox({
-						padding		: 0,
-						type				: 'inline',
-						href				: '#acf_inline_option',
-				        autoDimensions		: true,
-						overlayColor		: '#000',
-						onClosed			: function(){
-							inline_div.attr('id',selected);
-						}
-					});
-					
-				});*/
 				
 			}
-			
-			
-
-			
-			//$(this).parents('tr').find('.field_options .field_option').removeClass('open').find('[name]').attr('disabled', true);
-			//$(this).parents('tr').find('.field_options .field_option#'+selected).addClass('open').find('[name]').removeAttr('disabled');
-
 		}).trigger('change');
-
 		
+		
+	}
+	
+	/*-------------------------------------------
+		Reset Values
+	-------------------------------------------*/
+	$.fn.reset_values = function(){
+		$(this).find('[name]').each(function()
+		{
+			$(this).val('');
+			$(this).attr('checked','');
+			$(this).attr('selected','');
+		});
+	}
+	
+	$.fn.update_names = function(old_no, new_no)
+	{
+		//alert('passed through '+total_fields);
+		$(this).find('[name]').each(function()
+		{
+			var name = $(this).attr('name').replace('['+(old_no)+']','['+new_no+']');
+			$(this).attr('name', name);
+		});
+	}
+	
+	
+	/*-------------------------------------------
+		Update Orer Numbers
+	-------------------------------------------*/
+	$.fn.update_order_numbers = function(){
+		$(this).children('.field').each(function(i){
+			$(this).children('table').children('tbody').children('tr').children('td.order').html(i+1);
+		});
+	}
+	
+
+	/*-------------------------------------------
+		Document Ready
+	-------------------------------------------*/
+	$(document).ready(function(){
+   		$('div.postbox#acf_fields .fields').each(function(){
+   			$(this).make_acf();
+   		});
 	});
-	
-	
-   
-});
+
+})(jQuery);

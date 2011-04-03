@@ -4,24 +4,36 @@ class Page_link
 {
 	var $name;
 	var $title;
+	var $parent;
 	
-	function Page_link()
+	function Page_link($parent)
 	{
 		$this->name = 'page_link';
 		$this->title = 'Page Link';
+		$this->parent = $parent;
 	}
 	
 	function html($options)
 	{
-		
-		$post_types = get_post_types(array('public' => true));
-		foreach($post_types as $key => $value)
+		// get post types
+		if(is_array($options['options']['post_type']))
 		{
-			if($value == 'attachment')
+			// 1. If select has selected post types, just use them
+			$post_types = $options['options']['post_type'];
+		}
+		else
+		{
+			//2. If not post types have been selected, load all the public ones
+			$post_types = get_post_types(array('public' => true));
+			foreach($post_types as $key => $value)
 			{
-				unset($post_types[$key]);
+				if($value == 'attachment')
+				{
+					unset($post_types[$key]);
+				}
 			}
 		}
+		
 
 		$posts = get_posts(array(
 			'numberposts' 	=> 	-1,
@@ -75,7 +87,35 @@ class Page_link
 	
 	function has_options()
 	{
-		return false;
+		return true;
+	}
+	
+	function options($key, $options)
+	{
+		?>
+		<table class="acf_input">
+		<tr>
+			<td class="label">
+				<label for="">Post Type</label>
+			</td>
+			<td>
+				<?php 
+				foreach (get_post_types() as $post_type ) {
+				  $post_types[$post_type] = $post_type;
+				}
+				
+				unset($post_types['attachment']);
+				unset($post_types['nav_menu_item']);
+				unset($post_types['revision']);
+				unset($post_types['acf']);
+				
+				$this->parent->create_field(array('type'=>'select','name'=>'acf[fields]['.$key.'][options][post_type]','value'=>$options['post_type'],'id'=>'acf[fields]['.$key.'][options][post_type]', 'options' => array('choices' => $post_types, 'multiple' => 'true'))); 
+				?>
+				<p class="description">Filter posts by selecting a post type</p>
+			</td>
+		</tr>
+		</table>
+		<?php
 	}
 	
 	function has_format_value()
@@ -88,6 +128,12 @@ class Page_link
 		$value = get_permalink($value);
 	
 		return $value;
+	}
+	
+	function save_field($post_id, $field_name, $field_value)
+	{
+		// this is a normal text save
+		add_post_meta($post_id, '_acf_'.$field_name, $field_value);
 	}
 	
 }

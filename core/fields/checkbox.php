@@ -48,7 +48,7 @@ class Checkbox
 		//if($options['choices'] == ''){$options['choices'] = "option 1\noption 2\noption 3";}
 		?>
 
-		<table>
+		<table class="acf_input">
 		<tr>
 			<td class="label">
 				<label for="">Choices</label>
@@ -82,6 +82,15 @@ class Checkbox
 		}
 		
 		return $value;
+	}
+	
+	function save_field($post_id, $field_name, $field_value)
+	{
+		if(is_array($field_value))
+		{
+			$field_value = implode(',',$field_value);
+		}
+		add_post_meta($post_id, '_acf_'.$field_name, $field_value);
 	}
 	
 }

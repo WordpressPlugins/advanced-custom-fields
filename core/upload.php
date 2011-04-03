@@ -32,6 +32,15 @@ if(isset($_POST['acf_post']))
 		}
 		
 		.result {display: none;}
+		
+		form {
+			display: block;
+			position: relative;
+			overflow: hidden;
+			padding: 2px;
+			float: left;
+		}
+	
 	</style>
 
 </head>
@@ -53,6 +62,7 @@ if(!empty($file))
 
 <input type="hidden" name="acf_post" value="true" /> 
 <input type="file" name="acf_image" id="acf_image" /> 
+<input type="submit" class="button" value="Upload" />
 
 </form>
 

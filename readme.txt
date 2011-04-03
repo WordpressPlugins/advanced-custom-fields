@@ -43,7 +43,7 @@ http://plugins.elliotcondon.com/advanced-custom-fields/user-guide/
 = Website =
 http://plugins.elliotcondon.com/advanced-custom-fields/
 
-= Forum Support =
+= Bug Submission and Forum Support =
 http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 = Please Vote and Enjoy =
@@ -61,11 +61,24 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 
 == Screenshots ==
-Video Tutorials
-http://plugins.elliotcondon.com/advanced-custom-fields/user-guide/
+1. Creating the Advanced Custom Fields
+
+2. Adding the Custom Fields to a page and hiding the default meta boxes
+
+3. The Page edit screen after creating the Advanced Custom Fields
+
+4. Simple and intuitive API. Read the documentation at: http://plugins.elliotcondon.com/advanced-custom-fields/code-examples/
 
 
 == Changelog ==
+
+= 1.0.3 =
+* Heaps of js bug fixes
+* API will now work with looped posts
+* Date Picker returns the correct value
+* Added Post type option to Page Link Field
+* Fixed Image + File Uploads!
+* Lots of tidying up!
 
 = 1.0.2 =
 * Bug Fix: Stopped Field Options from loosing data

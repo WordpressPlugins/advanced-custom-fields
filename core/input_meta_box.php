@@ -86,11 +86,19 @@
 		{
 			continue;
 		}
+		elseif($field['type'] == 'repeater')
+		{
+			// if repeater, get the repeater class to find and add the values to field
+			$field = $this->fields['repeater']->add_values_to_field($field);	
+			
+		}
+		else
+		{
+			$field['value'] = get_post_meta($post->ID, '_acf_'.$field['name'], true);
+			$field['id'] = 'acf['.$field['name'].']';
+			$field['name'] = 'acf['.$field['name'].']';
+		}
 		
-		$field['value'] = get_post_meta($post->ID, '_acf_'.$field['name'], true);
-		
-		$field['id'] = 'acf['.$field['name'].']';
-		$field['name'] = 'acf['.$field['name'].']';
 
 		if($field['type'] == 'select' || $field['type'] == 'checkbox')
 		{

@@ -3,7 +3,7 @@
 global $post;
 		
 // shows hidden custom fields
-//echo "<style type='text/css'>#postcustom .hidden { display: table-row; }</style>";
+echo "<style type='text/css'>#postcustom .hidden { display: table-row; }</style>";
 
 // add metabox, style and javascript to acf page
 //if($_GET['post_type'] == 'acf')
@@ -105,6 +105,7 @@ else
 			// add these acf's to the page
 			echo '<link rel="stylesheet" type="text/css" href="'.$this->dir.'/css/style.global.css" />';
 			echo '<link rel="stylesheet" type="text/css" href="'.$this->dir.'/css/style.input.css" />';
+			echo '<script type="text/javascript" src="'.$this->dir.'/js/swap.jquery.js" ></script>';
 			echo '<script type="text/javascript" src="'.$this->dir.'/js/functions.input.js" ></script>';
 				
 			add_meta_box('acf_input', 'ACF Fields', array($this, '_input_meta_box'), get_post_type($post), 'normal', 'high', array('acfs' => $add_acf));

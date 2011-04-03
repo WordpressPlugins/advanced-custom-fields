@@ -3,7 +3,7 @@
 Plugin Name: Advanced Custom Fields
 Plugin URI: http://plugins.elliotcondon.com/advanced-custom-fields/
 Description: Completely Customise your edit pages with an assortment of field types: Wysiwyg, text, image, select, checkbox and more! Hide unwanted metaboxes and assign to any edit page!
-Version: 1.0.2
+Version: 1.0.3
 Author: Elliot Condon
 Author URI: http://www.elliotcondon.com/
 License: GPL
@@ -13,9 +13,6 @@ Copyright: Elliot Condon
 
 $acf = new Acf();
 include('core/api.php');
-
-
-
 
 class Acf
 { 
@@ -36,7 +33,7 @@ class Acf
 		$this->dir = plugins_url('',__FILE__);
 		$this->siteurl = get_bloginfo('url');
 		$this->wpadminurl = admin_url();
-		$this->version = '1.0.2';
+		$this->version = '1.0.3';
 		
 		// set text domain
 		load_plugin_textdomain('acf', false, $this->path.'/lang' );
@@ -157,23 +154,6 @@ class Acf
 	
 	
 	/*---------------------------------------------------------------------------------------------
-	 * admin_head
-	 *
-	 * @author Elliot Condon
-	 * @since 1.0.0
-	 * 
-	 ---------------------------------------------------------------------------------------------*/
-	function admin_footer()
-	{
-		//if($_GET['post_type'] != 'cf_matrix'){return false;}
-		
-		//echo '<link rel="stylesheet" href="'.$this->dir.'/css/cf_matrix_admin.css" type="text/css" media="all" />';
-		//echo '<script type="text/javascript" src="'.$this->dir.'/js/admin.js"></script>';
-		//include('core/meta_box_4.php');
-	}
-	
-	
-	/*---------------------------------------------------------------------------------------------
 	 * activate
 	 *
 	 * @author Elliot Condon
@@ -214,7 +194,7 @@ class Acf
 		$array['file'] = new File($this->dir); 
 		$array['select'] = new Select(); 
 		$array['checkbox'] = new Checkbox();
-		$array['page_link'] = new Page_link();
+		$array['page_link'] = new Page_link($this);
 		$array['date_picker'] = new Date_picker($this->dir);
 		
 		return $array;
@@ -230,7 +210,31 @@ class Acf
 	 ---------------------------------------------------------------------------------------------*/
 	function create_field($options)
 	{
+		if(!$this->fields[$options['type']])
+		{
+			echo 'error: Field Type does not exist!';
+			return false;
+		}
+		
 		$this->fields[$options['type']]->html($options);
+	}
+	
+	/*---------------------------------------------------------------------------------------------
+	 * save_field
+	 *
+	 * @author Elliot Condon
+	 * @since 1.0.0
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
+	function save_field($options)
+	{
+		if(!$this->fields[$options['field_type']])
+		{
+			echo 'error: Field Type does not exist!';
+			return false;
+		}
+		
+		$this->fields[$options['field_type']]->save_field($options['post_id'], $options['field_name'], $options['field_value']);
 	}
 	
 
@@ -327,7 +331,7 @@ class Acf
 		{
 			if(in_array('_acf_field_'.$i.'_label',$keys))
 			{
-				$fields[] = array(
+				$field = array(
 					'label'		=>	get_post_meta($acf_id, '_acf_field_'.$i.'_label', true),
 					'name'		=>	get_post_meta($acf_id, '_acf_field_'.$i.'_name', true),
 					'type'		=>	get_post_meta($acf_id, '_acf_field_'.$i.'_type', true),
@@ -335,6 +339,28 @@ class Acf
 										get_post_meta($acf_id, '_acf_field_'.$i.'_options', true)
 									),
 				);
+				
+				// if matrix, it will have sub fields
+				for($j = 0; $j < 99; $j++)
+				{
+					if(in_array('_acf_field_'.$i.'_field_'.$j.'_label',$keys))
+					{
+						$field['options']['repeaters'][] = array(
+							'label'		=>	get_post_meta($acf_id, '_acf_field_'.$i.'_field_'.$j.'_label', true),
+							'name'		=>	get_post_meta($acf_id, '_acf_field_'.$i.'_field_'.$j.'_name', true),
+							'type'		=>	get_post_meta($acf_id, '_acf_field_'.$i.'_field_'.$j.'_type', true),
+						);
+					}
+					else
+					{
+						// data doesnt exist, break loop
+						//echo 'not in array, field = '.$field['label'].'<br>';
+						break;
+					}
+				}	
+
+				$fields[] = $field;
+				
 			}
 			else
 			{
@@ -452,6 +478,7 @@ class Acf
 	 	}
 	 	
 	 	$array = unserialize($string);
+	 	/*print_r($string);
 	 	
 		foreach($array as $key => $value)
 		{
@@ -468,7 +495,7 @@ class Acf
 			{
 				$array[$key] = stripslashes($value);
 			}	
-		}
+		}*/
 		return $array;
 	 }
 	 

@@ -4,7 +4,12 @@
 		
 	// get options
 	$location = $this->get_acf_location($post->ID);
-	$location['post_type'] = explode(',',str_replace(' ','',$location['post_type']));
+	
+	// if post_type exists, it will be an array and neds to be exploded
+	if(is_array($location['post_type']))
+	{
+		$location['post_type'] = explode(',',str_replace(' ','',$location['post_type']));
+	}
 	
 ?>
 
@@ -18,6 +23,7 @@
 		</td>
 		<td>
 			<?php 
+			
 			$post_types = array();
 			foreach (get_post_types() as $post_type ) {
 			  $post_types[$post_type] = $post_type;

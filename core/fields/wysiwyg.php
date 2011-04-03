@@ -34,6 +34,12 @@ class Wysiwyg
 		
 		return $value;
 	}
+	
+	function save_field($post_id, $field_name, $field_value)
+	{
+		// this is a normal text save
+		add_post_meta($post_id, '_acf_'.$field_name, $field_value);
+	}
 }
 
 ?>

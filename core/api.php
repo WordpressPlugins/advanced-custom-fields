@@ -50,11 +50,12 @@ function get_acf($post_id = false)
     // checkpoint
     
     if(empty($acf_id)){return null;}
-    
+
     foreach($acf_id as $id)
 	{
 		$this_fields = $acf->get_fields($id);
 		if(empty($this_fields)){return null;}
+		
 		foreach($this_fields as $this_field)
 		{
 			$fields[] = $this_field;
@@ -63,7 +64,7 @@ function get_acf($post_id = false)
 	
 	// checkpoint
 	if(empty($fields)){return null;}
-
+	
 	$variables = array();
 	
 	foreach($fields as $field)
@@ -102,8 +103,9 @@ function get_field($field_name)
 	if(empty($acf_fields))
 	{
 		$acf_fields = array();
-		
-		//echo 'acf_fields is empty';
+	}
+	if(empty($acf_fields[$post->ID]))
+	{
 		$acf_fields[$post->ID] = get_acf();
 	}
 	
@@ -115,7 +117,5 @@ function the_field($field_name)
 {
 	echo get_field($field_name);
 }
-
-
 
 ?>
