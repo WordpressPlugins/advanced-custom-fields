@@ -94,8 +94,18 @@ else
 			
 			if($add_box == true)
 			{
-				// add acf to array
-				$add_acf[] = $acf;
+				// Override
+				if($location['ignore_other_acf'] == 'true')
+				{
+					// if ignore other acf's was ticked, override the $add_acf array and break the loop
+					$add_acf = array($acf);
+					break;
+				}
+				else
+				{
+					// add acf to array
+					$add_acf[] = $acf;
+				}
 			}
 			
 		}// end foreach

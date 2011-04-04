@@ -72,6 +72,11 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 == Changelog ==
 
+= 1.0.4 =
+* Updated the location options. New Override Option!
+* Fixed un ticking post type problem
+* Added JS alert if field has no type
+
 = 1.0.3 =
 * Heaps of js bug fixes
 * API will now work with looped posts

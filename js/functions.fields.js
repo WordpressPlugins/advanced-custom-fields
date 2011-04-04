@@ -149,12 +149,12 @@
 		Reset Values
 	-------------------------------------------*/
 	$.fn.reset_values = function(){
-		$(this).find('[name]').each(function()
-		{
-			$(this).val('');
-			$(this).attr('checked','');
-			$(this).attr('selected','');
-		});
+		
+		$(this).find('input[type="text"]').val('');
+		$(this).find('textarea').val('');
+		$(this).find('select option').removeAttr('selected');
+		$(this).find('select[multiple="multiple"] option').attr('selected','selected');
+		$(this).find('input[type="checkbox"]').removeAttr('checked');
 	}
 	
 	$.fn.update_names = function(old_no, new_no)
@@ -184,6 +184,16 @@
 	$(document).ready(function(){
    		$('div.postbox#acf_fields .fields').each(function(){
    			$(this).make_acf();
+   		});
+   		
+   		$('input#publish').click(function(){
+   			$('div.postbox#acf_fields select.type').each(function(){
+   				if($(this).val() == 'null')
+   				{
+   					alert('** All fields require a type selected **');
+   				}
+   			});
+   			
    		});
 	});
 
