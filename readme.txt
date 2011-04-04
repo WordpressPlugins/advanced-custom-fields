@@ -6,7 +6,7 @@ Requires at least: 3.0
 Tested up to: 3.1
 Stable tag: 3.1
 
-Completely Customise your edit pages with an assortment of field types: Wysiwyg, text, image, select, checkbox and more! Hide unwanted metaboxes and assign to any edit page!
+Completely Customise your edit pages with an assortment of field types: Wysiwyg, text, image, select, checkbox, page link, post object and more! Hide unwanted metaboxes and assign to any edit page!
 
 == Description ==
 
@@ -27,7 +27,8 @@ Advanced Custom Fields is the perfect solution for any wordpress website which n
 * File (upload a file, api returns the url)
 * Select (drop down list of choices, api returns chosen item)
 * Checkbox (tick for a list of choices, api returns array of choices)
-* Page Link (select a page, post or custom post type form a drop down menu, api returns the url)
+* Page Link (select 1 or more page, post or custom post types, api returns the url)
+* Post Object (select 1 or more page, post or custom post types, api returns post objects)
 * Date Picker (jquery date picker, options for format, api returns string)
 
 = Tested on =
@@ -71,6 +72,10 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 
 == Changelog ==
+
+= 1.0.5 =
+* New Field Type: Post Object
+* Added multiple select option to Select field type
 
 = 1.0.4 =
 * Updated the location options. New Override Option!

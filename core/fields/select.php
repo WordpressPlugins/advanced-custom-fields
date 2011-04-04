@@ -4,20 +4,26 @@ class Select
 {
 	var $name;
 	var $title;
+	var $parent;
 	
-	function Select()
+	function Select($parent)
 	{
 		$this->name = 'select';
 		$this->title = 'Select';
+		$this->parent = $parent;
 	}
 	
 	function html($options)
 	{
-		
 		//$options['choices'] = explode("\n",$options['choices']);
 		if($options['options']['multiple'] == 'true')
 		{
-			echo '<select id="'.$options['id'].'" class="'.$options['class'].'" name="'.$options['name'].'[]" multiple="multiple" size="5" >';
+			$name_extra = '[]';
+			if(count($options['options']['choices']) <= 1)
+			{
+				$name_extra = '';
+			}
+			echo '<select id="'.$options['id'].'" class="'.$options['class'].'" name="'.$options['name'].$name_extra.'" multiple="multiple" size="5" >';
 		}
 		else
 		{
@@ -83,6 +89,20 @@ class Select
 				Option 1<br />
 				Option 2 <br />
 				Option 3</p>
+			</td>
+		</tr>
+		<tr>
+			<td class="label">
+				<label>Multiple?</label>
+			</td>
+			<td>
+				<?php $this->parent->create_field(array(
+					'type'=>'checkbox',
+					'name'=>'acf[fields]['.$key.'][options][multiple]',
+					'value'=>$options['multiple'],
+					'id'=>'acf[fields]['.$key.'][options][multiple]', 
+					'options' => array('choices' => array('true' => 'Select multiple values'))
+				)); ?>
 			</td>
 		</tr>
 		</table>

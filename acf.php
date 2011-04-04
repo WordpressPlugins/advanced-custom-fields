@@ -3,7 +3,7 @@
 Plugin Name: Advanced Custom Fields
 Plugin URI: http://plugins.elliotcondon.com/advanced-custom-fields/
 Description: Completely Customise your edit pages with an assortment of field types: Wysiwyg, text, image, select, checkbox and more! Hide unwanted metaboxes and assign to any edit page!
-Version: 1.0.4
+Version: 1.0.5
 Author: Elliot Condon
 Author URI: http://www.elliotcondon.com/
 License: GPL
@@ -33,7 +33,7 @@ class Acf
 		$this->dir = plugins_url('',__FILE__);
 		$this->siteurl = get_bloginfo('url');
 		$this->wpadminurl = admin_url();
-		$this->version = '1.0.4';
+		$this->version = '1.0.5';
 		
 		// set text domain
 		load_plugin_textdomain('acf', false, $this->path.'/lang' );
@@ -185,6 +185,7 @@ class Acf
 		include('core/fields/select.php');
 		include('core/fields/checkbox.php');
 		include('core/fields/page_link.php');
+		include('core/fields/post_object.php');
 		include('core/fields/date_picker/date_picker.php');
 		
 		$array['text'] = new Text(); 
@@ -192,9 +193,10 @@ class Acf
 		$array['wysiwyg'] = new Wysiwyg(); 
 		$array['image'] = new Image($this->dir); 
 		$array['file'] = new File($this->dir); 
-		$array['select'] = new Select(); 
+		$array['select'] = new Select($this); 
 		$array['checkbox'] = new Checkbox();
 		$array['page_link'] = new Page_link($this);
+		$array['post_object'] = new Post_object($this);
 		$array['date_picker'] = new Date_picker($this->dir);
 		
 		return $array;

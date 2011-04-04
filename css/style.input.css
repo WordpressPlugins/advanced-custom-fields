@@ -8,7 +8,7 @@
 	display: none;
 }
 
-.postbox#acf_input  .inside {
+.postbox#acf_input .inside {
 	margin: 0;
 }
 
@@ -30,6 +30,10 @@
 table.acf_input > tbody > tr > td > input[type="text"], 
 table.acf_input > tbody > tr > td > textarea {
     width: 99.8%;
+}
+
+table.acf_input > tbody > tr > td > select {
+	min-width: 250px;
 }
 
 /* image upload */
@@ -281,4 +285,8 @@ a.remove_field:hover {
 #poststuff #acf_input .wp_themeSkin .mceStatusbar {
     background: #f3f6f9;
     border-color: #d7dee4;
+}
+
+#wpcontent select[multiple] {
+	height: auto;
 }

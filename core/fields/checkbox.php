@@ -25,6 +25,13 @@ class Checkbox
 		
 		echo '<ul class="checkbox_list '.$options['class'].'">';
 		// loop through values and add them as options
+		
+		$name_extra = '[]';
+		if(count($options['options']['choices']) <= 1)
+		{
+			$name_extra = '';
+		}
+			
 		foreach($options['options']['choices'] as $key => $value)
 		{
 			$selected = '';
@@ -32,7 +39,7 @@ class Checkbox
 			{
 				$selected = 'checked="yes"';
 			}
-			echo '<li><input type="checkbox" class="'.$options['class'].'" name="'.$options['name'].'[]" value="'.$key.'" '.$selected.' />'.$value.'</li>';
+			echo '<li><input type="checkbox" class="'.$options['class'].'" name="'.$options['name'].$name_extra.'" value="'.$key.'" '.$selected.' />'.$value.'</li>';
 		}
 		echo '</ul>';
 
