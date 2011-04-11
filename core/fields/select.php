@@ -13,21 +13,20 @@ class Select
 		$this->parent = $parent;
 	}
 	
-	function html($options)
+	function html($field)
 	{
-		//$options['choices'] = explode("\n",$options['choices']);
-		if($options['options']['multiple'] == 'true')
+		if($field->options['multiple'] == '1')
 		{
 			$name_extra = '[]';
-			if(count($options['options']['choices']) <= 1)
+			if(count($field->options['choices']) <= 1)
 			{
 				$name_extra = '';
 			}
-			echo '<select id="'.$options['id'].'" class="'.$options['class'].'" name="'.$options['name'].$name_extra.'" multiple="multiple" size="5" >';
+			echo '<select id="'.$field->input_id.'" class="'.$field->input_class.'" name="'.$field->input_name.$name_extra.'" multiple="multiple" size="5" >';
 		}
 		else
 		{
-			echo '<select id="'.$options['id'].'" class="'.$options['class'].'" name="'.$options['name'].'" >';	
+			echo '<select id="'.$field->input_id.'" class="'.$field->input_class.'" name="'.$field->input_name.'" >';	
 			// add top option
 			echo '<option value="null">- Select Option -</option>';
 		}
@@ -37,18 +36,13 @@ class Select
 		
 		
 		// loop through values and add them as options
-		foreach($options['options']['choices'] as $key => $value)
+		foreach($field->options['choices'] as $key => $value)
 		{
 			$selected = '';
-			if($options['options']['multiple'] == 'true' && empty($options['value']))
-			{
-				// 1. If it is multiple select & there are no values selected, make all options selected
-				$selected = 'selected="selected"';
-			}
-			elseif(is_array($options['value']))
+			if(is_array($field->value))
 			{
 				// 2. If the value is an array (multiple select), loop through values and check if it is selected
-				if(in_array($key, $options['value']))
+				if(in_array($key, $field->value))
 				{
 					$selected = 'selected="selected"';
 				}
@@ -56,7 +50,7 @@ class Select
 			else
 			{
 				// 3. this is not a multiple select, just check normaly
-				if($key == $options['value'])
+				if($key == $field->value)
 				{
 					$selected = 'selected="selected"';
 				}
@@ -74,9 +68,18 @@ class Select
 		return true;
 	}
 	
-	function options($key, $options)
+	function options_html($key, $options)
 	{
-		//if($options['choices'] == ''){$options['choices'] = "option 1\noption 2\noption 3";}
+		// implode selects so they work in a textarea
+		if(!empty($options['choices']) && is_array($options['choices']))
+		{		
+			foreach($options['choices'] as $choice_key => $choice_val)
+			{
+				$options['choices'][$choice_key] = $choice_key.' : '.$choice_val;
+			}
+			$options['choices'] = implode("\n", $options['choices']);
+		}
+
 		?>
 		<table class="acf_input">
 		<tr>
@@ -86,9 +89,9 @@ class Select
 			<td>
 				<textarea rows="5" name="acf[fields][<?php echo $key; ?>][options][choices]" id=""><?php echo $options['choices']; ?></textarea>
 				<p class="description">Enter your choices one per line. eg:<br />
-				Option 1<br />
-				Option 2 <br />
-				Option 3</p>
+				option_1 : Option 1<br />
+				option_3 : Option 2<br />
+				option_3 : Option 3</p>
 			</td>
 		</tr>
 		<tr>
@@ -96,29 +99,143 @@ class Select
 				<label>Multiple?</label>
 			</td>
 			<td>
-				<?php $this->parent->create_field(array(
-					'type'=>'checkbox',
-					'name'=>'acf[fields]['.$key.'][options][multiple]',
-					'value'=>$options['multiple'],
-					'id'=>'acf[fields]['.$key.'][options][multiple]', 
-					'options' => array('choices' => array('true' => 'Select multiple values'))
-				)); ?>
+				<?php 
+					$temp_field = new stdClass();	
+					$temp_field->type = 'true_false';
+					$temp_field->input_name = 'acf[fields]['.$key.'][options][multiple]';
+					$temp_field->input_class = '';
+					$temp_field->input_id = 'acf[fields]['.$key.'][options][multiple]';
+					$temp_field->value = $options['multiple'];
+					$temp_field->options = array('message' => 'Select multiple values');
+					$this->parent->create_field($temp_field); 
+				?>
 			</td>
 		</tr>
 		</table>
 		<?php
 	}
 	
-	function has_format_value()
+	
+	/*---------------------------------------------------------------------------------------------
+	 * Save Input
+	 * - this is called from save_input.php, this function saves the field's value(s)
+	 *
+	 * @author Elliot Condon
+	 * @since 1.1
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
+	function save_input($post_id, $field)
 	{
-		return false;
+		// set table name
+		global $wpdb;
+		$table_name = $wpdb->prefix.'acf_values';
+		
+		
+		// if select is a multiple, you need to save it as an array!
+		if(is_array($field['value']))
+		{
+			$field['value'] = serialize($field['value']);
+		}
+		
+		
+		// insert new data
+		$new_id = $wpdb->insert($table_name, array(
+			'post_id'	=>	$post_id,
+			'field_id'	=>	$field['field_id'],
+			'value'		=>	$field['value']
+		));
 	}
 	
-	function save_field($post_id, $field_name, $field_value)
-	{
-		// this is a normal text save
-		add_post_meta($post_id, '_acf_'.$field_name, $field_value);
+	
+	/*---------------------------------------------------------------------------------------------
+	 * Format Options
+	 * - this is called from save_field.php, this function formats the options into a savable format
+	 *
+	 * @author Elliot Condon
+	 * @since 1.1
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
+	function format_options($options)
+	{	
+		// if no choices, dont do anything
+		if($options['choices'] == '')
+		{
+			return $options;
+		}
+		
+		
+		// explode choices from each line
+		if(strpos($options['choices'], "\n") !== false)
+		{
+			// found multiple lines, explode it
+			$choices = explode("\n", $options['choices']);
+		}
+		else
+		{
+			// no multiple lines! 
+			$choices = array($options['choices']);
+		}
+		
+		
+		
+		$new_choices = array();
+		foreach($choices as $choice)
+		{
+			if(strpos($choice, ':') !== false)
+			{
+
+				$choice = explode(':', $choice);
+				$new_choices[trim($choice[0])] = trim($choice[1]);
+			}
+			else
+			{
+				$new_choices[trim($choice)] = trim($choice);
+			}
+		}
+		
+		
+		// return array containing all choices
+		$options['choices'] = $new_choices;
+		
+		return $options;
 	}
+	
+	
+	/*---------------------------------------------------------------------------------------------
+	 * Format Value
+	 * - this is called from api.php
+	 *
+	 * @author Elliot Condon
+	 * @since 1.1
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
+	function format_value_for_api($value)
+	{
+		return $this->format_value_for_input($value);
+	}
+	
+	
+	/*---------------------------------------------------------------------------------------------
+	 * Format Value for input
+	 * - this is called from api.php
+	 *
+	 * @author Elliot Condon
+	 * @since 1.1
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
+	function format_value_for_input($value)
+	{
+		if(is_array(unserialize($value)))
+		{
+			return(unserialize($value));
+		}
+		else
+		{
+			return $value;
+		}
+	}
+	
+	
 	
 }
 

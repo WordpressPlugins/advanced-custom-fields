@@ -6,9 +6,7 @@
 	background: transparent none;
 }
 
-.postbox#acf_location .hndlediv {
-	display: none;
-}
+
 
 
 .postbox#acf_location .inside {
@@ -28,4 +26,52 @@ table.acf_input > tbody > tr > td > select[multiple="multiple"] {
     float: left;
     width: 300px;
     height: auto !important;
+}
+
+.postbox#acf_location a.help {
+	width: 16px;
+	height: 17px;
+	background: url(../images/help.png) 0 0 no-repeat;
+	position: absolute;
+	top: 5px; 
+	right: 5px;
+}
+
+.postbox#acf_location .handlediv {
+	display: none;
+}
+
+.help_box_mask {
+	display: none;
+	position: relative;
+}
+
+.help_box {
+	background: #EAF2FA;
+	border: #DFDFDF solid 1px;
+	padding: 8px 16px;
+	margin-bottom: 10px;
+}
+
+.help_box  h4 {
+	margin: 8px 0 0;
+	padding: 0;
+}
+
+.help_box p {
+
+}
+
+.help_box ul {
+	margin: 12px 0;
+	padding: 6px 0 0 14px;
+	list-style: square;
+}
+
+.help_box ul li {
+	display: list-item;
+	font-size: 11px;
+	line-height: 12px;
+	color: #6b8298;
+	margin-bottom: 6px;
 }

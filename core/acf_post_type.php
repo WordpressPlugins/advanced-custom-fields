@@ -32,5 +32,4 @@ register_post_type('acf', array(
 	'supports' => $supports,
 ));
 
-
 ?>

@@ -2,7 +2,9 @@
 
 	<div class="postbox">
 		<div title="Click to toggle" class="handlediv"><br></div>
-		<h3 class="hndle"><span>Advanced Custom Fields v<?php echo $this->version; ?></span></h3>
+		<h3 class="hndle"><span>Advanced Custom Fields v<?php echo $this->version; ?></span>
+		<a class="thickbox button" href="http://localhost:8888/acf/wp-admin/plugin-install.php?tab=plugin-information&amp;plugin=advanced-custom-fields&amp;section=changelog&amp;TB_iframe=true&amp;width=640&amp;height=570">see what's new</a>
+		</h3>
 		<div class="inside">
 			<table cellpadding="0" cellspacing="0" class="author">
 				<tr>	

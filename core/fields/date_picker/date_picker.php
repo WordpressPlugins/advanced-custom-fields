@@ -13,21 +13,16 @@ class Date_picker
 		$this->plugin_dir = $plugin_dir;
 	}
 	
-	function html($options)
+	function html($field)
 	{
 		echo '<link rel="stylesheet" type="text/css" href="'.$this->plugin_dir.'/core/fields/date_picker/style.date_picker.css" />';
 		echo '<script type="text/javascript" src="'.$this->plugin_dir.'/core/fields/date_picker/jquery.ui.datepicker.js" ></script>';
-		echo '<input type="hidden" value="'.$options['options']['date_format'].'" name="date_format" />';
-		echo '<input type="text" value="'.$options['value'].'" id="'.$options['id'].'" class="acf_datepicker" name="'.$options['name'].'" />';
+		echo '<input type="hidden" value="'.$field->options['date_format'].'" name="date_format" />';
+		echo '<input type="text" value="'.$field->value.'" id="'.$field->input_id.'" class="acf_datepicker" name="'.$field->input_name.'" />';
 
 	}
 	
-	function has_options()
-	{
-		return true;
-	}
-	
-	function options($key, $options)
+	function options_html($key, $options)
 	{
 		?>
 		<table class="acf_input">
@@ -44,17 +39,7 @@ class Date_picker
 		<?php
 	}
 		
-	function has_format_value()
-	{
-		return false;
-	}
-
 	
-	function save_field($post_id, $field_name, $field_value)
-	{
-		// this is a normal text save
-		add_post_meta($post_id, '_acf_'.$field_name, $field_value);
-	}
 	
 }
 

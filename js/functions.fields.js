@@ -151,6 +151,7 @@
 	$.fn.reset_values = function(){
 		
 		$(this).find('input[type="text"]').val('');
+		$(this).find('input[type="hidden"]').val('');
 		$(this).find('textarea').val('');
 		$(this).find('select option').removeAttr('selected');
 		$(this).find('select[multiple="multiple"] option').attr('selected','selected');
@@ -195,6 +196,10 @@
    			});
    			
    		});
+   		
+   		$('div.postbox a.help').click(function(){
+   			$('div.postbox .help_box_mask').animate({'height':'toggle'}, 500);
+   		});   		
 	});
 
 })(jQuery);

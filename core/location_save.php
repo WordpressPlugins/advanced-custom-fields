@@ -4,24 +4,59 @@
 ---------------------------------------------------------------------------------------------*/
 if($_POST['location_meta_box'] == 'true')
 {
-	$location = $_POST['acf']['location'];
+	// set table name
+	global $wpdb;
+	$table_name = $wpdb->prefix.'acf_options';
 	
-	// add post meta
-	if(is_array($location['post_type']))
-	{
-		$location['post_type'] = implode(',',$location['post_type']);
-	}
-	if(is_array($location['ignore_other_acf']))
-	{
-		$location['ignore_other_acf'] = implode(', ',$location['ignore_other_acf']);
-	}
 	
-	add_post_meta($post_id, '_acf_location_post_type', $location['post_type']);
-	add_post_meta($post_id, '_acf_location_page_slug', $location['page_slug']);
-	add_post_meta($post_id, '_acf_location_post_id', $location['post_id']);
-	add_post_meta($post_id, '_acf_location_page_template', $location['page_template']);
-	add_post_meta($post_id, '_acf_location_parent_id', $location['parent_id']);
-	add_post_meta($post_id, '_acf_location_ignore_other_acf', $location['ignore_other_acf']);
+	// remove all old fields from the database
+	$wpdb->query("DELETE FROM $table_name WHERE acf_id = '$post_id' AND type = 'location'");
+	
+
+	// turn inputs into database friendly data
+	$locations = $_POST['acf']['location'];
+	if($locations)
+	{
+		foreach($locations as $key => $value)
+		{
+			if(empty($value))
+			{
+				continue;
+			}
+			
+			
+			// if not an array (most inputs are strings), convert into an array
+			if($key == 'post_types')
+			{
+				// already array, serialize the array for database save
+				$value = serialize($value);
+			}
+			elseif($key == 'ignore_other_acfs')
+			{
+				// do nothing
+			}
+			else
+			{
+				// must be a string, lets explode it!
+				$value = str_replace(', ',',',$value);
+				$value = explode(',',$value);
+				
+				// serialize the array for database save
+				$value = serialize($value);
+			}
+			
+			// location can now be saved
+			$new_id = $wpdb->insert($table_name, array(
+				'acf_id'	=>	$post_id,
+				'name'		=>	$key,
+				'value'		=>	$value,
+				'type'		=>	'location'
+			));
+			
+			//echo $post_id.' : '.$key.': '.' : '.$value;
+			
+		}
+	}
 }
 
 ?>

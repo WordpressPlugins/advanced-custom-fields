@@ -1,36 +1,55 @@
 <?php
 /*---------------------------------------------------------------------------------------------
-	Fields Meta Box
+	Save Fields Meta Box
 ---------------------------------------------------------------------------------------------*/
 if($_POST['fields_meta_box'] == 'true')
 {
+	// set table name
+	global $wpdb;
+	$table_name = $wpdb->prefix.'acf_fields';
+	
+	
+	// remove all old fields from the database
+	$wpdb->query("DELETE FROM $table_name WHERE post_id = '$post_id'");
+	
+	
+	// loop through fields and save them
 	$i = 0;
-
 	foreach($_POST['acf']['fields'] as $field)
 	{
-		// add post meta
-		add_post_meta($post_id, '_acf_field_'.$i.'_label', $field['label']);
-		add_post_meta($post_id, '_acf_field_'.$i.'_name', $field['name']);
-		add_post_meta($post_id, '_acf_field_'.$i.'_type', $field['type']);
+
 		
-		if(!empty($field['fields']))
+		// format options if needed
+		if(method_exists($this->fields[$field['type']], 'format_options'))
 		{
-			$j = 0;
-			
-			foreach($field['fields'] as $repeater)
-			{
-				// add post meta
-				add_post_meta($post_id, '_acf_field_'.$i.'_field_'.$j.'_label', $repeater['label']);
-				add_post_meta($post_id, '_acf_field_'.$i.'_field_'.$j.'_name', $repeater['name']);
-				add_post_meta($post_id, '_acf_field_'.$i.'_field_'.$j.'_type', $repeater['type']);
-				
-				$j++;
-			}
+			$field['options'] = $this->fields[$field['type']]->format_options($field['options']);
 		}
 		
-		add_post_meta($post_id, '_acf_field_'.$i.'_options', serialize($field['options']));
-
-		// increase counter
+		
+		// create data
+		$data = array(
+			'order_no' 	=> 	$i,
+			'post_id'	=>	$post_id,
+			'label'		=>	$field['label'],
+			'name'		=>	$field['name'],
+			'type'		=>	$field['type'],
+			'options'	=>	serialize($field['options']),
+			
+		);
+		
+		
+		// if there is an id, this field already exists, so save it in the same ID spot
+		if($field['id'])
+		{
+			$data['id']	= $field['id'];
+		}
+		
+		
+		// save field as row in database
+		$new_id = $wpdb->insert($table_name, $data);
+		
+		
+		// increase order_no
 		$i++;
 	}
 }

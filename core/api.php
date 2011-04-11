@@ -1,11 +1,5 @@
 <?php 
 /*---------------------------------------------------------------------------------------------
- * api.php
- *
- * @version 1.0.6
- ---------------------------------------------------------------------------------------------*/
- 
-/*---------------------------------------------------------------------------------------------
  * acf_object
  *
  * @author Elliot Condon
@@ -18,8 +12,12 @@ class acf_object
     {
     	foreach($variables as $key => $value)
     	{
-    		$this->$key = $value;
-    	}
+    		// field may exist but field name may be blank!!!
+    		if($key)
+    		{
+    			$this->$key = $value;
+    		}
+       	}
     }
     
 }
@@ -33,24 +31,32 @@ class acf_object
  ---------------------------------------------------------------------------------------------*/
 function get_acf($post_id = false)
 {
+	// get global vars
 	global $acf;
-	global $wpdb;
 	global $post;
 	
+	
+	// create blank arrays
+	$fields = array();
+	$variables = array();
+	
+	
+	// if no ID was passed through, just use the $post->ID
 	if(!$post_id)
 	{
 		$post_id = $post->ID;
 	}
 	
-	$results = array();
+
+	// get ID's for this post
     $acf_id = explode(',',get_post_meta($post_id, '_acf_id', true));
     
-    $fields = array();
     
-    // checkpoint
-    
+    // checkpoint: If no id's exist for this page, get out of here!
     if(empty($acf_id)){return null;}
-
+	
+	
+	// loop through ID's
     foreach($acf_id as $id)
 	{
 		$this_fields = $acf->get_fields($id);
@@ -61,61 +67,78 @@ function get_acf($post_id = false)
 			$fields[] = $this_field;
 		}
 	}
+
 	
-	// checkpoint
+	// checkpoint: If no fields, get out of here!
 	if(empty($fields)){return null;}
 	
-	$variables = array();
 	
 	foreach($fields as $field)
 	{
 		// get value
-		$field['value'] = get_post_meta($post_id, '_acf_'.$field['name'], true);
+		$field->value = $acf->load_value_for_api($post_id, $field);
 		
-		// if field has a format function, format the value
-		if($acf->fields[$field['type']]->has_format_value())
-		{
-			$field['value'] = $acf->fields[$field['type']]->format_value($field['value']);
-		}
 		
-		// add name + value to variables array
-		$variables[$field['name']] = $field['value'];
+		// add this field: name => value
+		$variables[$field->name] = $field->value;
 		
 	}
 	
-	return new acf_object($variables);
+	
+	// create a new obejct and give in variables
+	$object = new stdClass();
+	
+	foreach($variables as $key => $value)
+	{
+		$object->$key = $value;
+	}
+	
+	
+	// return the object
+	return $object;
 	
 	  
 }
 
+
 // get fields
-function get_fields()
+function get_fields($post_id = false)
 {
-	return get_acf();
+	return get_acf($post_id);
 }
 
+
 // get field
-function get_field($field_name)
+function get_field($field_name, $post_id = false)
 {
 	global $acf_fields;
 	global $post;
+	
+	if(!$post_id)
+	{
+		$post_id = $post->ID;
+	}
+	
+	//echo 'field name: '.$field_name.', post id: '.$post_id;
 	
 	if(empty($acf_fields))
 	{
 		$acf_fields = array();
 	}
-	if(empty($acf_fields[$post->ID]))
+	if(empty($acf_fields[$post_id]))
 	{
-		$acf_fields[$post->ID] = get_acf();
+		$acf_fields[$post_id] = get_acf($post_id);
 	}
 	
-	return $acf_fields[$post->ID]->$field_name;
+	return $acf_fields[$post_id]->$field_name;
 }
 
+
 // the field
-function the_field($field_name)
+function the_field($field_name, $post_id = false)
 {
-	echo get_field($field_name);
+	//echo 'field name: '.$field_name.', post id: '.$post_id;
+	echo get_field($field_name, $post_id);
 }
 
 ?>

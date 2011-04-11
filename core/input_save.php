@@ -4,43 +4,44 @@
 ---------------------------------------------------------------------------------------------*/
 if($_POST['input_meta_box'] == 'true')
 {
-	// save acf id's
-	add_post_meta($post_id, '_acf_id', $_POST['acf']['id']);
-	
-	// get field id's
-	$acf_id = explode(',',$_POST['acf']['id']);
-    $fields = array();
+
+    // If acf was not posted, don't go any further
+    if(!isset($_POST['acf']))
+    {
+    	return true;
+    }
     
-    if(empty($acf_id)){return null;}
-    foreach($acf_id as $id)
-	{
-		$this_fields = $this->get_fields($id);
-		if(empty($this_fields)){return null;}
-		foreach($this_fields as $this_field)
-		{
-			$fields[] = $this_field;
-		}
-	}
+    
+    // save which ACF's were here: for use in the api
+    add_post_meta($post_id, '_acf_id', $_POST['acf_id']);
+    
+    
+    // set table name
+	global $wpdb;
+	$table_name = $wpdb->prefix.'acf_values';
 	
-	// now we have this page's fields, loop through them and save
-	foreach($fields as $field)
-	{
-		// if this field has not been submitted, don't save, just continue to next loop
-		/*if(!isset($_POST['acf'][$field['name']]))
+	// remove all old values from the database
+	$wpdb->query("DELETE FROM $table_name WHERE post_id = '$post_id'");
+		
+    foreach($_POST['acf'] as $field)
+    {	
+    	if(method_exists($this->fields[$field['field_type']], 'save_input'))
 		{
-			echo $field['name'] . ' was not set';
-			continue;
-		}*/
+			$this->fields[$field['field_type']]->save_input($post_id, $field);
+		}
+		else
+		{
+			// insert new data
+			$new_id = $wpdb->insert($table_name, array(
+				'post_id'	=>	$post_id,
+				'field_id'	=>	$field['field_id'],
+				'value'		=>	$field['value']
+			));
+		}
+    	
 		
-		$options = array(
-			'post_id'		=>	$post_id,
-			'field_name'	=>	$field['name'],
-			'field_value'	=>	$_POST['acf'][$field['name']],
-			'field_type'	=>	$field['type'],
-		);
-		
-		$this->save_field($options);
-	}
+    }
+  
 	
 }
 

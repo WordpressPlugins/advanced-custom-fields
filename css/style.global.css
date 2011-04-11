@@ -36,7 +36,8 @@ table.acf_input > tbody > tr > td > label{
 }
 
 table.acf_input > tbody > tr > td > input[type=text],
-table.acf_input > tbody > tr > td > textarea{
+table.acf_input > tbody > tr > td > textarea,
+table.acf_input > tbody > tr > td > select{
 	width: 300px;
 	float: left;
 }

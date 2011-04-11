@@ -4,7 +4,9 @@
 		
 	// get options
 	$options = $this->get_acf_options($post->ID);
-	//print_r($options);
+	
+	// create temp field from creating inputs
+	$temp_field = new stdClass();
 ?>
 
 <input type="hidden" name="options_meta_box" value="true" />
@@ -16,29 +18,58 @@
 			<label for="post_type">Show on page</label>
 		</td>
 		<td>
-			<?php
-				$show = array(
+			<?php 
+			
+			$temp_field->type = 'checkbox';
+			$temp_field->input_name = 'acf[options][show_on_page]';
+			$temp_field->input_class = '';
+			$temp_field->input_id = 'show_on_page';
+			$temp_field->value = $options->show_on_page;
+			$temp_field->options = array(
+				'choices' => array(
 					'the_content'	=>	'Content Editor',
 					'custom_fields'	=>	'Custom Fields',
 					'discussion'	=>	'Discussion',
 					'comments'		=>	'Comments',
 					'slug'			=>	'Slug',
 					'author'		=>	'Author'
-				);
-				
-				if(empty($options['show_on_page']))
-				{
-					$options['show_on_page'] = 'bilbo bagains';
-				}
+				)
+			);
+			
+			$this->create_field($temp_field); 
+			
 			?>
-			<?php $this->create_field(array(
-				'type'		=>	'checkbox',
-				'name'		=>	'acf[options][show_on_page]',
-				'value'		=>	$options['show_on_page'],
-				'id'		=>	'show_on_page',
-				'options'	=>	array('choices' => $show) 
-				)); ?>
+			
 			<p class="description">Unselected items will not be shown on the edit screen.<br>This is useful to clean up the edit page</p>
+		</td>
+	</tr>
+	<tr>
+		<td class="label">
+			<label for="post_type">Filter Users</label>
+		</td>
+		<td>
+			<?php 
+			
+			$temp_field->type = 'select';
+			$temp_field->input_name = 'acf[options][user_roles]';
+			$temp_field->input_class = '';
+			$temp_field->input_id = 'user_roles';
+			$temp_field->value = $options->user_roles;
+			$temp_field->options = array(
+				'multiple' => '1',
+				'choices' => array(
+					'10' => 'Administrator', 
+					'7' => 'Editor', 
+					'4' => 'Author', 
+					'1' => 'contributor'
+				) 
+			);
+			
+			$this->create_field($temp_field); 
+			
+			?>
+			<p class="description">Select a user type to allow them to view / use this ACF<br />
+				* unselecting all is the same as selecting all</p>
 		</td>
 	</tr>
 	

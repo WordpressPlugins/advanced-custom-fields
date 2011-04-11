@@ -13,43 +13,28 @@ class Image
 		$this->plugin_dir = $plugin_dir;
 	}
 	
-	function html($options)
+	function html($field)
 	{
 		echo '<div class="acf_image_uploader">';
 		
-		if($options['value'] != '')
+		if($field->value != '')
 		{
 			echo '<a href="#" class="remove_image"></a>';
-			echo '<img src="'.$options['value'].'"/>';
-			echo '<input type="hidden" name="'.$options['name'].'" value="'.$options['value'].'" />';
+			echo '<img src="'.$field->value.'"/>';
+			echo '<input type="hidden" name="'.$field->input_name.'" value="'.$field->value.'" />';
 			echo '<iframe class="hide" src="'.$this->plugin_dir.'/core/upload.php"></iframe>';
 		}
 		else
 		{
 			echo '<a href="#" class="remove_image hide"></a>';
-			echo '<input type="hidden" name="'.$options['name'].'" value="'.$options['value'].'" />';
+			echo '<input type="hidden" name="'.$field->input_name.'" value="'.$field->value.'" />';
 			echo '<iframe src="'.$this->plugin_dir.'/core/upload.php"></iframe>';
 		}
 		
 		echo '</div>';
 
 	}
-	
-	function has_options()
-	{
-		return false;
-	}
-	
-	function has_format_value()
-	{
-		return false;
-	}
-	
-	function save_field($post_id, $field_name, $field_value)
-	{
-		// this is a normal text save
-		add_post_meta($post_id, '_acf_'.$field_name, $field_value);
-	}
+
 	
 }
 

@@ -18,6 +18,7 @@ Advanced Custom Fields is the perfect solution for any wordpress website which n
 * Add, Edit and reorder infinite rows to your fields
 * Easily load data through a simple and friendly API
 * Uses the native WordPress custom post type for ease of use and fast processing
+* Now uses custom Database tables to improve speed, reliability and future development
 
 = Field Types =
 * Text (type text, api returns text)
@@ -30,6 +31,7 @@ Advanced Custom Fields is the perfect solution for any wordpress website which n
 * Page Link (select 1 or more page, post or custom post types, api returns the url)
 * Post Object (select 1 or more page, post or custom post types, api returns post objects)
 * Date Picker (jquery date picker, options for format, api returns string)
+* True / False (tick box with message, api returns true or false)
 
 = Tested on =
 * Mac Firefox 	:)
@@ -48,6 +50,8 @@ http://plugins.elliotcondon.com/advanced-custom-fields/
 http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 = Please Vote and Enjoy =
+Your votes really make a difference! Thanks.
+
 
 == Installation ==
 
@@ -72,6 +76,17 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 
 == Changelog ==
+
+= 1.1.0 =
+* Lots of Field Type Bug Fixes
+* Now uses custom database tables to save and store data!
+* Lots of tidying up
+* New help button for location meta box
+* Added $post_id parameter to API functions (so you can get fields from any post / page)
+* Added support for key and value for select and checkbox field types
+* Re wrote most of the core files due to new database tables
+* Update script should copy across your old data to the new data system
+* Added True / False Field Type
 
 = 1.0.5 =
 * New Field Type: Post Object

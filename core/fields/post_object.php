@@ -13,13 +13,13 @@ class Post_object
 		$this->parent = $parent;
 	}
 	
-	function html($options)
+	function html($field)
 	{
 		// get post types
-		if(is_array($options['options']['post_type']))
+		if(is_array($field->options['post_type']))
 		{
 			// 1. If select has selected post types, just use them
-			$post_types = $options['options']['post_type'];
+			$post_types = $field->options['post_type'];
 		}
 		else
 		{
@@ -62,25 +62,26 @@ class Post_object
 			$choices[] = null;
 		}
 		
-		$options['options']['choices'] = $choices;
 		
-		$this->parent->create_field(array(
-			'type'=>'select',
-			'name'=>$options['name'],
-			'value'=>$options['value'],
-			'id'=>$options['name'],
-			'options' => $options['options']
-		)); 
+		$field->options['choices'] = $choices;
 		
 		
+		// change type to select and make it!
+		$field->type = 'select';
+		$this->parent->create_field($field); 
 	}
 	
-	function has_options()
-	{
-		return true;
-	}
 	
-	function options($key, $options)
+	/*---------------------------------------------------------------------------------------------
+	 * Options HTML
+	 * - called from fields_meta_box.php
+	 * - displays options in html format
+	 *
+	 * @author Elliot Condon
+	 * @since 1.1
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
+	function options_html($key, $options)
 	{
 		?>
 		<table class="acf_input">
@@ -90,6 +91,7 @@ class Post_object
 			</td>
 			<td>
 				<?php 
+				
 				foreach (get_post_types() as $post_type ) {
 				  $post_types[$post_type] = $post_type;
 				}
@@ -99,9 +101,19 @@ class Post_object
 				unset($post_types['revision']);
 				unset($post_types['acf']);
 				
-				$this->parent->create_field(array('type'=>'select','name'=>'acf[fields]['.$key.'][options][post_type]','value'=>$options['post_type'],'id'=>'acf[fields]['.$key.'][options][post_type]', 'options' => array('choices' => $post_types, 'multiple' => 'true'))); 
+
+				$temp_field = new stdClass();	
+				$temp_field->type = 'select';
+				$temp_field->input_name = 'acf[fields]['.$key.'][options][post_type]';
+				$temp_field->input_class = '';
+				$temp_field->input_id = 'acf[fields]['.$key.'][options][post_type]';
+				$temp_field->value = $options['post_type'];
+				$temp_field->options = array('choices' => $post_types, 'multiple' => '1');
+				$this->parent->create_field($temp_field); 
+				
 				?>
-				<p class="description">Filter posts by selecting a post type</p>
+				<p class="description">Filter posts by selecting a post type<br />
+				* unselecting all is the same as selecting all</p>
 			</td>
 		</tr>
 		<tr>
@@ -109,26 +121,66 @@ class Post_object
 				<label>Multiple?</label>
 			</td>
 			<td>
-				<?php $this->parent->create_field(array(
-					'type'=>'checkbox',
-					'name'=>'acf[fields]['.$key.'][options][multiple]',
-					'value'=>$options['multiple'],
-					'id'=>'acf[fields]['.$key.'][options][multiple]', 
-					'options' => array('choices' => array('true' => 'Select multiple posts'))
-				)); ?>
+				<?php 
+					$temp_field = new stdClass();	
+					$temp_field->type = 'true_false';
+					$temp_field->input_name = 'acf[fields]['.$key.'][options][multiple]';
+					$temp_field->input_class = '';
+					$temp_field->input_id = 'acf[fields]['.$key.'][options][multiple]';
+					$temp_field->value = $options['multiple'];
+					$temp_field->options = array('message' => 'Select multiple posts');
+					$this->parent->create_field($temp_field); 
+				?>
 			</td>
 		</tr>
 		</table>
 		<?php
 	}
 	
-	function has_format_value()
+	
+	
+	/*---------------------------------------------------------------------------------------------
+	 * Save Input
+	 * - this is called from save_input.php, this function saves the field's value(s)
+	 *
+	 * @author Elliot Condon
+	 * @since 1.1
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
+	function save_input($post_id, $field)
 	{
-		return true;
+		// set table name
+		global $wpdb;
+		$table_name = $wpdb->prefix.'acf_values';
+		
+		
+		// if select is a multiple, you need to save it as an array!
+		if(is_array($field['value']))
+		{
+			$field['value'] = serialize($field['value']);
+		}
+		
+		
+		// insert new data
+		$new_id = $wpdb->insert($table_name, array(
+			'post_id'	=>	$post_id,
+			'field_id'	=>	$field['field_id'],
+			'value'		=>	$field['value']
+		));
 	}
 	
-	function format_value($value)
+	/*---------------------------------------------------------------------------------------------
+	 * Format Value
+	 * - this is called from api.php
+	 *
+	 * @author Elliot Condon
+	 * @since 1.1
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
+	function format_value_for_api($value)
 	{
+		$value = $this->format_value_for_input($value);
+
 		if(is_array($value))
 		{
 			foreach($value as $k => $v)
@@ -144,10 +196,26 @@ class Post_object
 		return $value;
 	}
 	
-	function save_field($post_id, $field_name, $field_value)
+	
+	/*---------------------------------------------------------------------------------------------
+	 * Format Value for input
+	 * - this is called from api.php
+	 *
+	 * @author Elliot Condon
+	 * @since 1.1
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
+	function format_value_for_input($value)
 	{
-		// this is a normal text save
-		add_post_meta($post_id, '_acf_'.$field_name, $field_value);
+		if(is_array(unserialize($value)))
+		{
+			return(unserialize($value));
+		}
+		else
+		{
+			return $value;
+		}
+		
 	}
 	
 }
