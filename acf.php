@@ -3,7 +3,7 @@
 Plugin Name: Advanced Custom Fields
 Plugin URI: http://plugins.elliotcondon.com/advanced-custom-fields/
 Description: Completely Customise your edit pages with an assortment of field types: Wysiwyg, text, image, select, checkbox and more! Hide unwanted metaboxes and assign to any edit page!
-Version: 1.1.0
+Version: 1.1.1
 Author: Elliot Condon
 Author URI: http://www.elliotcondon.com/
 License: GPL
@@ -33,7 +33,7 @@ class Acf
 		$this->dir = plugins_url('',__FILE__);
 		$this->siteurl = get_bloginfo('url');
 		$this->wpadminurl = admin_url();
-		$this->version = '1.1.0';
+		$this->version = '1.1.1';
 		
 		// set text domain
 		load_plugin_textdomain('acf', false, $this->path.'/lang' );
@@ -576,6 +576,9 @@ class Acf
 		 	
 		 	// get var
 		 	$value = $wpdb->get_var("SELECT value FROM $table_name WHERE field_id = '$field->id' AND post_id = '$post_id'");
+		 	
+		 	$value = stripslashes($value);
+			
 		}
 		
 		
@@ -585,7 +588,7 @@ class Acf
 			$value = $this->fields[$field->type]->format_value_for_input($value);
 		}
 		
-		
+
 		// return value
 		return $value;
 	}
@@ -612,6 +615,7 @@ class Acf
 		 	
 		 	// get var
 		 	$value = $wpdb->get_var("SELECT value FROM $table_name WHERE field_id = '$field->id' AND post_id = '$post_id'");
+		 	$value = stripslashes($value);
 		}
 		
 		

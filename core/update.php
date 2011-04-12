@@ -268,4 +268,7 @@ if(version_compare($version,'1.1.0') < 0)
 	$version = '1.1.0';
 }
 
+
+// update to latest acf version
+update_option('acf_version','1.1.1');
 ?>

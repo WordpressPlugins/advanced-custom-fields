@@ -77,6 +77,9 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 == Changelog ==
 
+= 1.1.1 =
+* Fixed Slashes issue on edit screens for text based fields
+
 = 1.1.0 =
 * Lots of Field Type Bug Fixes
 * Now uses custom database tables to save and store data!

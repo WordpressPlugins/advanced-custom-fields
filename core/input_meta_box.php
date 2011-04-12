@@ -49,12 +49,13 @@ if(!in_array('the_content',$adv_options->show_on_page)): ?>
 	<?php $i = -1; ?>
 	<?php foreach($fields as $field): $i++ ?>
 	<?php 
-	
+		
 		// if they didn't select a type, skip this field
 		if($field->type == 'null')
 		{
 			continue;
 		}
+		
 		
 		
 		// set value, id and name for field

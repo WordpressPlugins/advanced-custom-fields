@@ -37,7 +37,7 @@
 			
 			<input type="hidden" name="acf[fields][<?php echo $key; ?>][id]'" value="<?php echo $field->id; ?>" />
 			<?php $temp_field = new stdClass(); ?>
-
+			
 			<table class="acf">
 				<tr>
 					<td class="order"><?php echo ($key+1); ?></td>
