@@ -60,14 +60,17 @@ if(!in_array('the_content',$adv_options->show_on_page)): ?>
 		
 		// set value, id and name for field
 		$field->value = $this->load_value_for_input($post->ID, $field);
+		$field->row_id = $this->load_row_id_for_input($post->ID, $field->id);
 		$field->input_id = 'acf['.$i.'][value]';
 		$field->input_name = 'acf['.$i.'][value]';
 		
 	?>
 	<tr>
 		<td>
-			<input type="hidden" name="acf[<?php echo $i; ?>][field_type]" value="<?php echo $field->type; ?>" />
+			<input type="hidden" name="acf[<?php echo $i; ?>][row_id]" value="<?php echo $field->row_id; ?>" />
 			<input type="hidden" name="acf[<?php echo $i; ?>][field_id]" value="<?php echo $field->id; ?>" />
+			<input type="hidden" name="acf[<?php echo $i; ?>][field_type]" value="<?php echo $field->type; ?>" />
+			
 			<label for="<?php echo $field->input_id ?>"><?php echo $field->label ?></label>
 			<?php $this->create_field($field); ?>
 		</td>

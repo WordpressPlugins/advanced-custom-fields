@@ -3,7 +3,7 @@
 Plugin Name: Advanced Custom Fields
 Plugin URI: http://plugins.elliotcondon.com/advanced-custom-fields/
 Description: Completely Customise your edit pages with an assortment of field types: Wysiwyg, text, image, select, checkbox and more! Hide unwanted metaboxes and assign to any edit page!
-Version: 1.1.1
+Version: 1.1.2
 Author: Elliot Condon
 Author URI: http://www.elliotcondon.com/
 License: GPL
@@ -33,7 +33,7 @@ class Acf
 		$this->dir = plugins_url('',__FILE__);
 		$this->siteurl = get_bloginfo('url');
 		$this->wpadminurl = admin_url();
-		$this->version = '1.1.1';
+		$this->version = '1.1.2';
 		
 		// set text domain
 		load_plugin_textdomain('acf', false, $this->path.'/lang' );
@@ -257,7 +257,7 @@ class Acf
 	 ---------------------------------------------------------------------------------------------*/
 	function create_field($field)
 	{
-		if(!$this->fields[$field->type])
+		if(!is_object($this->fields[$field->type]))
 		{
 			echo 'error: Field Type does not exist!';
 			return false;
@@ -367,20 +367,6 @@ class Acf
 	 function get_fields($acf_id)
 	 {
 	 
-	 	// If this is a new acf, there will be no custom keys!
-	 	if(!get_post_custom_keys($acf_id))
-	 	{
-	 		$fields = array();
-	 		$field = new stdClass();
-			$field->label = '';
-			$field->name = '';
-			$field->type = '';
-			$field->options = array();
-	 		
-	 		$fields[] = $field;
-			return $fields;
-	 	}
-	 	
 	 	// set table name
 		global $wpdb;
 		$table_name = $wpdb->prefix.'acf_fields';
@@ -388,6 +374,20 @@ class Acf
 	 	
 	 	// get fields
 	 	$fields = $wpdb->get_results("SELECT * FROM $table_name WHERE post_id = '$acf_id' ORDER BY order_no,name");
+	 	
+	 	
+	 	// if fields are empty, this must be a new or broken acf. add blank field
+	 	if(empty($fields))
+	 	{
+	 		$fields = array();
+	 		$field = new stdClass();
+			$field->label = '';
+			$field->name = '';
+			$field->type = '';
+			$field->options = '';
+	 		
+	 		$fields[] = $field;
+	 	}
 	 	
 
 		// loop through fields
@@ -400,7 +400,6 @@ class Acf
 	 	
 	 	// return fields
 	 	return $fields;
-		
 		
 	 }
 	 
@@ -499,7 +498,7 @@ class Acf
 	 	if(!get_post_custom_keys($acf_id))
 	 	{
 	 		$options->show_on_page = array('the_content', 'discussion', 'custom_fields', 'comments', 'slug', 'author');
-			$options->user_roles = array('10', '7', '4', '1');
+			$options->user_roles = array();
 			
 			return $options;
 	 	}
@@ -528,7 +527,7 @@ class Acf
 	 	
 	 	// if empty
 	 	if(empty($options->show_on_page)){$options->show_on_page = array();}
-	 	if(empty($options->user_roles)){$options->user_roles = array('10', '7', '4', '1');}
+	 	if(empty($options->user_roles)){$options->user_roles = array();}
 
 	 	
 	 	// return fields
@@ -576,7 +575,6 @@ class Acf
 		 	
 		 	// get var
 		 	$value = $wpdb->get_var("SELECT value FROM $table_name WHERE field_id = '$field->id' AND post_id = '$post_id'");
-		 	
 		 	$value = stripslashes($value);
 			
 		}
@@ -592,6 +590,30 @@ class Acf
 		// return value
 		return $value;
 	}
+	
+	
+	/*---------------------------------------------------------------------------------------------
+	 * load_row_id_for_input
+	 *
+	 * @author Elliot Condon
+	 * @since 1.1.2
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
+	function load_row_id_for_input($post_id, $field_id)
+	{
+		// set table name
+		global $wpdb;
+		$table_name = $wpdb->prefix.'acf_values';
+	 	
+	 	
+	 	// get var
+	 	$value = $wpdb->get_var("SELECT id FROM $table_name WHERE field_id = '$field_id' AND post_id = '$post_id'");
+	 	
+	 	
+	 	// return id
+	 	return $value;
+	}
+	
 	
 	/*---------------------------------------------------------------------------------------------
 	 * load_value_for_input

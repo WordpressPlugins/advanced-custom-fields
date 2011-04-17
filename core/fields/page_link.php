@@ -169,7 +169,7 @@ class Page_link
 	 * @since 1.1
 	 * 
 	 ---------------------------------------------------------------------------------------------*/
-	function format_value($value)
+	function format_value_for_api($value)
 	{
 		$value = get_permalink($value);
 		return $value;

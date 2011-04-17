@@ -40,7 +40,8 @@
 			
 			?>
 			
-			<p class="description">Unselected items will not be shown on the edit screen.<br>This is useful to clean up the edit page</p>
+			<p class="description">Select the metaboxes you wish to keep on your edit screen.<br />
+			Tip: This is useful to customise the edit screen</p>
 		</td>
 	</tr>
 	<tr>
@@ -68,8 +69,8 @@
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description">Select a user type to allow them to view / use this ACF<br />
-				* unselecting all is the same as selecting all</p>
+			<p class="description">Select user types to give them access to this ACF<br />
+			Tip: If no user types are selected, all user's will have access to this ACF</p>
 		</td>
 	</tr>
 	

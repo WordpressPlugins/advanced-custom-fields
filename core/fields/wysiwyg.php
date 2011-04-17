@@ -18,7 +18,7 @@ class Wysiwyg
 		echo '</textarea></div>';
 	}
 	
-	function format_value($value)
+	function format_value_for_api($value)
 	{
 		$value = apply_filters('the_content',$value); 
 		return $value;

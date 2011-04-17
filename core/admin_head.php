@@ -80,7 +80,11 @@ else
 			// current user role
 			global $current_user;
 			get_currentuserinfo();
-			if(!in_array($current_user->user_level, $options->user_roles)) {$add_box = false; }
+			if(!empty($options->user_roles))
+			{
+				if(!in_array($current_user->user_level, $options->user_roles)) {$add_box = false; }
+			}
+			
 
 						
 			if($add_box == true)

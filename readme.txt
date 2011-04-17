@@ -43,6 +43,9 @@ Advanced Custom Fields is the perfect solution for any wordpress website which n
 = Video Tutorials =
 http://plugins.elliotcondon.com/advanced-custom-fields/user-guide/
 
+= Field Type Info =
+http://plugins.elliotcondon.com/advanced-custom-fields/field-types/
+
 = Website =
 http://plugins.elliotcondon.com/advanced-custom-fields/
 
@@ -76,6 +79,14 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 
 == Changelog ==
+
+= 1.1.2 =
+* Fixed WYSIWYG API format issue
+* Fixed Page Link API format issue
+* Select / Checkbox can now contain a url in the value or label
+* Can now unselect all user types form field options
+* Updated value save / read functions
+* Lots of small bug fixes
 
 = 1.1.1 =
 * Fixed Slashes issue on edit screens for text based fields

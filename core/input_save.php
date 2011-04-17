@@ -31,12 +31,24 @@ if($_POST['input_meta_box'] == 'true')
 		}
 		else
 		{
-			// insert new data
-			$new_id = $wpdb->insert($table_name, array(
+			//$field = apply_filters('wp_insert_post_data', $field);
+			$field = stripslashes_deep( $field );
+			
+			$data = array(
 				'post_id'	=>	$post_id,
 				'field_id'	=>	$field['field_id'],
 				'value'		=>	$field['value']
-			));
+			);
+			
+			// if there is an id, this value already exists, so save it in the same ID spot
+			if($field['row_id'])
+			{
+				$data['id']	= $field['row_id'];
+			}
+			
+			
+			// insert new data
+			$new_id = $wpdb->insert($table_name, $data);
 		}
     	
 		
