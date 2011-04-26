@@ -5,8 +5,7 @@
 	
 	// vars
    	var wysiwyg_count = 0;
-   	
-	// add code to tinymce
+   	var post_id = 0;
 	
 	
 	/*-------------------------------------------
@@ -95,151 +94,102 @@
 	$.fn.make_acf_image = function(){
 	
 		var div = $(this);
-		var iframe = div.find('iframe');
+		var orig_send_to_editor = window.send_to_editor;
 		
-		
-		// can only add functions to the iframe if its loaded
-		iframe.load(function(){
-		
-			iframe.contents().find('form').unbind('submit').submit(function(){
-				
-				// if value is empty, return faslse and stop it from uploading!
-				if(iframe.contents().find('input[type="file"]').val() == '')
-				{
-					alert('No Image chosen');
-					return false;
-				}
-				
-				// set up load event
-				iframe.unbind("load").load(function(){
-				
-					var result = $(this).contents().find('body .result').html();
-				
-					if(result == null)
-					{
-						//alert('null');
-					}
-					else if(result == '0')
-					{
-						//alert('0');
-						//window.history.back();
-					}
-					else
-					{
-						//alert(result);
-						div.children('input[type=hidden]').attr('value',result);
-						
-						div.append('<img src="'+result+'" width="100" height="100" />');
-						div.find('img').hide().load(function(){
-							$(this).fadeIn(500);
-							div.children('a.remove_image').removeClass('hide');
-						});
-						//iframe.history.back();
-						div.find('iframe').addClass('hide');
-					}
-					
-					div.find('.loading').remove();
-					
-				});
-				
-				// send image
-				//iframe.contents().find('form').submit();
-				
-				// add loading div
-				div.append('<div class="loading"></div>');
-				
-				return true;
-			});
-			// end form.submit
+		div.find('input.button').click(function(){
 			
-			div.find('a.remove_image').unbind('click').click(function()
-			{
-				div.find('input[type=hidden]').val('');
-				div.find('img').remove();
-				div.find('iframe').removeClass('hide');
-				$(this).addClass('hide');
 			
+			// show the thickbox
+		 	tb_show('Add Image to field', 'media-upload.php?post_id='+post_id+'&type=image&acf_type=image&TB_iframe=1');
+		 	
+		 	
+		 	// new window.send_to_editor function
+		 	window.send_to_editor = function(html){
+		 		var new_div = $('<div>'+html+'</div>');
+			 	var img_src = new_div.find('a').attr('href');
+			 	
+			 	div.find('input.value').val(img_src);
+			 	div.find('img').attr('src',img_src);
+			 	div.addClass('active');
+			 	tb_remove();
+			 	
+			 	window.send_to_editor = orig_send_to_editor;
+			}
+			
+			
+			// Thickbox close needs to reset window.send_to_editor
+			$('#TB_overlay, a#TB_closeWindowButton').unbind('click').click(function(){
+				window.send_to_editor = orig_send_to_editor;
+				tb_remove();
 				return false;
 			});
-			// end a.remove_image.click
 			
-		}).trigger('load');
-		// end iframe.load
+			
+		 	return false;
+		});
 		
+		
+		div.find('a.remove_image').unbind('click').click(function()
+		{
+			div.find('input.value').val('');
+			div.removeClass('active');
+		
+			return false;
+		});
 	}
+	
 	
 	/*-------------------------------------------
 		File Upload
 	-------------------------------------------*/
 	$.fn.make_acf_file = function(){
-		var div = $(this);
-		var iframe = div.find('iframe');
-		
-		// can only add functions to the iframe if its loaded
-		iframe.load(function(){
-		
-			iframe.contents().find('form').unbind('submit').submit(function(){
-				
-				// if value is empty, return faslse and stop it from uploading!
-				if(iframe.contents().find('input[type="file"]').val() == '')
-				{
-					alert('No File chosen');
-					return false;
-				}
-
-				// set up load event
-				iframe.unbind("load").load(function(){
-				
-					var result = $(this).contents().find('body .result').html();
-				
-					if(result == null)
-					{
-						//alert('null');
-					}
-					else if(result == '0')
-					{
-						//alert('0');
-						//window.history.back();
-					}
-					else
-					{
-						//alert(result);
-						div.children('input[type=hidden]').attr('value',result);
-						
-						div.append('<span>'+result+'</span>');
-						div.children('a.remove_file').removeClass('hide');
 	
-						//iframe.history.back();
-						div.find('iframe').addClass('hide');
-					}
-					
-					div.find('.loading').remove();
-					
-				});
-				
-				// send image
-				//iframe.contents().find('form').submit();
-				
-				// add loading div
-				div.append('<div class="loading"></div>');
-				
-				return true;
-			});
+		var div = $(this);
+		var orig_send_to_editor = window.send_to_editor;
+		
+		div.find('p.no_file input.button').click(function(){
 			
-			div.find('a.remove_file').unbind('click').click(function()
-			{
-				div.find('input[type=hidden]').val('');
-				div.find('span').remove();
-				div.find('iframe').removeClass('hide');
-				$(this).addClass('hide');
+			// show the thickbox
+		 	tb_show('Add File to field', 'media-upload.php?post_id='+post_id+'&type=file&acf_type=file&TB_iframe=1');
+		 	
+		 	
+		 	// new window.send_to_editor function
+		 	window.send_to_editor = function(html) {
+		 		var new_div = $('<div>'+html+'</div>');
+			 	var file_src = new_div.find('a').attr('href');
+
+			 	div.find('input.value').val(file_src);
+			 	div.find('p.file span').html(file_src);
+			 	div.addClass('active');
+			 	tb_remove();
+			 	
+			 	window.send_to_editor = orig_send_to_editor;
+			}
 			
+			
+			// Thickbox close needs to reset window.send_to_editor
+			$('#TB_overlay, a#TB_closeWindowButton').unbind('click').click(function(){
+				window.send_to_editor = orig_send_to_editor;
+				tb_remove();
 				return false;
 			});
-			// end a.remove_file.click
 			
-		}).trigger('load');
-		// end iframe.load
+			
+			return false;
+		});
+		
+		
+		
+		div.find('p.file input.button').unbind('click').click(function()
+		{
+			div.find('input.value').val('');
+			div.removeClass('active');
+		
+			return false;
+		});
 	}
+
+	
 	
 	/*-------------------------------------------
 		Repeaters
@@ -450,6 +400,7 @@
 	-------------------------------------------*/
 	$(document).ready(function(){
 		
+		post_id = $('form#post input#post_ID').val();
 		var div = $('.postbox#acf_input');
 		
 		tinyMCE.settings.theme_advanced_buttons1 += ",|,add_image,add_video,add_audio,add_media";

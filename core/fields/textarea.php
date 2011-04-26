@@ -8,7 +8,7 @@ class Textarea
 	function Textarea()
 	{
 		$this->name = 'textarea';
-		$this->title = 'Text Area';
+		$this->title = __("Text Area",'acf');
 	}
 	
 	function html($field)

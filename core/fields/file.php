@@ -4,37 +4,79 @@ class File
 {
 	var $name;
 	var $title;
-	var $plugin_dir;
 	
-	function File($plugin_dir)
+	function File()
 	{
 		$this->name = 'file';
-		$this->title = 'File';
-		$this->plugin_dir = $plugin_dir;
+		$this->title = __('File','acf');
+		
+		add_action("admin_head-media-upload-popup", array($this, 'popup_head'));
 	}
+	
+	
+	function popup_head()
+	{
+		if($_GET['acf_type'] == 'file')
+		{
+			?>
+			<style type="text/css">
+				#media-upload-header #sidemenu li#tab-type_url,
+				#media-upload-header #sidemenu li#tab-gallery {
+					display: none;
+				}
+				
+				#media-items tr.url,
+				#media-items tr.align,
+				#media-items tr.image_alt,
+				#media-items tr.image-size,
+				#media-items tr.post_excerpt,
+				#media-items tr.post_content,
+				#media-items tr.image_alt p,
+				#media-items table thead input.button,
+				#media-items table thead img.imgedit-wait-spin,
+				#media-items tr.submit a.wp-post-thumbnail,
+				form#filter {
+					display: none;
+				}
+
+				.media-item table thead img {
+					border: #DFDFDF solid 1px; 
+					margin-right: 10px;
+				}
+
+			</style>
+			<script type="text/javascript">
+				(function($){
+					$(document).ready(function(){
+						$('input[value="Insert into Post"]').attr('value','<?php _e('Select File','acf'); ?>');
+					});
+				})(jQuery);
+			</script>
+			<?php
+		}
+	}
+	
 	
 	function html($field)
 	{
-		echo '<div class="acf_file_uploader">';
+		
+		$class = "";
+		$file = "";
 		
 		if($field->value != '')
 		{
+			$file = $field->value;
+			$class = " active";
+		}
+
+		echo '<div class="acf_file_uploader'.$class.'">';
 			echo '<a href="#" class="remove_file"></a>';
-			echo '<span>'.$field->value.'</span>';
-			echo '<input type="hidden" name="'.$field->input_name.'" value="'.$field->value.'" />';
-			echo '<iframe class="hide" src="'.$this->plugin_dir.'/core/upload.php"></iframe>';
-		}
-		else
-		{
-			echo '<a href="#" class="remove_file hide"></a>';
-			echo '<input type="hidden" name="'.$field->input_name.'" value="'.$field->value.'" />';
-			echo '<iframe src="'.$this->plugin_dir.'/core/upload.php"></iframe>';
-		}
-		
+			echo '<p class="file"><span>'.$file.'</span> <input type="button" class="button" value="'.__('Remove File','acf').'" /></p>';
+			echo '<input class="value" type="hidden" name="'.$field->input_name.'" value="'.$field->value.'" />';
+			echo '<p class="no_file">'.__('No File selected','acf').'. <input type="button" class="button" value="'.__('Add File','acf').'" /></p>';
 		echo '</div>';
 
 	}
-
 	
 }
 

@@ -9,7 +9,7 @@ class Post_object
 	function Post_object($parent)
 	{
 		$this->name = 'post_object';
-		$this->title = 'Post Object';
+		$this->title = __("Post Object",'acf');
 		$this->parent = $parent;
 	}
 	
@@ -34,41 +34,74 @@ class Post_object
 			}
 		}
 		
-
-		$posts = get_posts(array(
-			'numberposts' 	=> 	-1,
-			'post_type'		=>	$post_types,
-			'orderby'		=>	'title',
-			'order'			=>	'ASC'
-		));
 		
-		$choices = array();
-		if($posts)
+		// start select
+		if($field->options['multiple'] == '1')
 		{
-			foreach($posts as $post)
-			{
-				$title = get_the_title($post->ID);
-				
-				if(strlen($title) > 33)
-				{
-					$title = substr($title,0,30).'...';
-				}
-				
-				$choices[$post->ID] = $title.' ('.get_post_type($post->ID).')';
-			}			
+			$name_extra = '[]';
+			echo '<select id="'.$field->input_id.'" class="'.$field->input_class.'" name="'.$field->input_name.$name_extra.'" multiple="multiple" size="5" >';
 		}
 		else
 		{
-			$choices[] = null;
+			echo '<select id="'.$field->input_id.'" class="'.$field->input_class.'" name="'.$field->input_name.'" >';	
+			// add top option
+			echo '<option value="null">- '.__("Select Option",'acf').' -</option>';
 		}
 		
 		
-		$field->options['choices'] = $choices;
+		foreach($post_types as $post_type)
+		{
+			// get posts
+			$posts = get_posts(array(
+				'numberposts' 	=> 	-1,
+				'post_type'		=>	$post_type,
+				'orderby'		=>	'title',
+				'order'			=>	'ASC'
+			));
+			
+			
+			// if posts, make a group for them
+			if($posts)
+			{
+				echo '<optgroup label="'.$post_type.'">';
+				
+				foreach($posts as $post)
+				{
+					$key = $post->ID;
+					$value = get_the_title($post->ID);
+					$selected = '';
+					
+					
+					if(is_array($field->value))
+					{
+						// 2. If the value is an array (multiple select), loop through values and check if it is selected
+						if(in_array($key, $field->value))
+						{
+							$selected = 'selected="selected"';
+						}
+					}
+					else
+					{
+						// 3. this is not a multiple select, just check normaly
+						if($key == $field->value)
+						{
+							$selected = 'selected="selected"';
+						}
+					}	
+					
+					
+					echo '<option value="'.$key.'" '.$selected.'>'.$value.'</option>';
+					
+					
+				}	
+				
+				echo '</optgroup>';
+				
+			}// endif
+		}// endforeach
 		
-		
-		// change type to select and make it!
-		$field->type = 'select';
-		$this->parent->create_field($field); 
+
+		echo '</select>';
 	}
 	
 	
@@ -87,7 +120,7 @@ class Post_object
 		<table class="acf_input">
 		<tr>
 			<td class="label">
-				<label for="">Post Type</label>
+				<label for=""><?php _e("Post Type",'acf'); ?></label>
 			</td>
 			<td>
 				<?php 
@@ -112,13 +145,13 @@ class Post_object
 				$this->parent->create_field($temp_field); 
 				
 				?>
-				<p class="description">Filter posts by selecting a post type<br />
-				* unselecting all is the same as selecting all</p>
+				<p class="description"><?php _e("Filter posts by selecting a post type<br />
+				* unselecting all is the same as selecting all",'acf'); ?></p>
 			</td>
 		</tr>
 		<tr>
 			<td class="label">
-				<label>Multiple?</label>
+				<label><?php _e("Multiple?",'acf'); ?></label>
 			</td>
 			<td>
 				<?php 

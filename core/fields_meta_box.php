@@ -23,9 +23,9 @@
 	<table class="acf">
 		<tr>
 			<th class="order"><!-- Order --></th>
-			<th class="label">Label<br /><span>Shown on the edit page (eg. Hero Image)</span></th>
-			<th class="name">Name<br /><span>Used as variable name (eg. hero_image)</span></th>
-			<th class="type">Field Type<br /><span>Type of field</span></th>
+			<th class="label"><?php _e('Label','acf'); ?><br /><span><?php _e('Shown on the edit page (eg. Hero Image)','acf'); ?></span></th>
+			<th class="name"><?php _e('Name','acf'); ?><br /><span><?php _e('Used as variable name (eg. hero_image)','acf'); ?></span></th>
+			<th class="type"><?php _e('Field Type','acf'); ?><br /><span><?php _e('Type of field','acf'); ?></span></th>
 			<th class="blank"></th>
 			<th class="remove"><!-- Remove --></th>
 		</tr>
@@ -99,5 +99,5 @@
 
 <div class="table_footer">
 	<div class="order_message"></div>
-	<a href="javascript:;" id="add_field" class="button-primary">+ Add Field</a>
+	<a href="javascript:;" id="add_field" class="button-primary"><?php _e('+ Add Field','acf'); ?></a>
 </div>

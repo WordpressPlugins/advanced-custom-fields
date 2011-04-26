@@ -8,7 +8,7 @@ class Wysiwyg
 	function Wysiwyg()
 	{
 		$this->name = 'wysiwyg';
-		$this->title = 'Wysiwyg Editor';
+		$this->title = __("Wysiwyg Editor",'acf');
 	}
 	
 	function html($field)

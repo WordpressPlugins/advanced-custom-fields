@@ -13,12 +13,12 @@
 
 <div class="help_box_mask">
 <div class="help_box">
-	<h4>Enter values in the fields below to add this ACF to an edit screen</h4>
+	<h4><?php _e("Enter values in the fields below to add this ACF to an edit screen",'acf'); ?></h4>
 	<ul>
-		<li>The values you enter bellow will be used to match against edit screens.</li>
-		<li>If any of the values match the edit screen, this ACF will be used </li>
-		<li>Blank fields will be ignored</li>
-		<li>Use the override to remove all previous ACF's form an edit screen. This is useful for creating an ACF for all normal pages, and then creating a custom ACF for a home page (page title = 'Home'). Please note that the home page ACF needs a higher page order to remove ACF's before it.</li>
+		<li><?php _e("The values you enter bellow will be used to match against edit screens",'acf'); ?></li>
+		<li><?php _e("If any of the values match the edit screen, this ACF will be used",'acf'); ?></li>
+		<li><?php _e("Blank fields will be ignored",'acf'); ?></li>
+		<li><?php _e("Use the override to remove all previous ACF's form an edit screen. This is useful for creating an ACF for all normal pages, and then creating a custom ACF for a home page (page title = 'Home'). Please note that the home page ACF needs a higher page order to remove ACF's before it",'acf'); ?></li>
 	</ul>
 </div>
 </div>
@@ -29,7 +29,7 @@
 <table class="acf_input" id="acf_location">
 	<tr>
 		<td class="label">
-			<label for="post_type">Post Type's</label>
+			<label for="post_type"><?php _e("Post Type's",'acf'); ?></label>
 		</td>
 		<td>
 			<?php 
@@ -59,14 +59,14 @@
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description">Selecting a post type here will add this ACF to all edit screens of that post type.<br />(if your custom post type does not appear, make sure it is publicly query-able)<br /><br />
+			<p class="description"><?php _e("Selecting a post type here will add this ACF to all edit screens of that post type.<br />(if your custom post type does not appear, make sure it is publicly query-able)<br /><br />
 			Tip: Unselect post types and use the options below to customise your ACF location!<br />
-			(command+click)</p>
+			(command+click)",'acf'); ?></p>
 		</td>
 	</tr>
 	<tr>
 		<td class="label">
-			<label for="page_title">Page Title's</label>
+			<label for="page_title"><?php _e("Page Title's",'acf'); ?></label>
 		</td>
 		<td>
 			<?php 
@@ -81,12 +81,12 @@
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description">eg. Home, About Us</p>
+			<p class="description"><?php _e("eg. Home, About Us",'acf'); ?></p>
 		</td>
 	</tr>
 	<tr>
 		<td class="label">
-			<label for="page_slug">Page Slug's</label>
+			<label for="page_slug"><?php _e("Page Slug's",'acf'); ?></label>
 		</td>
 		<td>
 			<?php 
@@ -101,12 +101,12 @@
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description">eg. home, about-us</p>
+			<p class="description"><?php _e("eg. home, about-us",'acf'); ?></p>
 		</td>
 	</tr>
 	<tr>
 		<td class="label">
-			<label for="post_id">Post ID's</label>
+			<label for="post_id"><?php _e("Post ID's",'acf'); ?></label>
 		</td>
 		<td>
 			<?php 
@@ -121,12 +121,12 @@
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description">eg. 1, 2, 3</p>
+			<p class="description"><?php _e("eg. 1, 2, 3",'acf'); ?></p>
 		</td>
 	</tr>
 	<tr>
 		<td class="label">
-			<label for="template_name">Page Template's</label>
+			<label for="template_name"><?php _e("Page Template's",'acf'); ?></label>
 		</td>
 		<td>
 			<?php 
@@ -141,12 +141,12 @@
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description">eg. home_page.php</p>
+			<p class="description"><?php _e("eg. home_page.php",'acf'); ?></p>
 		</td>
 	</tr>
 	<tr>
 		<td class="label">
-			<label for="page_parent">Page Parent ID's</label>
+			<label for="page_parent"><?php _e("Page Parent ID's",'acf'); ?></label>
 		</td>
 		<td>
 			<?php 
@@ -161,12 +161,12 @@
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description">eg. 1, 2, 3</p>
+			<p class="description"><?php _e("eg. 1, 2, 3",'acf'); ?></p>
 		</td>
 	</tr>
 	<tr>
 		<td class="label">
-			<label for="page_parent">Overrides</label>
+			<label for="page_parent"><?php _e("Overrides",'acf'); ?></label>
 		</td>
 		<td>
 			<?php 
@@ -183,7 +183,7 @@
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description">Tick this box to remove all other ACF's <br />(from the edit screen where this ACF appears)</p>
+			<p class="description"><?php _e("Tick this box to remove all other ACF's <br />(from the edit screen where this ACF appears)",'acf'); ?></p>
 		</td>
 	</tr>
 </table>

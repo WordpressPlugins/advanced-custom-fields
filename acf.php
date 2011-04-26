@@ -3,7 +3,7 @@
 Plugin Name: Advanced Custom Fields
 Plugin URI: http://plugins.elliotcondon.com/advanced-custom-fields/
 Description: Completely Customise your edit pages with an assortment of field types: Wysiwyg, text, image, select, checkbox and more! Hide unwanted metaboxes and assign to any edit page!
-Version: 1.1.2
+Version: 1.1.3
 Author: Elliot Condon
 Author URI: http://www.elliotcondon.com/
 License: GPL
@@ -33,7 +33,7 @@ class Acf
 		$this->dir = plugins_url('',__FILE__);
 		$this->siteurl = get_bloginfo('url');
 		$this->wpadminurl = admin_url();
-		$this->version = '1.1.2';
+		$this->version = '1.1.3';
 		
 		// set text domain
 		load_plugin_textdomain('acf', false, $this->path.'/lang' );
@@ -89,7 +89,7 @@ class Acf
 		$parts = Explode('/', $currentFile);
 		$currentFile = $parts[count($parts) - 1];
 		
-		if($currentFile == 'edit.php')
+		if($currentFile == 'edit.php' && $_GET['post_type'] == 'acf')
 		{
 			wp_enqueue_script('thickbox');
 		}
@@ -101,7 +101,7 @@ class Acf
 		$parts = Explode('/', $currentFile);
 		$currentFile = $parts[count($parts) - 1];
 		
-		if($currentFile == 'edit.php')
+		if($currentFile == 'edit.php' && $_GET['post_type'] == 'acf')
 		{
 			wp_enqueue_style('thickbox');
 		}
@@ -174,7 +174,7 @@ class Acf
 
 		// remove acf menu item
 		global $menu;
-		$restricted = array('Advanced&nbsp;Custom&nbsp;Fields');
+		$restricted = array(__('Advanced&nbsp;Custom&nbsp;Fields','acf'));
 		end ($menu);
 		while (prev($menu)){
 			$value = explode(' ',$menu[key($menu)][0]);
@@ -235,8 +235,8 @@ class Acf
 		$array['text'] = new Text(); 
 		$array['textarea'] = new Textarea(); 
 		$array['wysiwyg'] = new Wysiwyg(); 
-		$array['image'] = new Image($this->dir); 
-		$array['file'] = new File($this->dir); 
+		$array['image'] = new Image(); 
+		$array['file'] = new File(); 
 		$array['select'] = new Select($this); 
 		$array['checkbox'] = new Checkbox();
 		$array['true_false'] = new True_false();
@@ -259,7 +259,7 @@ class Acf
 	{
 		if(!is_object($this->fields[$field->type]))
 		{
-			echo 'error: Field Type does not exist!';
+			_e('Error: Field Type does not exist!','acf');
 			return false;
 		}
 		
@@ -277,7 +277,7 @@ class Acf
 	{
 		if(!$this->fields[$options['field_type']])
 		{
-			echo 'error: Field Type does not exist!';
+			_e('Error: Field Type does not exist!','acf');
 			return false;
 		}
 		

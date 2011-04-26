@@ -80,6 +80,14 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 == Changelog ==
 
+= 1.1.3 =
+* Image Field now uses WP thickbox!
+* File Field now uses WP thickbox!
+* Page Link now supports multiple select
+* All Text has been wrapped in the _e() / __() functions to support translations!
+* Small bug fixes / housekeeping
+* Added ACF_WP_Query API function
+
 = 1.1.2 =
 * Fixed WYSIWYG API format issue
 * Fixed Page Link API format issue

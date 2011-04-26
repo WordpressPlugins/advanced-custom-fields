@@ -8,7 +8,7 @@ class Text
 	function Text()
 	{
 		$this->name = 'text';
-		$this->title = 'Text';
+		$this->title = __("Text",'acf');
 	}
 	
 	function html($field)

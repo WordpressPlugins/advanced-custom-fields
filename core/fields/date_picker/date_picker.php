@@ -9,7 +9,7 @@ class Date_picker
 	function Date_picker($plugin_dir)
 	{
 		$this->name = 'date_picker';
-		$this->title = 'Date Picker';
+		$this->title = __('Date Picker','acf');
 		$this->plugin_dir = $plugin_dir;
 	}
 	
@@ -28,11 +28,11 @@ class Date_picker
 		<table class="acf_input">
 		<tr>
 			<td class="label">
-				<label for="">Date format</label>
+				<label for=""><?php _e("Date format",'acf'); ?></label>
 			</td>
 			<td>
 				<input type="text" name="acf[fields][<?php echo $key; ?>][options][date_format]" id="" value="<?php echo $options['date_format']; ?>" />
-				<p class="description">eg. dd/mm/yy. read more about <a href="http://docs.jquery.com/UI/Datepicker/formatDate">formatDate</a></p>
+				<p class="description"><?php _e("eg. dd/mm/yy. read more about",'acf'); ?> <a href="http://docs.jquery.com/UI/Datepicker/formatDate">formatDate</a></p>
 			</td>
 		</tr>
 		</table>

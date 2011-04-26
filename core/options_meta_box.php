@@ -15,7 +15,7 @@
 <table class="acf_input" id="acf_options">
 	<tr>
 		<td class="label">
-			<label for="post_type">Show on page</label>
+			<label for="post_type"><?php _e("Show on page",'acf'); ?></label>
 		</td>
 		<td>
 			<?php 
@@ -40,13 +40,13 @@
 			
 			?>
 			
-			<p class="description">Select the metaboxes you wish to keep on your edit screen.<br />
-			Tip: This is useful to customise the edit screen</p>
+			<p class="description"><?php _e("Select the metaboxes you wish to keep on your edit screen.<br />
+			Tip: This is useful to customise the edit screen",'acf'); ?></p>
 		</td>
 	</tr>
 	<tr>
 		<td class="label">
-			<label for="post_type">Filter Users</label>
+			<label for="post_type"><?php _e("Filter Users",'acf'); ?></label>
 		</td>
 		<td>
 			<?php 
@@ -69,8 +69,8 @@
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description">Select user types to give them access to this ACF<br />
-			Tip: If no user types are selected, all user's will have access to this ACF</p>
+			<p class="description"><?php _e("Select user types to give them access to this ACF<br />
+			Tip: If no user types are selected, all user's will have access to this ACF",'acf'); ?></p>
 		</td>
 	</tr>
 	

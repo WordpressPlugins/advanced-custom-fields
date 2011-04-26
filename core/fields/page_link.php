@@ -10,7 +10,7 @@ class Page_link
 	function Page_link($parent)
 	{
 		$this->name = 'page_link';
-		$this->title = 'Page Link';
+		$this->title = __('Page Link','acf');
 		$this->parent = $parent;
 	}
 	
@@ -45,39 +45,76 @@ class Page_link
 		}
 		
 
-		$posts = get_posts(array(
-			'numberposts' 	=> 	-1,
-			'post_type'		=>	$post_types,
-			'orderby'		=>	'title',
-			'order'			=>	'ASC'
-		));
-		
-		$choices = array();
-		if($posts)
+		// start select
+		if($field->options['multiple'] == '1')
 		{
-			foreach($posts as $post)
-			{
-				$title = get_the_title($post->ID);
-				
-				if(strlen($title) > 33)
-				{
-					$title = substr($title,0,30).'...';
-				}
-				
-				$choices[$post->ID] = $title.' ('.get_post_type($post->ID).')';
-			}			
+			$name_extra = '[]';
+			echo '<select id="'.$field->input_id.'" class="'.$field->input_class.'" name="'.$field->input_name.$name_extra.'" multiple="multiple" size="5" >';
 		}
 		else
 		{
-			$choices[] = null;
+			echo '<select id="'.$field->input_id.'" class="'.$field->input_class.'" name="'.$field->input_name.'" >';	
+			// add top option
+			echo '<option value="null">- '.__("Select Option",'acf').' -</option>';
 		}
 		
-		$field->options['choices'] = $choices;
 		
 		
-		// change type to select and make it!
-		$field->type = 'select';
-		$this->parent->create_field($field); 
+		foreach($post_types as $post_type)
+		{
+			// get posts
+			$posts = get_posts(array(
+				'numberposts' 	=> 	-1,
+				'post_type'		=>	$post_type,
+				'orderby'		=>	'title',
+				'order'			=>	'ASC'
+			));
+			
+			
+			// if posts, make a group for them
+			if($posts)
+			{
+				echo '<optgroup label="'.$post_type.'">';
+				
+				foreach($posts as $post)
+				{
+					$key = $post->ID;
+					$value = get_the_title($post->ID);
+					$selected = '';
+					
+					
+					if(is_array($field->value))
+					{
+						// 2. If the value is an array (multiple select), loop through values and check if it is selected
+						if(in_array($key, $field->value))
+						{
+							$selected = 'selected="selected"';
+						}
+					}
+					else
+					{
+						// 3. this is not a multiple select, just check normaly
+						if($key == $field->value)
+						{
+							$selected = 'selected="selected"';
+						}
+					}	
+					
+					
+					echo '<option value="'.$key.'" '.$selected.'>'.$value.'</option>';
+					
+					
+				}	
+				
+				echo '</optgroup>';
+				
+			}// endif
+			
+		}// endforeach
+		
+
+		echo '</select>';
+
 	}
 	
 
@@ -96,7 +133,7 @@ class Page_link
 		<table class="acf_input">
 		<tr>
 			<td class="label">
-				<label for="">Post Type</label>
+				<label for=""><?php _e("Post Type",'acf'); ?></label>
 			</td>
 			<td>
 				<?php 
@@ -121,8 +158,25 @@ class Page_link
 					$this->parent->create_field($temp_field); 
 				
 				?>
-				<p class="description">Filter posts by selecting a post type<br />
-				* unselecting all is the same as selecting all</p>
+				<p class="description"><?php _e("Filter posts by selecting a post type<br />
+				Tip: deselect all post types to show all post type's posts",'acf'); ?></p>
+			</td>
+		</tr>
+		<tr>
+			<td class="label">
+				<label><?php _e("Multiple?",'acf'); ?></label>
+			</td>
+			<td>
+				<?php 
+					$temp_field = new stdClass();	
+					$temp_field->type = 'true_false';
+					$temp_field->input_name = 'acf[fields]['.$key.'][options][multiple]';
+					$temp_field->input_class = '';
+					$temp_field->input_id = 'acf[fields]['.$key.'][options][multiple]';
+					$temp_field->value = $options['multiple'];
+					$temp_field->options = array('message' => 'Select multiple values');
+					$this->parent->create_field($temp_field); 
+				?>
 			</td>
 		</tr>
 		</table>
@@ -166,14 +220,49 @@ class Page_link
 	 * - this is called from api.php
 	 *
 	 * @author Elliot Condon
-	 * @since 1.1
+	 * @since 1.1.3
 	 * 
 	 ---------------------------------------------------------------------------------------------*/
 	function format_value_for_api($value)
 	{
-		$value = get_permalink($value);
+		$value = $this->format_value_for_input($value);
+		
+		if(is_array($value))
+		{
+			foreach($value as $k => $v)
+			{
+				$value[$k] = get_permalink($v);
+			}
+		}
+		else
+		{
+			$value = get_permalink($value);
+		}
+		
 		return $value;
 	}
+	
+	
+	/*---------------------------------------------------------------------------------------------
+	 * Format Value for input
+	 * - this is called from api.php
+	 *
+	 * @author Elliot Condon
+	 * @since 1.1.3
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
+	function format_value_for_input($value)
+	{
+		if(is_array(unserialize($value)))
+		{
+			return(unserialize($value));
+		}
+		else
+		{
+			return $value;
+		}
+	}
+	
 
 	
 }

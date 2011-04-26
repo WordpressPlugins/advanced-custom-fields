@@ -9,7 +9,7 @@ class Select
 	function Select($parent)
 	{
 		$this->name = 'select';
-		$this->title = 'Select';
+		$this->title = __("Select",'acf');
 		$this->parent = $parent;
 	}
 	
@@ -30,9 +30,6 @@ class Select
 			// add top option
 			echo '<option value="null">- Select Option -</option>';
 		}
-		
-		
-		
 		
 		
 		// loop through values and add them as options
@@ -63,10 +60,6 @@ class Select
 		echo '</select>';
 	}
 	
-	function has_options()
-	{
-		return true;
-	}
 	
 	function options_html($key, $options)
 	{
@@ -84,19 +77,19 @@ class Select
 		<table class="acf_input">
 		<tr>
 			<td class="label">
-				<label for="">Choices</label>
+				<label for=""><?php _e("Choices",'acf'); ?></label>
 			</td>
 			<td>
 				<textarea rows="5" name="acf[fields][<?php echo $key; ?>][options][choices]" id=""><?php echo $options['choices']; ?></textarea>
-				<p class="description">Enter your choices one per line. eg:<br />
+				<p class="description"><?php _e("Enter your choices one per line. eg:<br />
 				option_1 : Option 1<br />
 				option_3 : Option 2<br />
-				option_3 : Option 3</p>
+				option_3 : Option 3",'acf'); ?></p>
 			</td>
 		</tr>
 		<tr>
 			<td class="label">
-				<label>Multiple?</label>
+				<label><?php _e("Multiple?",'acf'); ?></label>
 			</td>
 			<td>
 				<?php 
