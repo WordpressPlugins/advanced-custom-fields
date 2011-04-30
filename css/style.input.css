@@ -1,7 +1,8 @@
 .postbox#acf_input {
-	border: #EAEAEA solid 1px;
-	overflow: hidden;
+	border: #EAEAEA solid 0px;
 	background: transparent;
+	position: relative;
+	overflow: visible;
 }
 
 table.acf_input {
@@ -135,7 +136,7 @@ table.acf_input {
 table.acf_input > tbody > tr > td {
     border-bottom: 1px solid #eaeaea;
     border-top: 1px solid #FFFFFF;
-    padding: 8px;
+    padding: 8px 0;
 }
 
 table.acf_input > tbody > tr > td > label {

@@ -16,7 +16,7 @@
 	<h4><?php _e("Enter values in the fields below to add this ACF to an edit screen",'acf'); ?></h4>
 	<ul>
 		<li><?php _e("The values you enter bellow will be used to match against edit screens",'acf'); ?></li>
-		<li><?php _e("If any of the values match the edit screen, this ACF will be used",'acf'); ?></li>
+		<li><?php _e("If <strong>any</strong> of the values match the edit screen, this ACF will be used",'acf'); ?></li>
 		<li><?php _e("Blank fields will be ignored",'acf'); ?></li>
 		<li><?php _e("Use the override to remove all previous ACF's form an edit screen. This is useful for creating an ACF for all normal pages, and then creating a custom ACF for a home page (page title = 'Home'). Please note that the home page ACF needs a higher page order to remove ACF's before it",'acf'); ?></li>
 	</ul>
@@ -46,22 +46,19 @@
 			unset($post_types['acf']);
 			
 			
-			$temp_field->type = 'select';
+			$temp_field->type = 'checkbox';
 			$temp_field->input_name = 'acf[location][post_types]';
 			$temp_field->input_class = '';
 			$temp_field->input_id = 'post_types';
 			$temp_field->value = $location->post_types;
 			$temp_field->options = array(
 				'choices' => $post_types, 
-				'multiple' => '1'
 			);
 			
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description"><?php _e("Selecting a post type here will add this ACF to all edit screens of that post type.<br />(if your custom post type does not appear, make sure it is publicly query-able)<br /><br />
-			Tip: Unselect post types and use the options below to customise your ACF location!<br />
-			(command+click)",'acf'); ?></p>
+			<p class="description"><?php _e("Selecting a post type here will add this ACF to <strong>all</strong> edit screens of that post type.<br />(if your custom post type does not appear, make sure it is publicly query-able)",'acf'); ?></p>
 		</td>
 	</tr>
 	<tr>
@@ -162,6 +159,26 @@
 			
 			?>
 			<p class="description"><?php _e("eg. 1, 2, 3",'acf'); ?></p>
+		</td>
+	</tr>
+	<tr>
+		<td class="label">
+			<label for="category_names"><?php _e("Category Names's",'acf'); ?></label>
+		</td>
+		<td>
+			<?php 
+			
+			$temp_field->type = 'text';
+			$temp_field->input_name = 'acf[location][category_names]';
+			$temp_field->input_class = '';
+			$temp_field->input_id = 'category_names';
+			$temp_field->value = implode(', ',$location->category_names);
+			$temp_field->options = array();			
+			
+			$this->create_field($temp_field); 
+			
+			?>
+			<p class="description"><?php _e("eg. News, Media, Uncategoriazed",'acf'); ?></p>
 		</td>
 	</tr>
 	<tr>

@@ -46,18 +46,17 @@
 	</tr>
 	<tr>
 		<td class="label">
-			<label for="post_type"><?php _e("Filter Users",'acf'); ?></label>
+			<label for="post_type"><?php _e("Show only for specific users",'acf'); ?></label>
 		</td>
 		<td>
 			<?php 
 			
-			$temp_field->type = 'select';
+			$temp_field->type = 'checkbox';
 			$temp_field->input_name = 'acf[options][user_roles]';
 			$temp_field->input_class = '';
 			$temp_field->input_id = 'user_roles';
 			$temp_field->value = $options->user_roles;
 			$temp_field->options = array(
-				'multiple' => '1',
 				'choices' => array(
 					'10' => 'Administrator', 
 					'7' => 'Editor', 

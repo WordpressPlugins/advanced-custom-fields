@@ -2,54 +2,90 @@
 
 $version = get_option('acf_version','1.0.5');
 
+
+require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
+
+/*---------------------------------------------------------------------------------------------
+ * Update to 1.1.0 - this version needs tables!
+ *
+ * @author Elliot Condon
+ * @since 1.0.6
+ * 
+ ---------------------------------------------------------------------------------------------*/
 if(version_compare($version,'1.1.0') < 0)
 {
 	// Version is less than 1.1.0
 	
 	global $wpdb;
 	
+	
+	// set charset
+	if ($wpdb->has_cap('collation'))
+	{
+		if(!empty($wpdb->charset))
+		{
+			$charset_collate = " DEFAULT CHARACTER SET $wpdb->charset";
+		}
+		if(!empty($wpdb->collate))
+		{
+			$charset_collate .= " COLLATE $wpdb->collate";
+	
+		}
+	}
+
+
 	// create acf_fields table
 	$table_name = $wpdb->prefix.'acf_fields';
-	$sql = "CREATE TABLE " . $table_name . " (
-		id bigint(20) NOT NULL AUTO_INCREMENT,
-		order_no int(9) NOT NULL DEFAULT '0',
-		post_id bigint(20) NOT NULL DEFAULT '0',
-		parent_id bigint(20) NOT NULL DEFAULT '0',
-		label text NOT NULL,
-		name text NOT NULL,
-		type text NOT NULL,
-		options text NOT NULL,
-		UNIQUE KEY id (id)
-	);";
+	if(!$wpdb->get_var("SHOW TABLES LIKE '".$table_name."'"))
+	{
+		$sql = "CREATE TABLE " . $table_name . " (
+			id bigint(20) NOT NULL AUTO_INCREMENT,
+			order_no int(9) NOT NULL DEFAULT '0',
+			post_id bigint(20) NOT NULL DEFAULT '0',
+			parent_id bigint(20) NOT NULL DEFAULT '0',
+			label text NOT NULL,
+			name text NOT NULL,
+			type text NOT NULL,
+			options text NOT NULL,
+			UNIQUE KEY id (id)
+		) ".$charset_collate.";";
+		dbDelta($sql);
+	}
 	
 	
 	// create acf_options table
 	$table_name = $wpdb->prefix.'acf_options';
-	$sql .= "CREATE TABLE " . $table_name . " (
-		id bigint(20) NOT NULL AUTO_INCREMENT,
-		acf_id bigint(20) NOT NULL DEFAULT '0',
-		name text NOT NULL,
-		value text NOT NULL,
-		type text NOT NULL,
-		UNIQUE KEY id (id)
-	);";
+	if(!$wpdb->get_var("SHOW TABLES LIKE '".$table_name."'"))
+	{
+		$sql = "CREATE TABLE " . $table_name . " (
+			id bigint(20) NOT NULL AUTO_INCREMENT,
+			acf_id bigint(20) NOT NULL DEFAULT '0',
+			name text NOT NULL,
+			value text NOT NULL,
+			type text NOT NULL,
+			UNIQUE KEY id (id)
+		) ".$charset_collate.";";
+		dbDelta($sql);
+	}
 	
 	
 	// create acf_options table
 	$table_name = $wpdb->prefix.'acf_values';
-	$sql .= "CREATE TABLE " . $table_name . " (
-		id bigint(20) NOT NULL AUTO_INCREMENT,
-		order_no int(9) NOT NULL DEFAULT '0',
-		field_id bigint(20) NOT NULL DEFAULT '0',
-		value text NOT NULL,
-		post_id bigint(20) NOT NULL DEFAULT '0',
-		UNIQUE KEY id (id)
-	);";
+	if(!$wpdb->get_var("SHOW TABLES LIKE '".$table_name."'"))
+	{
+		$sql = "CREATE TABLE " . $table_name . " (
+			id bigint(20) NOT NULL AUTO_INCREMENT,
+			order_no int(9) NOT NULL DEFAULT '0',
+			field_id bigint(20) NOT NULL DEFAULT '0',
+			value text NOT NULL,
+			post_id bigint(20) NOT NULL DEFAULT '0',
+			UNIQUE KEY id (id)
+		) ".$charset_collate.";";
+		dbDelta($sql);
+	}
 
 
-	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-	dbDelta($sql);
-	
 	
 	$acfs = get_posts(array(
 		'numberposts' 	=> 	-1,
@@ -269,6 +305,63 @@ if(version_compare($version,'1.1.0') < 0)
 }
 
 
+
+/*---------------------------------------------------------------------------------------------
+ * Update to 1.1.0 - this version adds updates tables to be utf-8
+ *
+ * @author Elliot Condon
+ * @since 1.0.6
+ * 
+ ---------------------------------------------------------------------------------------------*/
+ 
+if(version_compare($version,'1.1.4') < 0)
+{
+	// Version is less than 1.1.4
+	
+	global $wpdb;
+	
+	
+	// set charset
+	if(!empty($wpdb->charset))
+	{
+		$char = $wpdb->charset;
+	}
+	else
+	{
+		$char = "utf8";
+	}
+
+	
+	
+	// alter acf_fields table
+	$table_name = $wpdb->prefix.'acf_fields';
+	if($wpdb->get_var("SHOW TABLES LIKE '".$table_name."'"))
+	{
+		$sql = "ALTER TABLE $table_name charset=$char;";
+		$wpdb->query($sql);
+	}
+	
+	
+	// alter acf_options table
+	$table_name = $wpdb->prefix.'acf_options';
+	if($wpdb->get_var("SHOW TABLES LIKE '".$table_name."'"))
+	{
+		$sql = "ALTER TABLE $table_name charset=$char;";
+		$wpdb->query($sql);
+	}
+	
+	
+	// alter acf_values table
+	$table_name = $wpdb->prefix.'acf_values';
+	if($wpdb->get_var("SHOW TABLES LIKE '".$table_name."'"))
+	{
+		$sql = "ALTER TABLE $table_name charset=$char;";
+		$wpdb->query($sql);
+	}
+	
+	
+}
+
 // update to latest acf version
-update_option('acf_version','1.1.3');
+update_option('acf_version','1.1.4');
 ?>

@@ -11,9 +11,18 @@ class File
 		$this->title = __('File','acf');
 		
 		add_action("admin_head-media-upload-popup", array($this, 'popup_head'));
+		add_filter('media_send_to_editor', array($this, 'media_send_to_editor'), 15, 2 );
+		add_action('admin_init', array($this, 'admin_init'));
 	}
 	
 	
+	/*---------------------------------------------------------------------------------------------
+	 * popup_head - STYLES MEDIA THICKBOX
+	 *
+	 * @author Elliot Condon
+	 * @since 1.1.4
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
 	function popup_head()
 	{
 		if($_GET['acf_type'] == 'file')
@@ -45,17 +54,77 @@ class File
 				}
 
 			</style>
-			<script type="text/javascript">
-				(function($){
-					$(document).ready(function(){
-						$('input[value="Insert into Post"]').attr('value','<?php _e('Select File','acf'); ?>');
-					});
-				})(jQuery);
-			</script>
+			
 			<?php
 		}
 	}
 	
+	
+	/*---------------------------------------------------------------------------------------------
+	 * rename_buttons - RENAMES MEDIA THICKBOX BUTTONS
+	 *
+	 * @author Elliot Condon
+	 * @since 1.1.4
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
+	function admin_init() 
+	{
+		if(isset($_GET["acf_type"]) && $_GET["acf_type"] == "file")
+		{
+			add_filter('gettext', array($this, 'rename_buttons'), 1, 3);
+		}
+	}
+	
+	function rename_buttons($translated_text, $source_text, $domain) {
+		if(isset($_GET["acf_type"]) && $_GET["acf_type"] == "file") 
+		{
+			if ($source_text == 'Insert into Post') {
+				return __('Select File', 'acf' );
+			}
+		}
+		return $translated_text;
+	}
+	
+	
+	/*---------------------------------------------------------------------------------------------
+	 * media_send_to_editor - SEND IMAGE TO ACF DIV
+	 *
+	 * @author Elliot Condon
+	 * @since 1.1.4
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
+	function media_send_to_editor($html, $id)
+	{
+		parse_str($_POST["_wp_http_referer"], $arr_postinfo);
+		
+		if(isset($arr_postinfo["acf_type"]) && $arr_postinfo["acf_type"] == "file")
+		{
+
+			$file_src = wp_get_attachment_url($id);
+		
+			?>
+			<script type="text/javascript">
+			
+				self.parent.acf_div.find('input.value').val('<?php echo $file_src; ?>');
+			 	self.parent.acf_div.find('p.file span').html('<?php echo $file_src; ?>');
+			 	self.parent.acf_div.addClass('active');
+			 	
+			 	// reset acf_div and return false
+			 	self.parent.acf_div = null;
+			 	
+			 	self.parent.tb_remove();
+				
+			</script>
+			<?php
+			exit;
+		} 
+		else 
+		{
+			return $html;
+		}
+		
+	}
+		
 	
 	function html($field)
 	{

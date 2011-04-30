@@ -15,9 +15,7 @@
 		{
 			$fields[] = $this_field;
 		}
-		
-		// add id to array (easy to explode it in a hidden input on line 68)
-		$acf_ids[] = $acf->ID;
+
 	}
 	
 	// get options from first (top level) acf
@@ -29,7 +27,6 @@
 
 <input type="hidden" name="ei_noncename" id="ei_noncename" value="<?php echo wp_create_nonce('ei-n'); ?>" />
 <input type="hidden" name="input_meta_box" value="true" />
-<input type="hidden" name="acf_id" value="<?php echo implode(',',$acf_ids); ?>" />
 <?php 
 
 

@@ -80,6 +80,14 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 == Changelog ==
 
+= 1.1.4 =
+* Fixed Image / File upload issues
+* Location now supports category names
+* Improved API - now it doesn't need any custom fields!
+* Fixed table encoding issue
+* Small CSS / Field changes to ACF edit screen
+
+
 = 1.1.3 =
 * Image Field now uses WP thickbox!
 * File Field now uses WP thickbox!

@@ -6,6 +6,9 @@
 	// vars
    	var wysiwyg_count = 0;
    	var post_id = 0;
+   	
+   	// global vars
+   	window.acf_div = null;
 	
 	
 	/*-------------------------------------------
@@ -94,37 +97,17 @@
 	$.fn.make_acf_image = function(){
 	
 		var div = $(this);
-		var orig_send_to_editor = window.send_to_editor;
 		
 		div.find('input.button').click(function(){
+			
+			// set global var
+			window.acf_div = div;
 			
 			
 			// show the thickbox
 		 	tb_show('Add Image to field', 'media-upload.php?post_id='+post_id+'&type=image&acf_type=image&TB_iframe=1');
 		 	
-		 	
-		 	// new window.send_to_editor function
-		 	window.send_to_editor = function(html){
-		 		var new_div = $('<div>'+html+'</div>');
-			 	var img_src = new_div.find('a').attr('href');
-			 	
-			 	div.find('input.value').val(img_src);
-			 	div.find('img').attr('src',img_src);
-			 	div.addClass('active');
-			 	tb_remove();
-			 	
-			 	window.send_to_editor = orig_send_to_editor;
-			}
-			
-			
-			// Thickbox close needs to reset window.send_to_editor
-			$('#TB_overlay, a#TB_closeWindowButton').unbind('click').click(function(){
-				window.send_to_editor = orig_send_to_editor;
-				tb_remove();
-				return false;
-			});
-			
-			
+		 				
 		 	return false;
 		});
 		
@@ -145,36 +128,18 @@
 	$.fn.make_acf_file = function(){
 	
 		var div = $(this);
-		var orig_send_to_editor = window.send_to_editor;
+
 		
 		div.find('p.no_file input.button').click(function(){
+			
+			// set global var
+			window.acf_div = div;
+			
 			
 			// show the thickbox
 		 	tb_show('Add File to field', 'media-upload.php?post_id='+post_id+'&type=file&acf_type=file&TB_iframe=1');
 		 	
 		 	
-		 	// new window.send_to_editor function
-		 	window.send_to_editor = function(html) {
-		 		var new_div = $('<div>'+html+'</div>');
-			 	var file_src = new_div.find('a').attr('href');
-
-			 	div.find('input.value').val(file_src);
-			 	div.find('p.file span').html(file_src);
-			 	div.addClass('active');
-			 	tb_remove();
-			 	
-			 	window.send_to_editor = orig_send_to_editor;
-			}
-			
-			
-			// Thickbox close needs to reset window.send_to_editor
-			$('#TB_overlay, a#TB_closeWindowButton').unbind('click').click(function(){
-				window.send_to_editor = orig_send_to_editor;
-				tb_remove();
-				return false;
-			});
-			
-			
 			return false;
 		});
 		

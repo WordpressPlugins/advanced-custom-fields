@@ -12,10 +12,6 @@ if($_POST['input_meta_box'] == 'true')
     }
     
     
-    // save which ACF's were here: for use in the api
-    add_post_meta($post_id, '_acf_id', $_POST['acf_id']);
-    
-    
     // set table name
 	global $wpdb;
 	$table_name = $wpdb->prefix.'acf_values';

@@ -1,6 +1,7 @@
 <?php
 
 global $post;
+
 		
 // shows hidden custom fields
 //echo "<style type='text/css'>#postcustom .hidden { display: table-row; }</style>";
@@ -27,7 +28,7 @@ elseif(get_post_type($post) == 'acf')
 	echo '<link rel="stylesheet" type="text/css" href="'.$this->dir.'/css/style.options.css" />';
 	
 	add_meta_box('acf_fields', 'Fields', array($this, '_fields_meta_box'), 'acf', 'normal', 'high');
-	add_meta_box('acf_location', 'Assign to edit page</span><span class="description">- Specify exactly where you want your Advanced Custom Fields fields to appear', array($this, '_location_meta_box'), 'acf', 'normal', 'high');
+	add_meta_box('acf_location', 'Assign to edit page</span><span class="description">- Create rules to show your advanced custom fields on edit pages', array($this, '_location_meta_box'), 'acf', 'normal', 'high');
 	add_meta_box('acf_options', 'Advanced Options</span><span class="description">- Customise the edit page', array($this, '_options_meta_box'), 'acf', 'normal', 'high');
 }
 else
@@ -75,6 +76,17 @@ else
 			
 			// page parents
 			if(in_array($post->post_parent, $location->page_parents)) {$add_box = true; }
+			
+			// category names
+			$cats = get_the_category(); 
+			if($cats)
+			{
+				foreach($cats as $cat)
+				{
+					if(in_array($cat->name, $location->category_names)) {$add_box = true; }
+				}
+			}
+			
 			
 			
 			// current user role

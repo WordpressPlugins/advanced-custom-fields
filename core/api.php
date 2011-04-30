@@ -48,30 +48,19 @@ function get_acf($post_id = false)
 	}
 	
 
-	// get ID's for this post
-    $acf_id = explode(',',get_post_meta($post_id, '_acf_id', true));
-    
-    
-    // checkpoint: If no id's exist for this page, get out of here!
-    if(empty($acf_id)){return null;}
-	
-	
-	// loop through ID's
-    foreach($acf_id as $id)
-	{
-		$this_fields = $acf->get_fields($id);
-		if(empty($this_fields)){return null;}
-		
-		foreach($this_fields as $this_field)
-		{
-			$fields[] = $this_field;
-		}
-	}
+    global $wpdb;
+	$acf_fields = $wpdb->prefix.'acf_fields';
+	$acf_values = $wpdb->prefix.'acf_values';	 	
+		 
+		 	
+	// get fields
+   	$fields = $wpdb->get_results("SELECT DISTINCT f.* FROM $acf_fields f 
+   	LEFT JOIN $acf_values v ON v.field_id=f.id
+   	WHERE v.post_id = '$post_id'");
+   	
 
-	
-	// checkpoint: If no fields, get out of here!
-	if(empty($fields)){return null;}
-	
+    if(empty($fields)){return null;}
+    
 	
 	foreach($fields as $field)
 	{
@@ -195,8 +184,12 @@ class ACF_WP_Query extends WP_Query
 	
 	function posts_join($join)
 	{
-		$join .= "LEFT JOIN wp_acf_values v ON v.post_id=wp_posts.ID
-		LEFT JOIN wp_acf_fields f ON f.id=v.field_id";
+		global $wpdb;
+		$acf_fields = $wpdb->prefix.'acf_fields';
+		$acf_values = $wpdb->prefix.'acf_values';	
+	
+		$join .= "LEFT JOIN $acf_values v ON v.post_id=wp_posts.ID
+		LEFT JOIN $acf_fields f ON f.id=v.field_id";
 			
 		return $join;
 	}
