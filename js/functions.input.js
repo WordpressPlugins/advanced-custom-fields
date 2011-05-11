@@ -156,152 +156,6 @@
 
 	
 	
-	/*-------------------------------------------
-		Repeaters
-	-------------------------------------------*/
-	$.fn.make_acf_repeater = function(){
-		
-		// vars
-		var div = $(this);
-		var add_field = div.find('a#add_field');
-		var fields_limit = 99;
-		
-		
-		/*-------------------------------------------
-			Add Field Button
-		-------------------------------------------*/
-		add_field.unbind("click").click(function(){
-			
-			// limit fields
-			if(div.children('table').children('tbody').children('tr').length >= fields_limit)
-			{
-				alert('Field limit reached!');
-				return false;
-			}
-			
-			// clone last tr
-			var new_field = div.children('table').children('tbody').children('tr').last().clone();
-			
-			// append to table
-			div.children('table').children('tbody').append(new_field);
-			
-			// set new field
-			new_field.reset_values();
-			
-			// re make special fields
-			new_field.make_all_fields();
-						
-			// update order numbers
-			update_order_numbers();
-			
-			
-			return false;
-			
-			
-		});
-	}
-	
-	
-	/*-------------------------------------------
-		Update Order Numbers
-	-------------------------------------------*/
-	function update_order_numbers(){
-		$('.postbox#acf_input .repeater').each(function(){
-			$(this).children('table').children('tbody').children('tr').each(function(i){
-				$(this).children('td.order').html(i+1);
-			});
-	
-		});
-	}
-	
-	/*-------------------------------------------
-		Sortable
-	-------------------------------------------*/
-	$.fn.make_sortable = function(){
-		
-		//alert('make sortable');
-		var div = $(this).find('.repeater');
-		
-		var fixHelper = function(e, ui) {
-			ui.children().each(function() {
-				$(this).width($(this).width());
-			});
-			return ui;
-		};
-		
-		div.find('table.acf_input').children('tbody').unbind('sortable').sortable({
-			update: function(event, ui){
-				update_order_numbers();
-				$(this).make_all_fields();
-				//alert('update');
-				},
-			handle: 'td.order',
-			helper: fixHelper,
-			//pre process stuff as soon as the element has been lifted
-		    start: function(event, ui)
-		    {
-		    	console.log(ui.item);
-		    	if(ui.item.find('.acf_wysiwyg').exists())
-		    	{
-		    		//console.log('aaaah, i found a wysiwyg')
-		    		var id = ui.item.find('.acf_wysiwyg textarea').attr('id');
-		    		//alert(tinyMCE.get(id).getContent());
-		    		//tinyMCE.execCommand("mceRemoveControl", false, id);
-		    	}
-		    },
-		
-		    //post process stuff as soon as the element has been dropped
-		    stop: function(event, ui)
-		    {
-		    	if(ui.item.find('.acf_wysiwyg').exists())
-		    	{
-		    		//var id = ui.item.find('.acf_wysiwyg textarea').attr('id');
-		    		//tinyMCE.execCommand("mceAddControl", false, id);
-		    		//div.make_sortable();
-		    	}
-		    }
-		});
-	}
-	
-	
-	
-	/*-------------------------------------------
-		Reset Values
-	-------------------------------------------*/
-	$.fn.reset_values = function(){
-	
-		if($(this).find('.acf_wysiwyg').exists())
-		{
-			var wysiwyg = $(this).find('.acf_wysiwyg');
-			
-			var name = wysiwyg.find('textarea').first().attr('name');
-			
-			wysiwyg.html('<textarea name="'+name+'"></textarea>');
-		}
-		
-		
-		// image upload
-		$(this).find('img').remove();
-		$(this).find('a.remove_image').addClass('hide');
-		$(this).find('iframe').removeClass('hide');
-		
-
-		// total fields
-		var total_fields = $(this).siblings('tr').length;
-
-		
-		// reset all values
-		$(this).find('[name]').each(function()
-		{
-			var name = $(this).attr('name').replace('['+(total_fields-1)+']','['+(total_fields)+']');
-			$(this).attr('name', name);
-			$(this).val('');
-			$(this).attr('checked','');
-			$(this).attr('selected','');
-		});
-		
-		
-	}
 	
 	$.fn.make_all_fields = function()
 	{
@@ -330,37 +184,6 @@
 	
 	
 	/*-------------------------------------------
-		Remove Field Button
-	-------------------------------------------*/
-	$.fn.add_remove_buttons = function(){
-		$(this).find('a.remove_field').unbind('click').live('click', function(){
-			
-			var total_fields = $(this).parents('.repeater').children('table').children('tbody').children('tr').length;
-			
-			// needs at least one
-			if(total_fields <= 1)
-			{
-				return false;
-			}
-			
-			var tr = $(this).parents('tr').first();
-			console.log('s');
-			tr.fadeTo(300,0,function(){
-				tr.animate({'height':0}, 300, function(){
-					tr.remove();
-					update_order_numbers();
-				});
-			});
-			
-			return false;
-			
-		});
-	}
-	
-	
-	
-	
-	/*-------------------------------------------
 		Document Ready
 	-------------------------------------------*/
 	$(document).ready(function(){
@@ -368,23 +191,16 @@
 		post_id = $('form#post input#post_ID').val();
 		var div = $('.postbox#acf_input');
 		
-		tinyMCE.settings.theme_advanced_buttons1 += ",|,add_image,add_video,add_audio,add_media";
-		tinyMCE.settings.theme_advanced_buttons2 += ",code";
+		
+		if(typeof(tinyMCE) != "undefined")
+		{
+			tinyMCE.settings.theme_advanced_buttons1 += ",|,add_image,add_video,add_audio,add_media";
+			tinyMCE.settings.theme_advanced_buttons2 += ",code";
+		}
+		
 	
-		// hide meta boxes
 		div.hide_meta_boxes();
-		
 		div.make_all_fields();
-		
-		div.make_sortable();
-		
-		div.add_remove_buttons();
-		
-		// repeater
-		div.find('.repeater').each(function(){
-			$(this).make_acf_repeater();
-		});
-		
 		
 	});
 	
