@@ -1,12 +1,12 @@
 === Advanced Custom Fields ===
 Contributors: Elliot Condon
 Donate link: https://www.paypal.com/au/cgi-bin/webscr?cmd=_flow&SESSION=-B2MHZ-ioHQb-z1o22AMmhjSI08rxFqQdljyfqVa1R-4QrbQWPNcfL37jYi&dispatch=5885d80a13c0db1f8e263663d3faee8d5fa8ff279e37c3d9d4e38bdbee0ede69
-Tags: custom, field, custom field, advanced, simple fields, magic fields, more fields, post, type, text, textarea, file, image, edit, admin
+Tags: custom, field, custom field, advanced, simple fields, magic fields, more fields, repeater, matrix, post, type, text, textarea, file, image, edit, admin
 Requires at least: 3.0
 Tested up to: 3.1
 Stable tag: 3.1
 
-Completely Customise your edit pages with an assortment of field types: Wysiwyg, text, image, select, checkbox, page link, post object and more! Hide unwanted metaboxes and assign to any edit page!
+Completely Customise your edit pages with an assortment of field types: Wysiwyg, Repeater, text, image, select, checkbox, page link, post object and more! Hide unwanted metaboxes and assign to any edit page!
 
 == Description ==
 
@@ -32,6 +32,7 @@ Advanced Custom Fields is the perfect solution for any wordpress website which n
 * Post Object (select 1 or more page, post or custom post types, api returns post objects)
 * Date Picker (jquery date picker, options for format, api returns string)
 * True / False (tick box with message, api returns true or false)
+* Repeater (ability to create repeatable blocks of fields!)
 
 = Tested on =
 * Mac Firefox 	:)
@@ -79,6 +80,14 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 
 == Changelog ==
+
+=2.0.0=
+* Completely re-designed the ACF edit page
+* Added repeater field (unlocked through external purchase)
+* Fixed minor js bugs
+* Fixed PHP error handling
+* Fixed problem with update script not running
+* General js + css improvements
 
 = 1.1.4 =
 * Fixed Image / File upload issues

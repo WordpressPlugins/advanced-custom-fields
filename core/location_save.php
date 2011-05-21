@@ -2,7 +2,7 @@
 /*---------------------------------------------------------------------------------------------
 	Fields Meta Box
 ---------------------------------------------------------------------------------------------*/
-if($_POST['location_meta_box'] == 'true')
+if(isset($_POST['location_meta_box']) && $_POST['location_meta_box'] == 'true')
 {
 	// set table name
 	global $wpdb;

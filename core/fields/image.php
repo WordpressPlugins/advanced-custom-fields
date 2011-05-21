@@ -1,11 +1,11 @@
 <?php
 
-class Image
+class acf_Image
 {
 	var $name;
 	var $title;
 
-	function Image()
+	function acf_Image()
 	{
 		$this->name = 'image';
 		$this->title = __('Image','acf');

@@ -1,17 +1,18 @@
 <?php
 
 $labels = array(
-	'name' => __( 'Advanced&nbsp;Custom&nbsp;Fields', 'acf' ),
+    'name' => __( 'Advanced&nbsp;Custom&nbsp;Fields', 'acf' ),
 	'singular_name' => __( 'Advanced Custom Fields', 'acf' ),
-	'search_items' =>  __( 'Search Advanced Custom Fields' , 'acf' ),
-	'all_items' => __( 'All Advanced Custom Fields' , 'acf' ),
-	'parent_item' => __( 'Parent Advanced Custom Fields' , 'acf' ),
-	'parent_item_colon' => __( 'Parent Advanced Custom Fields:' , 'acf' ),
-	'edit_item' => __( 'Edit Advanced Custom Fields' , 'acf' ),
-	'update_item' => __( 'Update Advanced Custom Fields' , 'acf' ),
-	'add_new_item' => __( 'Add New Advanced Custom Fields' , 'acf' ),
-	'new_item_name' => __( 'New Advanced Custom Fields Name' , 'acf' ),
-); 	
+    'add_new' => __( 'Add New' , 'acf' ),
+    'add_new_item' => __( 'Add New Advanced Custom Field Group' , 'acf' ),
+    'edit_item' =>  __( 'Edit Advanced Custom Field Group' , 'acf' ),
+    'new_item' => __( 'New Advanced Custom Field Group' , 'acf' ),
+    'view_item' => __('View Advanced Custom Field Group'),
+    'search_items' => __('Search Advanced Custom Field Groups'),
+    'not_found' =>  __('No Advanced Custom Field Groups found'),
+    'not_found_in_trash' => __('No Advanced Custom Field Groups found in Trash'), 
+);
+
 
 $supports = array(
 	'title',

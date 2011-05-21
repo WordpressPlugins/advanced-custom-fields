@@ -1,11 +1,11 @@
 <?php
 
-class Textarea
+class acf_Textarea
 {
 	var $name;
 	var $title;
 	
-	function Textarea()
+	function acf_Textarea()
 	{
 		$this->name = 'textarea';
 		$this->title = __("Text Area",'acf');

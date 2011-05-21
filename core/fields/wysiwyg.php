@@ -1,11 +1,11 @@
 <?php
 
-class Wysiwyg
+class acf_Wysiwyg
 {
 	var $name;
 	var $title;
 	
-	function Wysiwyg()
+	function acf_Wysiwyg()
 	{
 		$this->name = 'wysiwyg';
 		$this->title = __("Wysiwyg Editor",'acf');

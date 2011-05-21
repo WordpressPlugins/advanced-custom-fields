@@ -359,9 +359,11 @@ if(version_compare($version,'1.1.4') < 0)
 		$wpdb->query($sql);
 	}
 	
-	
+	update_option('acf_version','1.1.4');
+	$version = '1.1.4';
 }
 
+
 // update to latest acf version
-update_option('acf_version','1.1.4');
+update_option('acf_version','2.0.0');
 ?>

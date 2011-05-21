@@ -1,11 +1,11 @@
 <?php
 
-class Checkbox
+class acf_Checkbox
 {
 	var $name;
 	var $title;
 	
-	function Checkbox()
+	function acf_Checkbox()
 	{
 		$this->name = 'checkbox';
 		$this->title = __('Checkbox','acf');
@@ -53,7 +53,7 @@ class Checkbox
 	function options_html($key, $options)
 	{
 		// implode checkboxes so they work in a textarea
-		if(!empty($options['choices']) && is_array($options['choices']))
+		if(isset($options['choices']) && is_array($options['choices']))
 		{		
 			foreach($options['choices'] as $choice_key => $choice_val)
 			{
@@ -61,58 +61,36 @@ class Checkbox
 			}
 			$options['choices'] = implode("\n", $options['choices']);
 		}
+		else
+		{
+			$options['choices'] = "";
+		}
 		
 		?>
 
-		<table class="acf_input">
-		<tr>
+
+		<tr class="field_option field_option_checkbox">
 			<td class="label">
-				<label for=""><?php _e("Choices",'acf');_e("",'acf') ?></label>
+				<label for=""><?php _e("Choices",'acf'); ?></label>
+				<p class="description"><?php _e("Enter your choices one per line<br />
+				<br />
+				Red<br />
+				Blue<br />
+				<br />
+				or<br />
+				<br />
+				red : Red<br />
+				blue : Blue",'acf'); ?></p>
 			</td>
 			<td>
 				<textarea rows="5" name="acf[fields][<?php echo $key; ?>][options][choices]" id=""><?php echo $options['choices']; ?></textarea>
-				<p class="description"><?php _e("Enter your choices one per line. eg:<br />
-				option_1 : Option 1<br />
-				option_3 : Option 2<br />
-				option_3 : Option 3",'acf'); ?></p>
 			</td>
 		</tr>
-		</table>
+
 	
 		<?php
 	}
 
-
-	/*---------------------------------------------------------------------------------------------
-	 * save input
-	 * - called from fields_save.php
-	 * - saves input data
-	 *
-	 * @author Elliot Condon
-	 * @since 1.1
-	 * 
-	 ---------------------------------------------------------------------------------------------*/
-	function save_input($post_id, $field)
-	{
-		// set table name
-		global $wpdb;
-		$table_name = $wpdb->prefix.'acf_values';
-		
-		
-		// if select is a multiple, you need to save it as an array!
-		if(is_array($field['value']))
-		{
-			$field['value'] = serialize($field['value']);
-		}
-		
-		
-		// insert new data
-		$new_id = $wpdb->insert($table_name, array(
-			'post_id'	=>	$post_id,
-			'field_id'	=>	$field['field_id'],
-			'value'		=>	$field['value']
-		));
-	}
 	
 	
 	/*---------------------------------------------------------------------------------------------

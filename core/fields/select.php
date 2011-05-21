@@ -1,12 +1,12 @@
 <?php
 
-class Select
+class acf_Select
 {
 	var $name;
 	var $title;
 	var $parent;
 	
-	function Select($parent)
+	function acf_Select($parent)
 	{
 		$this->name = 'select';
 		$this->title = __("Select",'acf');
@@ -15,7 +15,7 @@ class Select
 	
 	function html($field)
 	{
-		if($field->options['multiple'] == '1')
+		if(isset($field->options['multiple']) && $field->options['multiple'] == '1')
 		{
 			$name_extra = '[]';
 			if(count($field->options['choices']) <= 1)
@@ -64,7 +64,7 @@ class Select
 	function options_html($key, $options)
 	{
 		// implode selects so they work in a textarea
-		if(!empty($options['choices']) && is_array($options['choices']))
+		if(isset($options['choices']) && is_array($options['choices']))
 		{		
 			foreach($options['choices'] as $choice_key => $choice_val)
 			{
@@ -72,24 +72,39 @@ class Select
 			}
 			$options['choices'] = implode("\n", $options['choices']);
 		}
+		else
+		{
+			$options['choices'] = "";
+		}
+		
+		if(!isset($options['multiple']))
+		{
+			$options['multiple'] = '0';
+		}
 
 		?>
-		<table class="acf_input">
-		<tr>
+
+		<tr class="field_option field_option_select">
 			<td class="label">
 				<label for=""><?php _e("Choices",'acf'); ?></label>
+				<p class="description"><?php _e("Enter your choices one per line<br />
+				<br />
+				Red<br />
+				Blue<br />
+				<br />
+				or<br />
+				<br />
+				red : Red<br />
+				blue : Blue",'acf'); ?></p>
 			</td>
 			<td>
 				<textarea rows="5" name="acf[fields][<?php echo $key; ?>][options][choices]" id=""><?php echo $options['choices']; ?></textarea>
-				<p class="description"><?php _e("Enter your choices one per line. eg:<br />
-				option_1 : Option 1<br />
-				option_3 : Option 2<br />
-				option_3 : Option 3",'acf'); ?></p>
+				<p class="description"></p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="field_option field_option_select">
 			<td class="label">
-				<label><?php _e("Multiple?",'acf'); ?></label>
+				<label><?php _e("Select multiple values?",'acf'); ?></label>
 			</td>
 			<td>
 				<?php 
@@ -99,46 +114,15 @@ class Select
 					$temp_field->input_class = '';
 					$temp_field->input_id = 'acf[fields]['.$key.'][options][multiple]';
 					$temp_field->value = $options['multiple'];
-					$temp_field->options = array('message' => 'Select multiple values');
+					$temp_field->options = array('message' => '');
 					$this->parent->create_field($temp_field); 
 				?>
 			</td>
 		</tr>
-		</table>
+
 		<?php
 	}
-	
-	
-	/*---------------------------------------------------------------------------------------------
-	 * Save Input
-	 * - this is called from save_input.php, this function saves the field's value(s)
-	 *
-	 * @author Elliot Condon
-	 * @since 1.1
-	 * 
-	 ---------------------------------------------------------------------------------------------*/
-	function save_input($post_id, $field)
-	{
-		// set table name
-		global $wpdb;
-		$table_name = $wpdb->prefix.'acf_values';
 		
-		
-		// if select is a multiple, you need to save it as an array!
-		if(is_array($field['value']))
-		{
-			$field['value'] = serialize($field['value']);
-		}
-		
-		
-		// insert new data
-		$new_id = $wpdb->insert($table_name, array(
-			'post_id'	=>	$post_id,
-			'field_id'	=>	$field['field_id'],
-			'value'		=>	$field['value']
-		));
-	}
-	
 	
 	/*---------------------------------------------------------------------------------------------
 	 * Format Options
@@ -218,9 +202,11 @@ class Select
 	 ---------------------------------------------------------------------------------------------*/
 	function format_value_for_input($value)
 	{
-		if(is_array(unserialize($value)))
+		$is_array = @unserialize($value);
+		
+		if($is_array)
 		{
-			return(unserialize($value));
+			return unserialize($value);
 		}
 		else
 		{

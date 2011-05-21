@@ -1,13 +1,12 @@
 <?php
 
-class Page_link
+class acf_Page_link
 {
 	var $name;
 	var $title;
 	var $parent;
 	
-	
-	function Page_link($parent)
+	function acf_Page_link($parent)
 	{
 		$this->name = 'page_link';
 		$this->title = __('Page Link','acf');
@@ -24,9 +23,9 @@ class Page_link
 	 * 
 	 ---------------------------------------------------------------------------------------------*/
 	function html($field)
-	{
+	{	
 		// get post types
-		if(is_array($field->options['post_type']))
+		if(isset($field->options['post_type']) && is_array($field->options['post_type']) && $field->options['post_type'][0] != "")
 		{
 			// 1. If select has selected post types, just use them
 			$post_types = $field->options['post_type'];
@@ -46,7 +45,7 @@ class Page_link
 		
 
 		// start select
-		if($field->options['multiple'] == '1')
+		if(isset($field->options["multiple"]) && $field->options["multiple"] == '1')
 		{
 			$name_extra = '[]';
 			echo '<select id="'.$field->input_id.'" class="'.$field->input_class.'" name="'.$field->input_name.$name_extra.'" multiple="multiple" size="5" >';
@@ -129,14 +128,27 @@ class Page_link
 	 ---------------------------------------------------------------------------------------------*/
 	function options_html($key, $options)
 	{
+		if(!isset($options['post_type']))
+		{
+			$options['post_type'] = "";
+		}
+		
+		if(!isset($options['multiple']))
+		{
+			$options['multiple'] = '0';
+		}
 		?>
-		<table class="acf_input">
-		<tr>
+
+		<tr class="field_option field_option_page_link">
 			<td class="label">
 				<label for=""><?php _e("Post Type",'acf'); ?></label>
+				<p class="description"><?php _e("Filter posts by selecting a post type<br />
+				Tip: deselect all post types to show all post type's posts",'acf'); ?></p>
 			</td>
 			<td>
 				<?php 
+				$post_types = array('' => '-All-');
+				
 				foreach (get_post_types() as $post_type ) {
 				  $post_types[$post_type] = $post_type;
 				}
@@ -158,13 +170,12 @@ class Page_link
 					$this->parent->create_field($temp_field); 
 				
 				?>
-				<p class="description"><?php _e("Filter posts by selecting a post type<br />
-				Tip: deselect all post types to show all post type's posts",'acf'); ?></p>
+				
 			</td>
 		</tr>
-		<tr>
+		<tr class="field_option field_option_page_link">
 			<td class="label">
-				<label><?php _e("Multiple?",'acf'); ?></label>
+				<label><?php _e("Select multiple values?",'acf'); ?></label>
 			</td>
 			<td>
 				<?php 
@@ -174,45 +185,14 @@ class Page_link
 					$temp_field->input_class = '';
 					$temp_field->input_id = 'acf[fields]['.$key.'][options][multiple]';
 					$temp_field->value = $options['multiple'];
-					$temp_field->options = array('message' => 'Select multiple values');
+					$temp_field->options = array('message' => '');
 					$this->parent->create_field($temp_field); 
 				?>
 			</td>
 		</tr>
-		</table>
 		<?php
 	}
 	
-	
-	/*---------------------------------------------------------------------------------------------
-	 * Save Input
-	 * - this is called from save_input.php, this function saves the field's value(s)
-	 *
-	 * @author Elliot Condon
-	 * @since 1.1
-	 * 
-	 ---------------------------------------------------------------------------------------------*/
-	function save_input($post_id, $field)
-	{
-		// set table name
-		global $wpdb;
-		$table_name = $wpdb->prefix.'acf_values';
-		
-		
-		// if select is a multiple, you need to save it as an array!
-		if(is_array($field['value']))
-		{
-			$field['value'] = serialize($field['value']);
-		}
-		
-		
-		// insert new data
-		$new_id = $wpdb->insert($table_name, array(
-			'post_id'	=>	$post_id,
-			'field_id'	=>	$field['field_id'],
-			'value'		=>	$field['value']
-		));
-	}
 	
 	
 	/*---------------------------------------------------------------------------------------------
@@ -253,14 +233,18 @@ class Page_link
 	 ---------------------------------------------------------------------------------------------*/
 	function format_value_for_input($value)
 	{
-		if(is_array(unserialize($value)))
+		$is_array = @unserialize($value);
+		
+		if($is_array)
 		{
-			return(unserialize($value));
+			return unserialize($value);
 		}
 		else
 		{
 			return $value;
 		}
+		
+
 	}
 	
 

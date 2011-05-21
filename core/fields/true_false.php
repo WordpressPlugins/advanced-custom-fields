@@ -1,11 +1,11 @@
 <?php
 
-class True_false
+class acf_True_false
 {
 	var $name;
 	var $title;
 	
-	function True_false()
+	function acf_True_false()
 	{
 		$this->name = 'true_false';
 		$this->title = __("True / False",'acf');
@@ -16,7 +16,7 @@ class True_false
 		// set default message
 		if(empty($field->options['message']))
 		{
-			$field->options['message'] = __("True",'acf');
+			$field->options['message'] = "";
 		}
 		
 		// set choices
@@ -53,18 +53,23 @@ class True_false
 	 ---------------------------------------------------------------------------------------------*/
 	function options_html($key, $options)
 	{
+		if(!isset($options['message']))
+		{
+			$options['message'] = "";
+		}
 		?>
-		<table class="acf_input">
-		<tr>
+
+		<tr class="field_option field_option_true_false">
 			<td class="label">
 				<label for="acf[fields][<?php echo $key; ?>][options][message]"><?php _e("Message",'acf'); ?></label>
+				<p class="description"><?php _e("eg. Show extra content",'acf'); ?></a></p>
 			</td>
 			<td>
 				<input type="text" name="acf[fields][<?php echo $key; ?>][options][message]" id="acf[fields][<?php echo $key; ?>][options][message]" value="<?php echo $options['message']; ?>" />
-				<p class="description"><?php _e("eg. Show extra content",'acf'); ?></a></p>
+				
 			</td>
 		</tr>
-		</table>
+
 		<?php
 	}
 

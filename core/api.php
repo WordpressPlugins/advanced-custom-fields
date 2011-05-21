@@ -54,22 +54,59 @@ function get_acf($post_id = false)
 		 
 		 	
 	// get fields
-   	$fields = $wpdb->get_results("SELECT DISTINCT f.* FROM $acf_fields f 
+	$fields = array();
+   	$temp_fields = $wpdb->get_results("SELECT DISTINCT f.* FROM $acf_fields f 
    	LEFT JOIN $acf_values v ON v.field_id=f.id
    	WHERE v.post_id = '$post_id'");
    	
 
-    if(empty($fields)){return null;}
+    if(empty($temp_fields)){return null;}
     
 	
+	// add fields to field array with key = field->id
+	foreach($temp_fields as $field)
+	{
+		$fields[$field->id] = $field;
+	}
+	
+	
+	// now look for child fields
+	foreach($fields as $i => $field)
+	{
+		if($field->parent_id != 0)
+		{
+			// this is a sub field.
+			$parent_field = $wpdb->get_row("SELECT * FROM $acf_fields WHERE id = $field->parent_id");
+			
+			if(isset($fields[$parent_field->id]))
+			{
+				// parent field has already been created!
+				$fields[$parent_field->id]->options['sub_fields'][] = $field;
+			}
+			else
+			{
+				// add sub field to parent field
+				$parent_field->options = array();
+				$parent_field->options['sub_fields'][] = $field;
+			
+			
+				// add parent field
+				$fields[$parent_field->id] = $parent_field;
+			}
+			
+			
+			unset($fields[$i]);
+		}
+	}
+	//echo '<pre>';
+	//print_r($fields);
+	//echo '</pre>';
+	//die;
 	foreach($fields as $field)
 	{
-		// get value
-		$field->value = $acf->load_value_for_api($post_id, $field);
-		
-		
+	
 		// add this field: name => value
-		$variables[$field->name] = $field->value;
+		$variables[$field->name] = $acf->load_value_for_api($post_id, $field);
 		
 	}
 	
@@ -115,16 +152,35 @@ function get_field($field_name, $post_id = false)
 	
 	//echo 'field name: '.$field_name.', post id: '.$post_id;
 	
-	if(empty($acf_fields))
+	if(!isset($acf_fields))
 	{
 		$acf_fields = array();
 	}
-	if(empty($acf_fields[$post_id]))
+	if(!isset($acf_fields[$post_id]))
 	{
 		$acf_fields[$post_id] = get_acf($post_id);
 	}
 	
 	return $acf_fields[$post_id]->$field_name;
+}
+
+// get sub field
+function get_sub_field($field_name, $field)
+{
+	if(isset($field[$field_name]))
+	{
+		return $field[$field_name];
+	}
+	else
+	{
+		return false;
+	}
+}
+
+// get sub field
+function the_sub_field($field_name, $field)
+{
+	echo get_sub_field($field_name, $field);
 }
 
 
@@ -188,7 +244,7 @@ class ACF_WP_Query extends WP_Query
 		$acf_fields = $wpdb->prefix.'acf_fields';
 		$acf_values = $wpdb->prefix.'acf_values';	
 	
-		$join .= "LEFT JOIN $acf_values v ON v.post_id=wp_posts.ID
+		$join .= "LEFT JOIN $acf_values v ON v.post_id=".$wpdb->prefix."posts.ID
 		LEFT JOIN $acf_fields f ON f.id=v.field_id";
 			
 		return $join;

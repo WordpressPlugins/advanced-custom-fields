@@ -1,11 +1,11 @@
 <?php
 
-class Text
+class acf_Text
 {
 	var $name;
 	var $title;
 	
-	function Text()
+	function acf_Text()
 	{
 		$this->name = 'text';
 		$this->title = __("Text",'acf');
@@ -17,9 +17,8 @@ class Text
 	}
 	
 	function format_value_for_input($value)
-	{		
-		$value = htmlspecialchars($value, ENT_QUOTES);
-		return $value;
+	{
+		return htmlspecialchars($value, ENT_QUOTES);
 	}
 	
 }

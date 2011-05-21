@@ -1,4 +1,63 @@
-<div class="cfm_col_right hidden metabox-holder" id="poststuff" >
+<div id="screen-meta-activate-acf-wrap" class="screen-meta-wrap hidden acf">
+	<div class="screen-meta-content">
+		
+		<h5>Unlock Special Fields.</h5>
+		<p>Special Fields can be unlocked by purchasing an activation code. Each activation code can be used on multiple sites. <a href="#">Store under construction</a></p>
+		<table class="acf_activate">
+			<thead>
+				<tr>
+					<th>Field Type</th>
+					<th>Status</th>
+					<th>Activation Code</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Repeater</td>
+					<td><?php if(array_key_exists('repeater', $this->activated_fields)){
+						echo 'Active';
+					}
+					else
+					{
+						echo 'Not Active';
+					} ?></td>
+					<td>
+						<form action="" method="post">
+							<?php if(array_key_exists('repeater', $this->activated_fields)){
+								echo '<span class="activation_code">'.$this->activated_fields['repeater'].'</span>';
+								echo '<input type="hidden" name="acf_field_deactivate" value="repeater" />';
+								echo '<input type="submit" class="button" value="Deactivate" />';
+							}
+							else
+							{
+								echo '<input type="text" name="acf_ac" value="" />';
+								echo '<input type="hidden" name="acf_field_activate" value="repeater" />';
+								echo '<input type="submit" class="button" value="Activate" />';
+								echo '<a href="#">Available soon</a>';
+							} ?>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div id="screen-meta-activate-acf-link-wrap" class="hide-if-no-js screen-meta-toggle acf">
+	<a href="#screen-meta-activate-acf" id="screen-meta-activate-acf-link" class="show-settings">Unlock Fields</a>
+</div>
+
+
+<?php
+// get current page
+$currentFile = $_SERVER["SCRIPT_NAME"];
+$parts = Explode('/', $currentFile);
+$currentFile = $parts[count($parts) - 1];
+
+if($currentFile == 'edit.php'):
+?>
+
+
+<div class="acf_col_right hidden metabox-holder" id="poststuff" >
 
 	<div class="postbox">
 		<div title="Click to toggle" class="handlediv"><br></div>
@@ -6,6 +65,8 @@
 		<a class="thickbox button" href="http://localhost:8888/acf/wp-admin/plugin-install.php?tab=plugin-information&amp;plugin=advanced-custom-fields&amp;section=changelog&amp;TB_iframe=true&amp;width=640&amp;height=570"><?php _e("see what's new",'acf'); ?></a>
 		</h3>
 		<div class="inside">
+			
+		
 			<table cellpadding="0" cellspacing="0" class="author">
 				<tr>	
 					<td style="width:24px;">
@@ -54,6 +115,5 @@
 			</table>
 		</div>
 	</div>
-	
-
 </div>
+<?php endif; ?>

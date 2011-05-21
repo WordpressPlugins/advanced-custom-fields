@@ -30,6 +30,15 @@ if($_POST['input_meta_box'] == 'true')
 			//$field = apply_filters('wp_insert_post_data', $field);
 			$field = stripslashes_deep( $field );
 			
+			
+			// if select is a multiple (multiple select value), you need to save it as an array!
+			if(is_array($field['value']))
+			{
+				$field['value'] = serialize($field['value']);
+			}
+			
+			
+			// create data object to save
 			$data = array(
 				'post_id'	=>	$post_id,
 				'field_id'	=>	$field['field_id'],

@@ -1,45 +1,211 @@
 (function($){
-	// exists
-	$.fn.exists = function(){return jQuery(this).length>0;}
 
-	
-	$.fn.make_acf = function()
+	// exists
+	$.fn.exists = function()
 	{
-		// vars
-		var fields = $(this); // .fields
-		var add_field = fields.siblings('.table_footer').children('a#add_field');
-		var fields_limit = parseInt(fields.siblings('input[name=fields_limit]').val()) - 1;
+		return jQuery(this).length>0;
+	};
+
+
+	/*--------------------------------------------------------------------------
+		Update Names
+	--------------------------------------------------------------------------*/
+	$.fn.update_names = function(new_no, new_sub_no)
+	{
+		//console.log('update names: new_no = '+new_no+', new_sub_no = '+new_sub_no);
+		
+		//alert('passed through '+total_fields);
+		$(this).find('[name]').each(function()
+		{	
+			
+			var name = $(this).attr('name');
+			var id = $(this).attr('id');
 				
-		/*-------------------------------------------
-			Add Field Button
-		-------------------------------------------*/
-		add_field.unbind("click").click(function(){
-			
-			var total_fields = fields.children('.field').length-1;
-			
-			// limit fields
-			if(total_fields >= fields_limit)
+			if(name.indexOf("[fields][999]") != -1)
 			{
-				alert('Field limit reached!');
-				return false;
+				name = name.replace('[fields][999]','[fields]['+new_no+']');
+				id = id.replace('[fields][999]','[fields]['+new_no+']');
 			}
 			
-			// clone last tr
-			var new_field = fields.children('.field').last().clone(true);
+			if($(this).closest('.sub_field').hasClass('field_clone'))
+			{
+				// dont change this input (its the clone sub field!)
+			}
+			else
+			{
+				
+				
+				if(name.indexOf("[sub_fields][999]") != -1)
+				{
+					name = name.replace('[sub_fields][999]','[sub_fields]['+new_sub_no+']');
+					id = id.replace('[sub_fields][999]','[sub_fields]['+new_sub_no+']');
+				}
+				
+				
+				
+				
+			}
 			
-			// reset new field
-			new_field.reset_values();
-			new_field.update_names(total_fields, (total_fields+1));
+			$(this).attr('name', name);
+			$(this).attr('id', id);
+		});
+	}
+	
+	
+	/*--------------------------------------------------------------------------
+		Update Order Numbers
+	--------------------------------------------------------------------------*/
+	function update_order_numbers(){
+		
+		$('.fields').each(function(){
+			$(this).children('.field').each(function(i){
+				$(this).find('td.field_order').first().html(i+1);
+			});
+		});
+	
+		
+	}
+	
+	
+	/*--------------------------------------------------------------------------
+		setup_fields
+	--------------------------------------------------------------------------*/
+	function setup_fields()
+	{
+		
+		if(!$('.postbox#acf_fields').exists())
+		{
+			alert('ERROR. Could not find .postbox#acf_fields');
+			return false;
+		}
+		
+		
+		// add edit button functionality
+		$('a.acf_edit_field').live('click', function(){
+			//console.log('me');
+			var field = $(this).closest('.field');
+			
+			if(field.is('.form_open'))
+			{
+				field.removeClass('form_open');
+			}
+			else
+			{
+				field.addClass('form_open');
+			}
+			
+			
+			field.children('.field_form_mask').animate({'height':'toggle'}, 500);
+		});
+		
+		
+		// add delete button functionality
+		$('a.acf_delete_field').live('click', function(){
+			//console.log('me');
+			var field = $(this).closest('.field');
+			var fields = field.closest('.fields');
+			
+			field.remove();
+			if(!fields.children('.field').exists())
+			{
+				// no more fields, show the message
+				fields.children('.no_fields_message').show();
+			}
+			//field.animate({'opacity':'0'}, 500, function(){
+			//	$(this).animate({'height':'0'}, 500, function(){
+			//		
+			//	});
+			//});
+		});
+		
+		
+		// show field type options
+		$('.field_form tr.field_type select').live('change', function(){
+			
+			var tbody = $(this).closest('tbody');
+			var type = $(this).val();
+			
+			// does it have repeater?
+			if(!$(this).find('option[value="repeater"]').exists())
+			{
+				//console.log('select: '+type+'. parent length: '+$(this).closest('.repeater').length);
+				if($(this).closest('.repeater').length == 0)
+				{
+					$(this).append('<option value="null" disabled="true">Repeater (Unlock field with activation code)</option>');
+				}
+			}
+			
+			tbody.children('tr.field_option').hide();
+			tbody.children('tr.field_option').find('[name]').attr('disabled', 'true');
+			
+			var tr = tbody.children('tr.field_option_'+type);
+			tr.find('[name]').removeAttr('disabled');
+			
+			var tr_top = tbody.children('tr.field_type');
+			
+			tr.insertAfter(tr_top);
+			tr.show();
+			
+			
+		}).trigger('change');
+		
+		
+		// Add Field Button
+		$('#add_field').live('click',function(){
+			
+			var table_footer = $(this).closest('.table_footer');
+			var fields = table_footer.siblings('.fields');
+			//console.log(fields);
+			
+			// clone last tr
+			var new_field = fields.children('.field_clone').clone();
+			new_field.removeClass('field_clone').addClass('field');
+			
+			
+			// update input names
+			if(new_field.hasClass('sub_field'))
+			{
+				
+				// it is a sub field
+				//console.log(fields.parents('.fields').last());
+				var field_length = fields.parents('.fields').last().children('.field').length;
+				var sub_field_length = fields.children('.field').length;
+				//alert(sub_field_length);
+				//alert('update numbers for sub field! field:'+field_length+', sub:'+sub_field_length);
+				
+				new_field.update_names(field_length, sub_field_length);
+			}
+			else
+			{
+				var field_length = fields.children('.field').length;
+				new_field.update_names(field_length, 0);
+				
+				//alert('update numbers for field! field:'+field_length);
+			}
+			
 			
 			// append to table
 			fields.append(new_field);
 			
-			// close options
-			new_field.find('select.type').trigger('change');
-			new_field.find('input.label').focus();
+			
+			// remove no fields message
+			if(fields.children('.no_fields_message').exists())
+			{
+				fields.children('.no_fields_message').hide();
+			}
+			
+			
+			// open up the edit form
+			new_field.find('a.acf_edit_field').first().trigger('click');
+			
+			
+			// clear text inputs
+			new_field.find('.field_form input[type="text"]').val('');
+			new_field.find('.field_form input[type="text"]').first().focus();
+			
 			
 			// update order numbers
-			fields.update_order_numbers();
+			update_order_numbers();
 		
 			return false;
 			
@@ -47,155 +213,59 @@
 		});
 		
 		
-		/*-------------------------------------------
-			Sortable
-		-------------------------------------------*/
-		fields.sortable({
-			update: function(event, ui){fields.update_order_numbers();},
-			handle: 'table'
-		});
-		
-		
-		/*-------------------------------------------
-			Auto Fill Name
-		-------------------------------------------*/
-		fields.children('.field').children('table').find('input.label').unbind('blur').blur(function()
+		// Auto complete field name
+		$('.field_form tr.field_label input.label').live('blur', function()
 		{
+			//console.log('blur');
 			var label = $(this);
-			var name = $(this).parent().siblings('td.name').children('input');
-			
+			var name = $(this).closest('tr').siblings('tr.field_name').find('input.name');
+
 			if(name.val() == '')
 			{
 				var val = label.val().toLowerCase().split(' ').join('_').split('\'').join('');
 				name.val(val);
+				name.trigger('keyup');
 			}
 		});
 		
 		
-		/*-------------------------------------------
-			Remove Field Button
-		-------------------------------------------*/
-		fields.children('.field').children('table').find('a.remove_field').unbind('click').click(function()
-		{	
-			// needs at least one
-			if(fields.children('.field').length <= 1)
-			{
-				return false;
-			}
-			
-			var field = $(this).parents('.field').first();
-			field.fadeTo(300,0,function(){
-				field.animate({'height':0}, 300, function(){
-					field.remove();
-					fields.update_order_numbers();
-				});
-			});
-			
-			return false;
-		});
-		
-		
-		/*-------------------------------------------
-			Field Options
-		-------------------------------------------*/
-		fields.children('.field').children('table').find('select.type').change(function()
+		// update field text when typing
+		$('.field_form tr.field_label input.label').live('keyup', function()
 		{
-			var selected = $(this).val();
-			var td = $(this).parent('td');
-			
-			var field = $(this).parents('.field').first();
-			var field_options = field.children('.field_options');
-			var selected_option = field_options.children('.field_option#'+selected);
-			
-			// remove preivous field option button
-			td.children('a.field_options_button').remove();
-			field.removeClass('options_open');
-			field_options.children('.field_option').hide();
-			field_options.children('.field_option').find('[name]').attr('disabled', 'true');
-			
-			
-			// if options...
-			if(selected_option.exists())
-			{
-				var a = $('<a class="field_options_button" href="javascript:;"></a>');
-				td.append(a);
-				
-				// all options are disabled, make the chosen one abled!
-				selected_option.find('[name]').removeAttr('disabled');
-				
-				a.click(function(){
-					if(!field.is('.options_open'))
-					{
-						field.addClass('options_open');
-						selected_option.animate({'height':'toggle', 'padding-top':'toggle', 'padding-bottom':'toggle'}, 500);
-					}
-					else
-					{
-						selected_option.animate({'height':'toggle', 'padding-top':'toggle', 'padding-bottom':'toggle'}, 500, function(){
-							field.removeClass('options_open');
-						});
-					}
-					
-					selected_option.find('[name]').removeAttr('disabled');
-				});
-				
-			}
-		}).trigger('change');
-		
-		
-	}
-	
-	/*-------------------------------------------
-		Reset Values
-	-------------------------------------------*/
-	$.fn.reset_values = function(){
-		
-		$(this).find('input[type="text"]').val('');
-		$(this).find('input[type="hidden"]').val('');
-		$(this).find('textarea').val('');
-		$(this).find('select option').removeAttr('selected');
-		$(this).find('select[multiple="multiple"] option').attr('selected','selected');
-		$(this).find('input[type="checkbox"]').removeAttr('checked');
-	}
-	
-	$.fn.update_names = function(old_no, new_no)
-	{
-		//alert('passed through '+total_fields);
-		$(this).find('[name]').each(function()
+			var val = $(this).val();
+			var name = $(this).closest('.field').find('td.field_label strong a').first().html(val);
+		});
+		$('.field_form tr.field_name input.name').live('keyup', function()
 		{
-			var name = $(this).attr('name').replace('['+(old_no)+']','['+new_no+']');
-			$(this).attr('name', name);
+			var val = $(this).val();
+			var name = $(this).closest('.field').find('td.field_name').first().html(val);
 		});
-	}
-	
-	
-	/*-------------------------------------------
-		Update Orer Numbers
-	-------------------------------------------*/
-	$.fn.update_order_numbers = function(){
-		$(this).children('.field').each(function(i){
-			$(this).children('table').children('tbody').children('tr').children('td.order').html(i+1);
+		$('.field_form tr.field_type select.type').live('change', function()
+		{
+			var val = $(this).val();
+			var name = $(this).closest('.field').find('td.field_type').first().html(val);
 		});
+		
+		
+		// sortable
+		$('.fields').sortable({
+			update: function(event, ui){update_order_numbers();},
+			handle: 'td.field_order'
+		});
+		
 	}
-	
 
-	/*-------------------------------------------
+	/*--------------------------------------------------------------------------
 		Document Ready
-	-------------------------------------------*/
+	--------------------------------------------------------------------------*/
 	$(document).ready(function(){
-   		$('div.postbox#acf_fields .fields').each(function(){
-   			$(this).make_acf();
-   		});
+	
+		setup_fields();
+		
+   		//$('div.postbox#acf_fields .fields').each(function(){
+   			//$(this).make_acf();
+   		//});
    		
-   		$('input#publish').click(function(){
-   			$('div.postbox#acf_fields select.type').each(function(){
-   				if($(this).val() == 'null')
-   				{
-   					alert('** All fields require a type selected **');
-   				}
-   			});
-   			
-   		});
    		
    		$('div.postbox a.help').click(function(){
    			$('div.postbox .help_box_mask').animate({'height':'toggle'}, 500);

@@ -42,7 +42,7 @@ if(!in_array('the_content',$adv_options->show_on_page)): ?>
 	<input type="hidden" name="show_<?php echo $option; ?>" value="true" />
 <?php endforeach; ?>
 
-<table class="acf_input" id="acf_input">
+<div class="acf_fields_input">
 	<?php $i = -1; ?>
 	<?php foreach($fields as $field): $i++ ?>
 	<?php 
@@ -53,24 +53,23 @@ if(!in_array('the_content',$adv_options->show_on_page)): ?>
 			continue;
 		}
 		
-		
-		
+	
 		// set value, id and name for field
-		$field->value = $this->load_value_for_input($post->ID, $field);
-		$field->row_id = $this->load_row_id_for_input($post->ID, $field->id);
+		$value = $this->load_value_for_input($post->ID, $field);
+
+		$field->value = $value;
 		$field->input_id = 'acf['.$i.'][value]';
 		$field->input_name = 'acf['.$i.'][value]';
+		$field->input_class = '';
 		
 	?>
-	<tr>
-		<td>
-			<input type="hidden" name="acf[<?php echo $i; ?>][row_id]" value="<?php echo $field->row_id; ?>" />
-			<input type="hidden" name="acf[<?php echo $i; ?>][field_id]" value="<?php echo $field->id; ?>" />
-			<input type="hidden" name="acf[<?php echo $i; ?>][field_type]" value="<?php echo $field->type; ?>" />
-			
-			<label for="<?php echo $field->input_id ?>"><?php echo $field->label ?></label>
-			<?php $this->create_field($field); ?>
-		</td>
-	</tr>
+	<div class="field">
+		<?php //print_r($value); ?>
+		<input type="hidden" name="acf[<?php echo $i; ?>][field_id]" value="<?php echo $field->id; ?>" />
+		<input type="hidden" name="acf[<?php echo $i; ?>][field_type]" value="<?php echo $field->type; ?>" />
+		
+		<label for="<?php echo $field->input_id ?>"><?php echo $field->label ?></label>
+		<?php $this->create_field($field); ?>
+	</div>
 	<?php endforeach; ?>
-</table>
+</div>

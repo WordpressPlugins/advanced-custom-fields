@@ -1,11 +1,11 @@
 <?php
 
-class File
+class acf_File
 {
 	var $name;
 	var $title;
 	
-	function File()
+	function acf_File()
 	{
 		$this->name = 'file';
 		$this->title = __('File','acf');

@@ -30,6 +30,7 @@
 	<tr>
 		<td class="label">
 			<label for="post_type"><?php _e("Post Type's",'acf'); ?></label>
+			<p class="description"><?php _e("Selecting a post type here will add this ACF to <strong>all</strong> edit screens of that post type.",'acf'); ?></p>
 		</td>
 		<td>
 			<?php 
@@ -58,12 +59,13 @@
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description"><?php _e("Selecting a post type here will add this ACF to <strong>all</strong> edit screens of that post type.<br />(if your custom post type does not appear, make sure it is publicly query-able)",'acf'); ?></p>
+			
 		</td>
 	</tr>
 	<tr>
 		<td class="label">
 			<label for="page_title"><?php _e("Page Title's",'acf'); ?></label>
+			<p class="description"><?php _e("eg. Home, About Us",'acf'); ?></p>
 		</td>
 		<td>
 			<?php 
@@ -78,12 +80,13 @@
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description"><?php _e("eg. Home, About Us",'acf'); ?></p>
+			
 		</td>
 	</tr>
 	<tr>
 		<td class="label">
 			<label for="page_slug"><?php _e("Page Slug's",'acf'); ?></label>
+			<p class="description"><?php _e("eg. home, about-us",'acf'); ?></p>
 		</td>
 		<td>
 			<?php 
@@ -98,12 +101,13 @@
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description"><?php _e("eg. home, about-us",'acf'); ?></p>
+			
 		</td>
 	</tr>
 	<tr>
 		<td class="label">
 			<label for="post_id"><?php _e("Post ID's",'acf'); ?></label>
+			<p class="description"><?php _e("eg. 1, 2, 3",'acf'); ?></p>
 		</td>
 		<td>
 			<?php 
@@ -118,12 +122,13 @@
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description"><?php _e("eg. 1, 2, 3",'acf'); ?></p>
+			
 		</td>
 	</tr>
 	<tr>
 		<td class="label">
 			<label for="template_name"><?php _e("Page Template's",'acf'); ?></label>
+			<p class="description"><?php _e("eg. home_page.php",'acf'); ?></p>
 		</td>
 		<td>
 			<?php 
@@ -138,12 +143,13 @@
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description"><?php _e("eg. home_page.php",'acf'); ?></p>
+			
 		</td>
 	</tr>
 	<tr>
 		<td class="label">
 			<label for="page_parent"><?php _e("Page Parent ID's",'acf'); ?></label>
+			<p class="description"><?php _e("eg. 1, 2, 3",'acf'); ?></p>
 		</td>
 		<td>
 			<?php 
@@ -158,12 +164,13 @@
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description"><?php _e("eg. 1, 2, 3",'acf'); ?></p>
+			
 		</td>
 	</tr>
 	<tr>
 		<td class="label">
 			<label for="category_names"><?php _e("Category Names's",'acf'); ?></label>
+			<p class="description"><?php _e("eg. News, Media, Uncategoriazed",'acf'); ?></p>
 		</td>
 		<td>
 			<?php 
@@ -178,12 +185,13 @@
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description"><?php _e("eg. News, Media, Uncategoriazed",'acf'); ?></p>
+			
 		</td>
 	</tr>
 	<tr>
 		<td class="label">
 			<label for="page_parent"><?php _e("Overrides",'acf'); ?></label>
+			<p class="description"><?php _e("Tick this box to remove all other ACF's (from the edit screen where this ACF appears)",'acf'); ?></p>
 		</td>
 		<td>
 			<?php 
@@ -200,7 +208,7 @@
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description"><?php _e("Tick this box to remove all other ACF's <br />(from the edit screen where this ACF appears)",'acf'); ?></p>
+			
 		</td>
 	</tr>
 </table>
