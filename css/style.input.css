@@ -27,13 +27,13 @@
     text-shadow: 0 1px 0 #FFFFFF;
 }
 
-.acf_fields_input .field:first-child {
+/* .acf_fields_input .field:first-child {
 	border-top: 0 none;
 }
 
 .acf_fields_input .field:last-child {
 	border-bottom: 0 none;
-}
+} */
 
 .postbox#acf_input  h3.hndle{
 	display: none;
@@ -64,6 +64,12 @@
     width: 99.8%;
 }
 
+#poststuff .inside p.instructions {
+	font-size: 11px;
+	margin: -6px 0 10px;
+	padding: 0;
+	color: #999;
+}
 
 
 /*---------------------------------------------------------------------------------------------

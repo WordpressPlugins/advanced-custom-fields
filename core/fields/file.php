@@ -12,7 +12,27 @@ class acf_File
 		
 		add_action("admin_head-media-upload-popup", array($this, 'popup_head'));
 		add_filter('media_send_to_editor', array($this, 'media_send_to_editor'), 15, 2 );
-		add_action('admin_init', array($this, 'admin_init'));
+		//add_action('admin_init', array($this, 'admin_init'));
+		
+		add_action('admin_print_scripts', array($this, 'my_admin_scripts'));
+		add_action('admin_print_styles', array($this, 'my_admin_styles'));
+	}
+	
+	
+	/*---------------------------------------------------------------------------------------------
+	 * admin_print_scripts / admin_print_styles
+	 *
+	 * @author Elliot Condon
+	 * @since 2.0.1
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
+	function my_admin_scripts() {
+		wp_enqueue_script('media-upload');
+		wp_enqueue_script('thickbox');
+	}
+	
+	function my_admin_styles() {
+		wp_enqueue_style('thickbox');
 	}
 	
 	
@@ -43,10 +63,9 @@ class acf_File
 				#media-items tr.image_alt p,
 				#media-items table thead input.button,
 				#media-items table thead img.imgedit-wait-spin,
-				#media-items tr.submit a.wp-post-thumbnail,
-				form#filter {
+				#media-items tr.submit a.wp-post-thumbnail {
 					display: none;
-				}
+				} 
 
 				.media-item table thead img {
 					border: #DFDFDF solid 1px; 
@@ -54,35 +73,24 @@ class acf_File
 				}
 
 			</style>
+			<script type="text/javascript">
+			(function($){
+			
+				$(document).ready(function(){
+				
+					$('#media-items').bind('DOMNodeInserted',function(){
+						$('input[value="Insert into Post"]').each(function(){
+							$(this).attr('value','<?php _e("Select File",'acf'); ?>');
+						});
+					}).trigger('DOMNodeInserted');
+					
+				});
+							
+			})(jQuery);
+			</script>
 			
 			<?php
 		}
-	}
-	
-	
-	/*---------------------------------------------------------------------------------------------
-	 * rename_buttons - RENAMES MEDIA THICKBOX BUTTONS
-	 *
-	 * @author Elliot Condon
-	 * @since 1.1.4
-	 * 
-	 ---------------------------------------------------------------------------------------------*/
-	function admin_init() 
-	{
-		if(isset($_GET["acf_type"]) && $_GET["acf_type"] == "file")
-		{
-			add_filter('gettext', array($this, 'rename_buttons'), 1, 3);
-		}
-	}
-	
-	function rename_buttons($translated_text, $source_text, $domain) {
-		if(isset($_GET["acf_type"]) && $_GET["acf_type"] == "file") 
-		{
-			if ($source_text == 'Insert into Post') {
-				return __('Select File', 'acf' );
-			}
-		}
-		return $translated_text;
 	}
 	
 	

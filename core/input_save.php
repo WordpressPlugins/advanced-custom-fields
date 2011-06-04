@@ -55,6 +55,19 @@ if($_POST['input_meta_box'] == 'true')
 			// insert new data
 			$new_id = $wpdb->insert($table_name, $data);
 		}
+		
+		
+		
+		// save as standard cf
+		if(isset($field['save_as_cf']))
+		{
+			if(is_array($field['value']))
+			{
+				$field['value'] = serialize($field['value']);
+			}
+			
+			update_post_meta($post_id, $field['save_as_cf'], $field['value']);
+		}
     	
 		
     }

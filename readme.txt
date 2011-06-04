@@ -81,6 +81,14 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 == Changelog ==
 
+=2.0.1=
+* Added Field Option: Field Instructions
+* Added Field Option: Is field searchable? (saves field value as a normal custom field so you can use the field against wp queries)
+* Added Media Search / Pagination to Image / File thickbox
+* Added Media Upload support to post types which do not have a Content Editor.
+* Fixed "Select Image" / "Select File" text on thickbox buttons after upload
+* Repeater field now returns null if no data was added.
+
 =2.0.0=
 * Completely re-designed the ACF edit page
 * Added repeater field (unlocked through external purchase)

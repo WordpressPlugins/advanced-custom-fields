@@ -382,7 +382,7 @@ class acf_Repeater
 				{
 					
 					// if select is a multiple (multiple select value), you need to save it as an array!
-					if(isset($cell['value']))
+					if(isset($cell['value']) && $cell['value'] != "")
 					{
 						if(is_array($cell['value']))
 						{
@@ -391,7 +391,8 @@ class acf_Repeater
 					}
 					else
 					{
-						$cell['value'] = "";
+						//$cell['value'] = "";
+						continue;
 					}
 
 					
@@ -533,6 +534,10 @@ class acf_Repeater
 		 			 	
 	 	}
 	 	
+	 	if(empty($values))
+	 	{
+	 		$values = null;
+	 	}
 	 	
 	 	return $values;
 	}

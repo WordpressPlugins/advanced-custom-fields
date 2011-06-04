@@ -10,13 +10,13 @@
 	padding-left: 4px;
 }
 
-ul.checkbox_list {
+.postbox#acf_options ul.checkbox_list {
 	display: block;
 	float: left;
 	width: 300px;
 }
 
-ul.checkbox_list li {
+.postbox#acf_options ul.checkbox_list li {
 	display: block;
 }
 

@@ -3,7 +3,7 @@
 Plugin Name: Advanced Custom Fields
 Plugin URI: http://plugins.elliotcondon.com/advanced-custom-fields/
 Description: Completely Customise your edit pages with an assortment of field types: Wysiwyg, Repeater, text, textarea, image, file, select, checkbox post type, page link and more! Hide unwanted metaboxes and assign to any edit page!
-Version: 2.0.0
+Version: 2.0.1
 Author: Elliot Condon
 Author URI: http://www.elliotcondon.com/
 License: GPL
@@ -36,7 +36,7 @@ class Acf
 		$this->dir = plugins_url('',__FILE__);
 		$this->siteurl = get_bloginfo('url');
 		$this->wpadminurl = admin_url();
-		$this->version = '2.0.0';
+		$this->version = '2.0.1';
 		$this->activated_fields = $this->get_activated_fields();
 		
 		
@@ -407,7 +407,7 @@ class Acf
 		// loop through fields
 	 	foreach($fields as $field)
 	 	{
-	 	
+	 		
 			// unserialize options
 			$field->options = @unserialize($field->options);
 			
@@ -603,7 +603,7 @@ class Acf
 	{
 		global $post;
 		
-		if(get_post_type($post) == 'acf')
+		if(isset($_GET['post_type']) && $_GET['post_type'] == 'acf')
 		{
 			echo '<link rel="stylesheet" type="text/css" href="'.$this->dir.'/css/style.screen_extra.css" />';
 			echo '<script type="text/javascript" src="'.$this->dir.'/js/functions.screen_extra.js" ></script>';

@@ -43,7 +43,7 @@
 <div class="fields">
 		
 	<div class="no_fields_message" <?php if(sizeof($fields) > 1){ echo 'style="display:none;"'; } ?>>
-		No fields. Click the "Add Field" button to create your first field.
+		<?php _e("No fields. Click the \"+ Add Field button\" to create your first field.",'acf'); ?>
 	</div>
 	
 	<?php foreach($fields as $key => $field): ?>
@@ -59,8 +59,8 @@
 							<a class="acf_edit_field" title="Edit this Field" href="javascript:;"><?php echo $field->label; ?></a>
 						</strong>
 						<div class="row_options">
-							<span><a class="acf_edit_field" title="Edit this Field" href="javascript:;">Edit</a> | </span>
-							<span><a class="acf_delete_field" title="Delete this Field" href="javascript:;">Delete</a>
+							<span><a class="acf_edit_field" title="Edit this Field" href="javascript:;"><?php _e("Edit",'acf'); ?></a> | </span>
+							<span><a class="acf_delete_field" title="Delete this Field" href="javascript:;"><?php _e("Delete",'acf'); ?></a>
 						</div>
 
 					</td>
@@ -84,8 +84,8 @@
 					<tbody>
 						<tr class="field_label">
 							<td class="label">
-								<label><span class="required">*</span>Field Label</label>
-								<p class="description">This is the name which will appear on the EDIT page</p>
+								<label><span class="required">*</span><?php _e("Field Label",'acf'); ?></label>
+								<p class="description"><?php _e("This is the name which will appear on the EDIT page",'acf'); ?></p>
 							</td>
 							<td>
 								<?php 
@@ -104,8 +104,8 @@
 							</td>
 						</tr>
 						<tr class="field_name">
-							<td class="label"><label><span class="required">*</span>Field Name</label>
-							<p class="description">Single word, no spaces. Underscores and dashes allowed</p>
+							<td class="label"><label><span class="required">*</span><?php _e("Field Name",'acf'); ?></label>
+							<p class="description"><?php _e("Single word, no spaces. Underscores and dashes allowed",'acf'); ?></p>
 							</td>
 							<td>
 								<?php 
@@ -123,7 +123,7 @@
 							</td>
 						</tr>
 						<tr class="field_type">
-							<td class="label"><label><span class="required">*</span>Field Type</label></td>
+							<td class="label"><label><span class="required">*</span><?php _e("Field Type",'acf'); ?></label></td>
 							<td>
 								<?php 
 							
@@ -136,6 +136,39 @@
 								
 								$this->create_field($temp_field); 
 							
+								?>
+							</td>
+						</tr>
+						<tr class="field_instructions">
+							<td class="label"><label><?php _e("Field Instructions",'acf'); ?></label>
+							<p class="description"><?php _e("Instructions for authors. Shown when submitting data",'acf'); ?></p></td>
+							<td>
+								<?php 
+							
+								$temp_field->type = 'textarea';
+								$temp_field->input_name = 'acf[fields]['.$key.'][instructions]';
+								$temp_field->input_id = 'acf[fields]['.$key.'][instructions]';
+								$temp_field->input_class = 'instructions';
+								$temp_field->value = $field->instructions;
+								
+								$this->create_field($temp_field); 
+							
+								?>
+							</td>
+						</tr>
+						<tr class="field_save_as_cf">
+							<td class="label">
+								<label><?php _e("Is field searchable?",'acf'); ?></label>
+							</td>
+							<td>
+								<?php 
+									$temp_field->type = 'true_false';
+									$temp_field->input_name = 'acf[fields]['.$key.'][save_as_cf]';
+									$temp_field->input_id = 'acf[fields]['.$key.'][save_as_cf]';
+									$temp_field->input_class = 'save_as_cf';
+									$temp_field->value = $field->save_as_cf;
+									$temp_field->options = array('message' => __("Save this field's value as a standard WordPress Custom Field",'acf'));
+									$this->create_field($temp_field); 
 								?>
 							</td>
 						</tr>

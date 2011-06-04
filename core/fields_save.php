@@ -44,13 +44,14 @@ if(isset($_POST['fields_meta_box']) &&  $_POST['fields_meta_box'] == 'true')
 		
 		// create data
 		$data = array(
-			'order_no' 	=> 	$i,
-			'post_id'	=>	$post_id,
-			'label'		=>	$field['label'],
-			'name'		=>	$field['name'],
-			'type'		=>	$field['type'],
-			'options'	=>	serialize($field['options']),
-			
+			'order_no' 		=> 	$i,
+			'post_id'		=>	$post_id,
+			'label'			=>	$field['label'],
+			'name'			=>	$field['name'],
+			'type'			=>	$field['type'],
+			'options'		=>	serialize($field['options']),
+			'instructions'	=>	$field['instructions'],
+			'save_as_cf'	=>	$field['save_as_cf'],
 		);
 		
 		

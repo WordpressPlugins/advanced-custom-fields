@@ -2,7 +2,7 @@
 	<div class="screen-meta-content">
 		
 		<h5>Unlock Special Fields.</h5>
-		<p>Special Fields can be unlocked by purchasing an activation code. Each activation code can be used on multiple sites. <a href="#">Store under construction</a></p>
+		<p>Special Fields can be unlocked by purchasing an activation code. Each activation code can be used on multiple sites. <a href="http://plugins.elliotcondon.com/shop/">Visit the Plugin Store</a></p>
 		<table class="acf_activate">
 			<thead>
 				<tr>
@@ -33,7 +33,6 @@
 								echo '<input type="text" name="acf_ac" value="" />';
 								echo '<input type="hidden" name="acf_field_activate" value="repeater" />';
 								echo '<input type="submit" class="button" value="Activate" />';
-								echo '<a href="#">Available soon</a>';
 							} ?>
 						</form>
 					</td>

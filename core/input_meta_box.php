@@ -68,8 +68,14 @@ if(!in_array('the_content',$adv_options->show_on_page)): ?>
 		<input type="hidden" name="acf[<?php echo $i; ?>][field_id]" value="<?php echo $field->id; ?>" />
 		<input type="hidden" name="acf[<?php echo $i; ?>][field_type]" value="<?php echo $field->type; ?>" />
 		
+		<?php if($field->save_as_cf == 1): ?>
+		<input type="hidden" name="acf[<?php echo $i; ?>][save_as_cf]" value="<?php echo $field->name; ?>" />
+		<?php endif; ?>
+		
 		<label for="<?php echo $field->input_id ?>"><?php echo $field->label ?></label>
+		<?php if($field->instructions): ?><p class="instructions"><?php echo $field->instructions; ?></p><?php endif; ?>
 		<?php $this->create_field($field); ?>
+		
 	</div>
 	<?php endforeach; ?>
 </div>

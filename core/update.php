@@ -364,6 +364,52 @@ if(version_compare($version,'1.1.4') < 0)
 }
 
 
+/*---------------------------------------------------------------------------------------------
+ * Update to 2.0.1 - this version adds field description and save as custom field columns to acf_fields
+ *
+ * @author Elliot Condon
+ * @since 2.0.6
+ * 
+ ---------------------------------------------------------------------------------------------*/
+ 
+if(version_compare($version,'2.0.1') < 0)
+{
+
+	global $wpdb;
+	
+	
+	// set charset
+	if(!empty($wpdb->charset))
+	{
+		$char = $wpdb->charset;
+	}
+	else
+	{
+		$char = "utf8";
+	}
+
+
+	// create acf_fields table
+	$table_name = $wpdb->prefix.'acf_fields';
+	if($wpdb->get_var("SHOW TABLES LIKE '".$table_name."'"))
+	{
+		$sql = "CREATE TABLE " . $table_name . " (
+			id bigint(20) NOT NULL AUTO_INCREMENT,
+			order_no int(9) NOT NULL DEFAULT '0',
+			post_id bigint(20) NOT NULL DEFAULT '0',
+			parent_id bigint(20) NOT NULL DEFAULT '0',
+			label text NOT NULL,
+			name text NOT NULL,
+			instructions text NOT NULL DEFAULT '',
+			save_as_cf int(1) NOT NULL DEFAULT 0,
+			type text NOT NULL,
+			options text NOT NULL,
+			UNIQUE KEY id (id)
+		) ".$char.";";
+		dbDelta($sql);
+	}
+}
+
 // update to latest acf version
-update_option('acf_version','2.0.0');
+update_option('acf_version','2.0.1');
 ?>
