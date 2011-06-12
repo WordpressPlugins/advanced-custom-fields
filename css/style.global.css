@@ -1,0 +1,70 @@
+table.acf_input {
+	border: #DFDFDF solid 1px;
+	border-collapse:separate; 
+	border-spacing:0; 
+	vertical-align:top; 
+	width: 100%;
+	background: #FEFEFE;
+}
+
+table.acf_input tr:nth-child(even) {
+	background: #F9F9F9
+}
+
+table.acf_input tr:nth-child(odd) {
+	background: transparent;
+}
+
+table.acf_input tr.field_save {
+	background: #EAF2FA;
+}
+
+table.acf_input tr td {
+	border-bottom: #DFDFDF solid 1px;
+	border-right: #DFDFDF solid 1px;
+	padding: 10px 8px;
+}
+
+table.acf_input tr:last-child  td {
+	border-bottom: 0 none;
+}
+
+table.acf_input tr td:last-child {
+	border-right: 0 none;
+}
+
+table.acf_input tbody tr td.label {
+	width: 24%;
+	vertical-align: top;
+}
+
+table.acf_input tbody tr td.label label{
+	display: block;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 0;
+	margin: 0;
+}
+
+table.acf_input tbody tr td.label label span.required {
+	color: #f00;
+	display: inline;
+	margin-right: 5px;
+}
+
+
+table.acf_input tbody tr td.label p{
+	display: block;
+	font-size: 10px;
+	padding: 6px 0 !important;
+	margin: 0 !important;
+	font-style: normal;
+	line-height: 12px;
+	color: #666;
+}
+
+table.acf_input input[type=text],
+table.acf_input textarea,
+table.acf_input select{
+	width: 99.95%;
+}

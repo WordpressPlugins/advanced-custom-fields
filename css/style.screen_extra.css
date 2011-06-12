@@ -1,0 +1,140 @@
+/*--------------------------------------------------------------------------------------------
+	Admin
+--------------------------------------------------------------------------------------------*/
+.acf_cols {position: relative; overflow: hidden; clear: both;}
+.acf_col_left {margin-right: 400px;}
+.acf_col_left .tablenav {display: none;}
+.acf_col_left p.search-box {display: none;}
+.acf_col_left form {overflow: hidden; position: relative; clear: left;}
+
+
+.acf_col_right {float: right; width: 380px; padding-top: 86px !important;}
+.acf_col_right ul li,
+.acf_col_right ol li {font-size: 11px; line-height: 14px;}
+.acf_col_right ul {list-style: square outside; padding-left: 20px;}
+.acf_col_right#poststuff .inside p {margin: 12px 6px 12px;}
+.acf_col_right table.author {
+	border: #cde1e8 solid 1px; 
+	background: #f0f7f9;
+    border-spacing: 0;
+    clear: both;
+    margin: 0;
+    width: 100%;
+    margin: 4px 0;}
+.acf_col_right table.author td {padding: 5px; font-size: 12px; line-height: 24px;}
+
+#poststuff.acf_col_right .inside {
+    margin: 2px 6px 4px;
+}
+
+.acf_col_right form span {
+	float: left;
+}
+
+.acf_col_right form input[type="image"]{
+	display: block; 
+	float: left; 
+	margin: 0 0 0 8px; 
+	padding: 0;
+}
+
+.postbox h3.hndle {
+	cursor: default;
+	position: relative;
+}
+
+.postbox h3.hndle a.button {
+	height: 13px;
+    line-height: 12px;
+    position: absolute;
+    right: 6px;
+    top: 2px;
+}
+
+/*--------------------------------------------------------------------------------------------
+	Unlock Fields
+--------------------------------------------------------------------------------------------*/
+.screen-meta-toggle.acf {
+	float: right;
+	background: none repeat scroll 0 0 #33aee6;
+    border-radius: 0 0 3px 3px;
+    float: right;
+    font-family: "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
+    height: 22px;
+    margin: 0 6px 0 0;
+    padding: 0;
+}
+
+#screen-meta-links .acf a.show-settings {
+	color: #fff;
+	text-shadow: #175d7d 0 1px 0;
+	padding: 0 16px;
+	background: 0 none;
+}
+
+.screen-meta-wrap h5 {
+	margin: 8px 0 3px;
+	font-size: 13px;
+}
+.screen-meta-wrap {
+	background: #EAF2FA;
+	border: #ccdbea solid 1px;
+	border-top: 0 none;
+	margin: 0 15px;
+	padding: 8px 12px 12px;
+	border-radius: 0 0 4px 4px;
+}
+
+.screen-meta-wrap p {
+	margin-top: 0px;
+}
+
+table.acf_activate {
+	border: #DFDFDF solid 1px;
+	border-collapse:separate; 
+	border-spacing:0; 
+	vertical-align:top; 
+	width: 100%;
+	background: #FEFEFE;
+}
+
+table.acf_activate thead tr {
+	background: #F9F9F9 !important;
+}
+
+table.acf_activate thead tr th {
+	text-align: left;
+	color: #21759B;
+}
+
+table.acf_activate tr:nth-child(even) {
+	background: #F9F9F9
+}
+
+table.acf_activate tr:nth-child(odd) {
+	background: transparent;
+}
+
+table.acf_activate tr.field_save {
+	background: #EAF2FA;
+}
+
+table.acf_activate tr td,
+table.acf_activate tr th {
+	border-bottom: #DFDFDF solid 1px;
+	border-right: #DFDFDF solid 1px;
+	padding: 8px;
+}
+
+table.acf_activate tr:last-child  td {
+	border-bottom: 0 none;
+}
+
+table.acf_activate tr td:last-child {
+	border-right: 0 none;
+}
+
+table.acf_activate input[type="submit"] {
+	margin-left: 5px;
+	margin-right: 5px;
+}
