@@ -4,211 +4,258 @@
 		
 	// get options
 	$location = $this->get_acf_location($post->ID);
-	
+	if(!isset($location->rules) || empty($location->rules))
+	{
+		$rule = new stdClass();
+		$rule->param = '';
+		$rule->operator = '';
+		$rule->value = '';
+		
+		$location->rules = array();
+		$location->rules[] = $rule;
+	}
 	// create temp field from creating inputs
 	$temp_field = new stdClass();
 ?>
-
-<a class="help" href="javascript:;"></a>
-
-<div class="help_box_mask">
-<div class="help_box">
-	<h4><?php _e("Enter values in the fields below to add this ACF to an edit screen",'acf'); ?></h4>
-	<ul>
-		<li><?php _e("The values you enter bellow will be used to match against edit screens",'acf'); ?></li>
-		<li><?php _e("If <strong>any</strong> of the values match the edit screen, this ACF will be used",'acf'); ?></li>
-		<li><?php _e("Blank fields will be ignored",'acf'); ?></li>
-		<li><?php _e("Use the override to remove all previous ACF's form an edit screen. This is useful for creating an ACF for all normal pages, and then creating a custom ACF for a home page (page title = 'Home'). Please note that the home page ACF needs a higher page order to remove ACF's before it",'acf'); ?></li>
-	</ul>
-</div>
-</div>
 
 <input type="hidden" name="location_meta_box" value="true" />
 <input type="hidden" name="ei_noncename" id="ei_noncename" value="<?php echo wp_create_nonce('ei-n'); ?>" />
 
 <table class="acf_input" id="acf_location">
+	<tbody>
 	<tr>
 		<td class="label">
-			<label for="post_type"><?php _e("Post Type's",'acf'); ?></label>
-			<p class="description"><?php _e("Selecting a post type here will add this ACF to <strong>all</strong> edit screens of that post type.",'acf'); ?></p>
+			<label for="post_type">Rules</label>
+			<p class="description">Create a set of rules to determine which edit screens will use these advanced custom fields</p>
 		</td>
 		<td>
-			<?php 
 			
-			$post_types = array();
+			<div class="location_rules">
+				<?php if($location->rules): ?>
+				<table class="acf_input" id="location_rules">
+					<tbody>
+						<?php foreach($location->rules as $k => $rule): ?>
+						<tr>
+						<td class="param">
+							<?php 
+							
+							$temp_field->type = 'select';
+							$temp_field->input_name = 'acf[location][rules]['.$k.'][param]';
+							$temp_field->input_class = '';
+							$temp_field->input_id = '';
+							$temp_field->value = $rule->param;
+							$temp_field->options = array('choices' => array(
+								'post_type'		=>	'Post Type',
+								'page'			=>	'Page',
+								'page_type'		=>	'Page Type',
+								//'page_parent'	=>	'Page Parent',
+								'page_template'	=>	'Page Template',
+								'post'			=>	'Post',
+								'post_category'	=>	'Post Category',
+								'user_type'		=>	'User Type'
+							));		
+							
+							$this->create_field($temp_field); 
+							
+							?>
+							
+						</td>
+						<td class="operator">
+							<?php 
+							
+							$temp_field->type = 'select';
+							$temp_field->input_name = 'acf[location][rules]['.$k.'][operator]';
+							$temp_field->input_class = '';
+							$temp_field->input_id = '';
+							$temp_field->value = $rule->operator;
+							$temp_field->options = array('choices' => array(
+								'=='	=>	'is equal to',
+								'!='	=>	'is not equal to',
+							));		
+							
+							$this->create_field($temp_field); 
+							
+							?>
+						</td>
+						<td class="value">
+							<div rel="post_type">
+								<?php 
+								$choices = get_post_types();
+								
+								unset($choices['attachment']);
+								unset($choices['nav_menu_item']);
+								unset($choices['revision']);
+								unset($choices['acf']);
+								
+								$temp_field->type = 'select';
+								$temp_field->input_name = 'acf[location][rules]['.$k.'][value]';
+								$temp_field->input_class = '';
+								$temp_field->input_id = '';
+								$temp_field->value = $rule->value;
+								$temp_field->options = array(
+									'choices' => $choices, 
+								);
+								
+								$this->create_field($temp_field); 
+								
+								?>
+							</div>
+							<div rel="page">
+								<?php 
+								$choices = array();
+								
+								foreach(get_pages('sort_column=menu_order&sort_order=desc') as $page)
+								{
+									if($page->post_parent != 0)
+									{
+										$choices[$page->ID] = '- '.$page->post_title;
+									}
+									else
+									{
+										$choices[$page->ID] = $page->post_title;
+									}
+									
+								}
+								$temp_field->options = array(
+									'choices' => $choices, 
+								);
+								
+								$this->create_field($temp_field); 
+								
+								?>
+							</div>
+							<div rel="page_type">
+								<?php 
+								$choices = array(
+									'parent'	=>	'Parent Page',
+									'child'		=>	'Child Page'
+								);
+								
+								$temp_field->options = array(
+									'choices' => $choices, 
+								);
+								
+								$this->create_field($temp_field); 
+								
+								?>
+							</div>
+							<?php /*<div rel="page_parent">
+								<?php 
+								$choices = array();
+								foreach(get_pages('parent=0&sort_column=menu_order&sort_order=desc') as $page)
+								{
+									$choices[$page->ID] = $page->post_title;
+								}
+								$temp_field->options = array(
+									'choices' => $choices, 
+								);
+								
+								$this->create_field($temp_field); 
+								
+								?>
+							</div> */ ?>
+							<div rel="page_template">
+							
+								<?php 
+									
+								$choices = array();
+								$choices['default'] = 'Default Template';
+								foreach(get_page_templates() as $k => $v)
+								{
+									$choices[$v] = $k;
+								}
+								$temp_field->options = array(
+									'choices' => $choices, 
+								);
+								
+								$this->create_field($temp_field); 
+								
+								?>
+							</div>
+							<div rel="post">
+							
+								<?php 
+								$choices = array();
+								foreach(get_posts(array('numberposts'=>'-1')) as $v)
+								{
+									$choices[$v->ID] = $v->post_title;
+								}
+								$temp_field->options = array(
+									'choices' => $choices, 
+								);
+								
+								$this->create_field($temp_field); 
+								
+								?>
+							</div>
+							<div rel="post_category">
+							
+								<?php 
+									
+								$choices = array();
+								foreach(get_categories() as $v);
+								{
+									$choices[$v->term_id] = $v->name;
+								}
+								$temp_field->options = array(
+									'choices' => $choices, 
+								);
+								
+								$this->create_field($temp_field); 
+								
+								?>
+							</div>
+							<div rel="user_type">
+							
+								<?php 
+									
+								$choices = array(
+									'administrator' => 'Administrator', 
+									'editor' => 'Editor', 
+									'author' => 'Author', 
+									'contributor' => 'contributor'
+								);
+								
+								$temp_field->options = array(
+									'choices' => $choices, 
+								);
+								
+								$this->create_field($temp_field); 
+								
+								?>
+							</div>
+						</td>
+						<td class="buttons">
+							<a href="javascript:;" class="remove"></a>
+							<a href="javascript:;" class="add"></a>
+						</td>
+						</tr>
+						<?php endforeach; ?>
+					</tbody>
+					
+				</table>
+				<?php endif; ?>
+				<p>match <?php 
+							
+							$temp_field->type = 'select';
+							$temp_field->input_name = 'acf[location][allorany]';
+							$temp_field->input_class = '';
+							$temp_field->input_id = '';
+							$temp_field->value = $location->allorany;
+							$temp_field->options = array('choices' => array(
+								'all'	=>	'all',
+								'any'	=>	'any',							
+							));		
+							
+							$this->create_field($temp_field); 
+							
+							?> of the above criteria</p>
+			</div>
 			
-			foreach (get_post_types() as $post_type ) {
-			  $post_types[$post_type] = $post_type;
-			}
-			
-			unset($post_types['attachment']);
-			unset($post_types['nav_menu_item']);
-			unset($post_types['revision']);
-			unset($post_types['acf']);
-			
-			
-			$temp_field->type = 'checkbox';
-			$temp_field->input_name = 'acf[location][post_types]';
-			$temp_field->input_class = '';
-			$temp_field->input_id = 'post_types';
-			$temp_field->value = $location->post_types;
-			$temp_field->options = array(
-				'choices' => $post_types, 
-			);
-			
-			$this->create_field($temp_field); 
-			
-			?>
 			
 		</td>
+		
 	</tr>
-	<tr>
-		<td class="label">
-			<label for="page_title"><?php _e("Page Title's",'acf'); ?></label>
-			<p class="description"><?php _e("eg. Home, About Us",'acf'); ?></p>
-		</td>
-		<td>
-			<?php 
-			
-			$temp_field->type = 'text';
-			$temp_field->input_name = 'acf[location][page_titles]';
-			$temp_field->input_class = '';
-			$temp_field->input_id = 'page_titles';
-			$temp_field->value = implode(', ',$location->page_titles);
-			$temp_field->options = array();			
-			
-			$this->create_field($temp_field); 
-			
-			?>
-			
-		</td>
-	</tr>
-	<tr>
-		<td class="label">
-			<label for="page_slug"><?php _e("Page Slug's",'acf'); ?></label>
-			<p class="description"><?php _e("eg. home, about-us",'acf'); ?></p>
-		</td>
-		<td>
-			<?php 
-			
-			$temp_field->type = 'text';
-			$temp_field->input_name = 'acf[location][page_slugs]';
-			$temp_field->input_class = '';
-			$temp_field->input_id = 'page_slugs';
-			$temp_field->value = implode(', ',$location->page_slugs);
-			$temp_field->options = array();			
-			
-			$this->create_field($temp_field); 
-			
-			?>
-			
-		</td>
-	</tr>
-	<tr>
-		<td class="label">
-			<label for="post_id"><?php _e("Post ID's",'acf'); ?></label>
-			<p class="description"><?php _e("eg. 1, 2, 3",'acf'); ?></p>
-		</td>
-		<td>
-			<?php 
-			
-			$temp_field->type = 'text';
-			$temp_field->input_name = 'acf[location][post_ids]';
-			$temp_field->input_class = '';
-			$temp_field->input_id = 'post_ids';
-			$temp_field->value = implode(', ',$location->post_ids);
-			$temp_field->options = array();			
-			
-			$this->create_field($temp_field); 
-			
-			?>
-			
-		</td>
-	</tr>
-	<tr>
-		<td class="label">
-			<label for="template_name"><?php _e("Page Template's",'acf'); ?></label>
-			<p class="description"><?php _e("eg. home_page.php",'acf'); ?></p>
-		</td>
-		<td>
-			<?php 
-			
-			$temp_field->type = 'text';
-			$temp_field->input_name = 'acf[location][page_templates]';
-			$temp_field->input_class = '';
-			$temp_field->input_id = 'page_templates';
-			$temp_field->value = implode(', ',$location->page_templates);
-			$temp_field->options = array();			
-			
-			$this->create_field($temp_field); 
-			
-			?>
-			
-		</td>
-	</tr>
-	<tr>
-		<td class="label">
-			<label for="page_parent"><?php _e("Page Parent ID's",'acf'); ?></label>
-			<p class="description"><?php _e("eg. 1, 2, 3",'acf'); ?></p>
-		</td>
-		<td>
-			<?php 
-			
-			$temp_field->type = 'text';
-			$temp_field->input_name = 'acf[location][page_parents]';
-			$temp_field->input_class = '';
-			$temp_field->input_id = 'page_parents';
-			$temp_field->value = implode(', ',$location->page_parents);
-			$temp_field->options = array();			
-			
-			$this->create_field($temp_field); 
-			
-			?>
-			
-		</td>
-	</tr>
-	<tr>
-		<td class="label">
-			<label for="category_names"><?php _e("Category Names's",'acf'); ?></label>
-			<p class="description"><?php _e("eg. News, Media, Uncategoriazed",'acf'); ?></p>
-		</td>
-		<td>
-			<?php 
-			
-			$temp_field->type = 'text';
-			$temp_field->input_name = 'acf[location][category_names]';
-			$temp_field->input_class = '';
-			$temp_field->input_id = 'category_names';
-			$temp_field->value = implode(', ',$location->category_names);
-			$temp_field->options = array();			
-			
-			$this->create_field($temp_field); 
-			
-			?>
-			
-		</td>
-	</tr>
-	<tr>
-		<td class="label">
-			<label for="page_parent"><?php _e("Overrides",'acf'); ?></label>
-			<p class="description"><?php _e("Tick this box to remove all other ACF's (from the edit screen where this ACF appears)",'acf'); ?></p>
-		</td>
-		<td>
-			<?php 
-			
-			$temp_field->type = 'true_false';
-			$temp_field->input_name = 'acf[location][ignore_other_acfs]';
-			$temp_field->input_class = '';
-			$temp_field->input_id = 'ignore_other_acfs';
-			$temp_field->value = $location->ignore_other_acfs;
-			$temp_field->options = array(
-				'message' => 'Ignore all other Advanced Custom Field\'s'
-			);
-			
-			$this->create_field($temp_field); 
-			
-			?>
-			
-		</td>
-	</tr>
+
+	</tbody>
 </table>

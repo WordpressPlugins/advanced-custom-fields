@@ -2,7 +2,7 @@
 /*---------------------------------------------------------------------------------------------
 	Fields Meta Box
 ---------------------------------------------------------------------------------------------*/
-if($_POST['input_meta_box'] == 'true')
+if(isset($_POST['input_meta_box']) && $_POST['input_meta_box'] == 'true')
 {
 
     // If acf was not posted, don't go any further

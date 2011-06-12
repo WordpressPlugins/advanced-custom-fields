@@ -23,36 +23,81 @@ table.acf_input > tbody > tr > td > select[multiple="multiple"] {
 	display: none;
 }
 
-.help_box_mask {
+
+td.param {
+	width: 40%;
+}
+td.operator {
+	width: 20%;
+}
+
+/*---------------------------------------------------------------------------------------------
+	Location Rules
+---------------------------------------------------------------------------------------------*/
+.location_rules {
+
+}
+
+table#location_rules {
+
+}
+
+table#location_rules tr {
+
+}
+
+table#location_rules tr td {
+	padding: 4px;
+	border-right: 0 none;
+}
+
+table#location_rules tr:nth-child(odd) {
+	background: #F9F9F9
+}
+
+table#location_rules tr:nth-child(even) {
+	background: transparent;
+}
+
+table#location_rules tr td.buttons {
+	width: 40px;
+}
+
+table#location_rules a.remove {
+	display: block;
+	width: 16px;
+	height: 16px;
+	background: url(../images/button_remove.png) 0 0 no-repeat;
+	float: left;
+	margin-right: 4px;
+}
+
+table#location_rules a.remove:hover {
+	background-position: 0 100%;
+}
+
+table#location_rules a.remove.disabled {
+	opacity: 0.4;
+	background-position: 0 0 !important;
+	cursor: default;
+}
+
+table#location_rules a.add {
+	display: block;
+	width: 16px;
+	height: 16px;
+	background: url(../images/button_add.png) 0 0 no-repeat;
+	float: left;
+}
+
+table#location_rules a.add:hover {
+	background-position: 0 100%;
+}
+
+.location_rules p select {
+	width: 50px;
+}
+
+table#location_rules tr td.value div {
 	display: none;
-	position: relative;
-}
-
-.help_box {
-	background: #FFFFE0;
-	border: #E6DB55 solid 1px;
-	padding: 8px 16px;
-	margin-bottom: 10px;
-}
-
-.help_box  h4 {
-	margin: 8px 0 0;
-	padding: 0;
-}
-
-.help_box p {
-
-}
-
-.help_box ul {
-	margin: 12px 0;
-	padding: 6px 0 0 14px;
-	list-style: square;
-}
-
-.help_box ul li {
-	display: list-item;
-	font-size: 11px;
-	line-height: 12px;
-	margin-bottom: 6px;
 }

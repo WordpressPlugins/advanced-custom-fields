@@ -31,6 +31,15 @@ if(isset($_POST['fields_meta_box']) &&  $_POST['fields_meta_box'] == 'true')
 		}
 		
 		
+		// defaults
+		if(!isset($field['label'])) { $field['label'] = ""; }
+		if(!isset($field['name'])) { $field['label'] = ""; }
+		if(!isset($field['type'])) { $field['label'] = "text"; }
+		if(!isset($field['options'])) { $field['options'] = array(); }
+		if(!isset($field['instructions'])) { $field['instructions'] = ""; }
+		if(!isset($field['save_as_cf'])) { $field['save_as_cf'] = ""; }
+		
+		
 		// clean field
 		$field = stripslashes_deep($field);
 		

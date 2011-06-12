@@ -88,6 +88,7 @@ if($currentFile == 'post.php' || $currentFile == 'post-new.php')
 	
 		// ACF 
 		echo '<script type="text/javascript" src="'.$this->dir.'/js/functions.fields.js" ></script>';
+		echo '<script type="text/javascript" src="'.$this->dir.'/js/functions.location.js" ></script>';
 		
 		echo '<link rel="stylesheet" type="text/css" href="'.$this->dir.'/css/style.global.css" />';
 		echo '<link rel="stylesheet" type="text/css" href="'.$this->dir.'/css/style.fields.css" />';
@@ -95,7 +96,7 @@ if($currentFile == 'post.php' || $currentFile == 'post-new.php')
 		echo '<link rel="stylesheet" type="text/css" href="'.$this->dir.'/css/style.options.css" />';
 		
 		add_meta_box('acf_fields', 'Fields', array($this, '_fields_meta_box'), 'acf', 'normal', 'high');
-		add_meta_box('acf_location', 'Assign to edit page</span><span class="description">- Create rules to show your advanced custom fields on edit pages', array($this, '_location_meta_box'), 'acf', 'normal', 'high');
+		add_meta_box('acf_location', 'Location </span><span class="description">- Add Fields to Edit Screens', array($this, '_location_meta_box'), 'acf', 'normal', 'high');
 		add_meta_box('acf_options', 'Advanced Options</span><span class="description">- Customise the edit page', array($this, '_options_meta_box'), 'acf', 'normal', 'high');
 	
 	}
@@ -116,11 +117,49 @@ if($currentFile == 'post.php' || $currentFile == 'post-new.php')
 			foreach($acfs as $acf)
 			{
 				$add_box = false;
-				
-				// get options of matrix
 				$location = $this->get_acf_location($acf->ID);
-				$options = $this->get_acf_options($acf->ID);
 				
+				
+				if($location->allorany == 'all')
+				{
+					// ALL
+					
+					$add_box = true;
+					
+					if($location->rules)
+					{
+						foreach($location->rules as $rule)
+						{
+							// if any rules dont return true, dont add this acf
+							if(!$this->match_location_rule($post, $rule))
+							{
+								$add_box = false;
+							}
+						}
+					}
+					
+				}
+				elseif($location->allorany == 'any')
+				{
+					// ANY
+					
+					$add_box = false;
+					
+					if($location->rules)
+					{
+						foreach($location->rules as $rule)
+						{
+							// if any rules return true, add this acf
+							if($this->match_location_rule($post, $rule))
+							{
+								$add_box = true;
+							}
+						}
+					}
+				}
+				
+				//$options = $this->get_acf_options($acf->ID);
+				/*
 				
 				// post type
 				if(in_array(get_post_type($post), $location->post_types)) {$add_box = true; }
@@ -165,22 +204,11 @@ if($currentFile == 'post.php' || $currentFile == 'post-new.php')
 					if(!in_array($current_user->user_level, $options->user_roles)) {$add_box = false; }
 				}
 				
-	
+				*/
 							
 				if($add_box == true)
 				{
-					// Override
-					if($location->ignore_other_acfs == '1')
-					{
-						// if ignore other acf's was ticked, override the $add_acf array and break the loop
-						$add_acf = array($acf);
-						break;
-					}
-					else
-					{
-						// add acf to array
-						$add_acf[] = $acf;
-					}
+					$add_acf[] = $acf;
 				}
 				
 			}// end foreach

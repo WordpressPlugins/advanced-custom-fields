@@ -28,7 +28,7 @@ class acf_Select
 		{
 			echo '<select id="'.$field->input_id.'" class="'.$field->input_class.'" name="'.$field->input_name.'" >';	
 			// add top option
-			echo '<option value="null">- Select Option -</option>';
+			//echo '<option value="null">- Select Option -</option>';
 		}
 		
 		

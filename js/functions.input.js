@@ -42,57 +42,6 @@
 		});
 	};
 	
-	/*-------------------------------------------
-		Hide Meta Boxes
-	-------------------------------------------*/
-	$.fn.hide_meta_boxes = function()
-	{
-		var screen_options = $('#screen-meta');
-		var div = $(this);
-		
-		// hide content_editor
-		if(!div.find('input[name=show_the_content]').exists())
-		{
-			$('#postdivrich').hide();
-		}
-		
-		// hide custom_fields
-		if(!div.find('input[name=show_custom_fields]').exists())
-		{
-			$('#postcustom').hide();
-			screen_options.find('label[for=postcustom-hide]').hide();
-		}
-		
-		// hide discussion
-		if(!div.find('input[name=show_discussion]').exists())
-		{
-			$('#commentstatusdiv').hide();
-			screen_options.find('label[for=commentstatusdiv-hide]').hide();
-		}
-		
-		// hide comments
-		if(!div.find('input[name=show_comments]').exists())
-		{
-			$('#commentsdiv').hide();
-			screen_options.find('label[for=commentsdiv-hide]').hide();
-		}
-		
-		// hide slug
-		if(!div.find('input[name=show_slug]').exists())
-		{
-			$('#slugdiv').hide();
-			screen_options.find('label[for=slugdiv-hide]').hide();
-		}
-		
-		// hide author
-		if(!div.find('input[name=show_author]').exists())
-		{
-			$('#authordiv').hide();
-			screen_options.find('label[for=authordiv-hide]').hide();
-		}
-		
-		screen_options.find('label[for=acf_input-hide]').hide();
-	};
 	
 	/*-------------------------------------------
 		Image Upload
@@ -450,10 +399,7 @@
 			tinyMCE.settings.theme_advanced_buttons1 += ",|,add_image,add_video,add_audio,add_media";
 			tinyMCE.settings.theme_advanced_buttons2 += ",code";
 		}
-		
-	
-		// hide meta boxes
-		div.hide_meta_boxes();
+
 		
 		div.make_all_fields();
 		

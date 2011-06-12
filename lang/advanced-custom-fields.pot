@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/advanced-custom-fields\n"
-"POT-Creation-Date: 2011-05-21 23:59:47+00:00\n"
+"POT-Creation-Date: 2011-06-04 05:22:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -28,19 +28,58 @@ msgstr ""
 msgid "Field Order"
 msgstr ""
 
-#: core/fields_meta_box.php:37 core/fields/repeater.php:141
+#: core/fields_meta_box.php:37 core/fields_meta_box.php:87
+#: core/fields/repeater.php:141
 msgid "Field Label"
 msgstr ""
 
-#: core/fields_meta_box.php:38 core/fields/repeater.php:142
+#: core/fields_meta_box.php:38 core/fields_meta_box.php:107
+#: core/fields/repeater.php:142
 msgid "Field Name"
 msgstr ""
 
-#: core/fields_meta_box.php:39 core/fields/repeater.php:143
+#: core/fields_meta_box.php:39 core/fields_meta_box.php:126
+#: core/fields/repeater.php:143
 msgid "Field Type"
 msgstr ""
 
-#: core/fields_meta_box.php:172
+#: core/fields_meta_box.php:46
+msgid "No fields. Click the \"+ Add Field button\" to create your first field."
+msgstr ""
+
+#: core/fields_meta_box.php:62
+msgid "Edit"
+msgstr ""
+
+#: core/fields_meta_box.php:63
+msgid "Delete"
+msgstr ""
+
+#: core/fields_meta_box.php:88
+msgid "This is the name which will appear on the EDIT page"
+msgstr ""
+
+#: core/fields_meta_box.php:108
+msgid "Single word, no spaces. Underscores and dashes allowed"
+msgstr ""
+
+#: core/fields_meta_box.php:143
+msgid "Field Instructions"
+msgstr ""
+
+#: core/fields_meta_box.php:144
+msgid "Instructions for authors. Shown when submitting data"
+msgstr ""
+
+#: core/fields_meta_box.php:161
+msgid "Is field searchable?"
+msgstr ""
+
+#: core/fields_meta_box.php:170
+msgid "Save this field's value as a standard WordPress Custom Field"
+msgstr ""
+
+#: core/fields_meta_box.php:205
 msgid "+ Add Field"
 msgstr ""
 
@@ -65,35 +104,35 @@ msgid ""
 "this ACF"
 msgstr ""
 
-#: core/screen_extra.php:64
+#: core/screen_extra.php:63
 msgid "Advanced Custom Fields v"
 msgstr ""
 
-#: core/screen_extra.php:65
+#: core/screen_extra.php:64
 msgid "see what's new"
 msgstr ""
 
-#: core/screen_extra.php:76
+#: core/screen_extra.php:75
 msgid "User Guide + Code Examples"
 msgstr ""
 
-#: core/screen_extra.php:76
+#: core/screen_extra.php:75
 msgid "Visit the Plugin Website"
 msgstr ""
 
-#: core/screen_extra.php:86
+#: core/screen_extra.php:85
 msgid "Need Help?"
 msgstr ""
 
-#: core/screen_extra.php:86
+#: core/screen_extra.php:85
 msgid "Visit the Support Forum"
 msgstr ""
 
-#: core/screen_extra.php:99
+#: core/screen_extra.php:98
 msgid "Help fund future development"
 msgstr ""
 
-#: core/screen_extra.php:112
+#: core/screen_extra.php:111
 msgid "Created by"
 msgstr ""
 
@@ -269,11 +308,11 @@ msgstr ""
 msgid "Select Image"
 msgstr ""
 
-#: core/fields/image.php:143
+#: core/fields/image.php:173
 msgid "No image selected"
 msgstr ""
 
-#: core/fields/image.php:143
+#: core/fields/image.php:173
 msgid "Add Image"
 msgstr ""
 
@@ -346,18 +385,18 @@ msgstr ""
 msgid "File"
 msgstr ""
 
-#: core/fields/file.php:82
+#: core/fields/file.php:83
 msgid "Select File"
 msgstr ""
 
-#: core/fields/file.php:143
+#: core/fields/file.php:151
 msgid "Remove File"
 msgstr ""
 
-#: core/fields/file.php:145
+#: core/fields/file.php:153
 msgid "No File selected"
 msgstr ""
 
-#: core/fields/file.php:145
+#: core/fields/file.php:153
 msgid "Add File"
 msgstr ""

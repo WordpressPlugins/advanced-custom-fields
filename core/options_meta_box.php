@@ -16,6 +16,8 @@
 	<tr>
 		<td class="label">
 			<label for="post_type"><?php _e("Show on page",'acf'); ?></label>
+			<p class="description"><?php _e("Deselect items to hide them on the edit page",'acf'); ?></p>
+			<p class="description"><?php _e("If multiple ACF groups appear on an edit page, the first ACF group's options will be used. The first ACF group is the one with the lowest order number.",'acf'); ?></p>
 		</td>
 		<td>
 			<?php 
@@ -23,7 +25,7 @@
 			$temp_field->type = 'checkbox';
 			$temp_field->input_name = 'acf[options][show_on_page]';
 			$temp_field->input_class = '';
-			$temp_field->input_id = 'show_on_page';
+			$temp_field->input_id = 'acf[options][show_on_page]';
 			$temp_field->value = $options->show_on_page;
 			$temp_field->options = array(
 				'choices' => array(
@@ -40,37 +42,34 @@
 			
 			?>
 			
-			<p class="description"><?php _e("Select the metaboxes you wish to keep on your edit screen.<br />
-			Tip: This is useful to customise the edit screen",'acf'); ?></p>
+			
 		</td>
 	</tr>
 	<tr>
 		<td class="label">
-			<label for="post_type"><?php _e("Show only for specific users",'acf'); ?></label>
+			<label for="post_type"><?php _e("Field Group Layout",'acf'); ?></label>
+			<p class="description"><?php _e("Display your field group with or without a box",'acf'); ?></p>
 		</td>
 		<td>
 			<?php 
 			
-			$temp_field->type = 'checkbox';
-			$temp_field->input_name = 'acf[options][user_roles]';
+			$temp_field->type = 'select';
+			$temp_field->input_name = 'acf[options][field_group_layout]';
 			$temp_field->input_class = '';
-			$temp_field->input_id = 'user_roles';
-			$temp_field->value = $options->user_roles;
+			$temp_field->input_id = '';
+			$temp_field->value = $options->field_group_layout;
 			$temp_field->options = array(
 				'choices' => array(
-					'10' => 'Administrator', 
-					'7' => 'Editor', 
-					'4' => 'Author', 
-					'1' => 'contributor'
-				) 
+					'in_box'	=>	'In a postbox',
+					'default'	=>	'No Box',
+				)
 			);
 			
 			$this->create_field($temp_field); 
 			
 			?>
-			<p class="description"><?php _e("Select user types to give them access to this ACF<br />
-			Tip: If no user types are selected, all user's will have access to this ACF",'acf'); ?></p>
+			
+			
 		</td>
-	</tr>
-	
+	</tr>	
 </table>

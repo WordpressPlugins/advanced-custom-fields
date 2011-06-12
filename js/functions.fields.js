@@ -20,10 +20,13 @@
 			
 			var name = $(this).attr('name');
 			var id = $(this).attr('id');
-				
-			if(name.indexOf("[fields][999]") != -1)
+
+			if(name && name.indexOf("[fields][999]") != -1)
 			{
 				name = name.replace('[fields][999]','[fields]['+new_no+']');
+			}
+			if(id && id.indexOf("[fields][999]") != -1)
+			{
 				id = id.replace('[fields][999]','[fields]['+new_no+']');
 			}
 			
@@ -33,17 +36,14 @@
 			}
 			else
 			{
-				
-				
-				if(name.indexOf("[sub_fields][999]") != -1)
+				if(name && name.indexOf("[sub_fields][999]") != -1)
 				{
 					name = name.replace('[sub_fields][999]','[sub_fields]['+new_sub_no+']');
+				}
+				if(id && id.indexOf("[sub_fields][999]") != -1)
+				{
 					id = id.replace('[sub_fields][999]','[sub_fields]['+new_sub_no+']');
 				}
-				
-				
-				
-				
 			}
 			
 			$(this).attr('name', name);
@@ -261,15 +261,7 @@
 	$(document).ready(function(){
 	
 		setup_fields();
-		
-   		//$('div.postbox#acf_fields .fields').each(function(){
-   			//$(this).make_acf();
-   		//});
-   		
-   		
-   		$('div.postbox a.help').click(function(){
-   			$('div.postbox .help_box_mask').animate({'height':'toggle'}, 500);
-   		});   		
+				
 	});
 
 })(jQuery);

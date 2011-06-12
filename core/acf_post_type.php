@@ -16,7 +16,7 @@ $labels = array(
 
 $supports = array(
 	'title',
-	'revisions',
+	//'revisions',
 	//'custom-fields',
 	'page-attributes'
 );

@@ -98,10 +98,7 @@ function get_acf($post_id = false)
 			unset($fields[$i]);
 		}
 	}
-	//echo '<pre>';
-	//print_r($fields);
-	//echo '</pre>';
-	//die;
+	
 	foreach($fields as $field)
 	{
 	

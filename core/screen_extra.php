@@ -24,7 +24,7 @@
 					<td>
 						<form action="" method="post">
 							<?php if(array_key_exists('repeater', $this->activated_fields)){
-								echo '<span class="activation_code">'.$this->activated_fields['repeater'].'</span>';
+								echo '<span class="activation_code">XXXX-XXXX-XXXX-'.substr($this->activated_fields['repeater'],-4) .'</span>';
 								echo '<input type="hidden" name="acf_field_deactivate" value="repeater" />';
 								echo '<input type="submit" class="button" value="Deactivate" />';
 							}

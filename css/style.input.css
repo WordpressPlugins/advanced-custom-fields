@@ -7,15 +7,13 @@
 
 .acf_fields_input {
 	position: relative;
-	border-top: 1px solid #eaeaea;
-    border-bottom: 1px solid #FFFFFF;
 }
 
 .acf_fields_input .field {
 	position: relative;
 	padding: 10px 2px;
-	border-bottom: 1px solid #eaeaea;
-    border-top: 1px solid #FFFFFF;
+	border-top: 1px solid #eaeaea;
+	-moz-box-shadow: inset 0px 1px 0px #fff; -webkit-box-shadow: inset 0px 1px 0px #fff; box-shadow: inset 0px 1px 0px #fff;
 }
 
 .acf_fields_input .field label {
@@ -27,23 +25,16 @@
     text-shadow: 0 1px 0 #FFFFFF;
 }
 
-/* .acf_fields_input .field:first-child {
-	border-top: 0 none;
-}
 
-.acf_fields_input .field:last-child {
-	border-bottom: 0 none;
-} */
-
-.postbox#acf_input  h3.hndle{
+.postbox#acf_input > h3.hndle{
 	display: none;
 }
 
-.postbox#acf_input .inside {
+.postbox#acf_input > .inside {
 	margin: 0;
 }
 
-.postbox#acf_input .handlediv {
+.postbox#acf_input > .handlediv {
 	display: none;
 	height: 0;
 	width: 0;
@@ -301,4 +292,33 @@ a.remove_field:hover {
 
 ul.checkbox_list {
 	background: transparent !important;
+}
+
+
+/*---------------------------------------------------------------------------------------------
+	In Box
+---------------------------------------------------------------------------------------------*/
+
+#acf_input .acf_fields_input {
+	
+}
+
+#acf_input .acf_fields_input .postbox {
+	background: #fdfdfd;
+}
+
+#acf_input .acf_fields_input .postbox .inside {
+	margin: 0;
+	
+}
+
+#acf_input .acf_fields_input .postbox .inside .field {
+	padding: 10px 10px;
+	border-top: 1px solid #f3f3f3;
+	-moz-box-shadow: inset 0px 1px 0px #fff; -webkit-box-shadow: inset 0px 1px 0px #fff; box-shadow: inset 0px 1px 0px #fff;
+}
+
+#acf_input .acf_fields_input .postbox .inside .field:first-child {
+	border-top: none;
+	-moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none;
 }

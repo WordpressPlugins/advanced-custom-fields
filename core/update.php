@@ -408,8 +408,184 @@ if(version_compare($version,'2.0.1') < 0)
 		) ".$char.";";
 		dbDelta($sql);
 	}
+	
+	update_option('acf_version','2.0.1');
+	$version = '2.0.1';
 }
 
-// update to latest acf version
-update_option('acf_version','2.0.1');
+
+/*---------------------------------------------------------------------------------------------
+ * Update to 2.0.1 - this version adds field description and save as custom field columns to acf_fields
+ *
+ * @author Elliot Condon
+ * @since 2.0.6
+ * 
+ ---------------------------------------------------------------------------------------------*/
+
+if(version_compare($version,'2.0.2') < 0)
+{
+	global $wpdb;
+	
+	
+	// 1. CREATE NEW RULES TABLE
+	
+	$table_name = $wpdb->prefix.'acf_rules';
+
+	if ($wpdb->has_cap('collation'))
+	{
+		if(!empty($wpdb->charset))
+		{
+			$charset_collate = " DEFAULT CHARACTER SET $wpdb->charset";
+		}
+		if(!empty($wpdb->collate))
+		{
+			$charset_collate .= " COLLATE $wpdb->collate";
+	
+		}
+	}
+	
+	if(!$wpdb->get_var("SHOW TABLES LIKE '".$table_name."'"))
+	{
+		// rules table does not exist
+
+		$sql = "CREATE TABLE " . $table_name . " (
+			id bigint(20) NOT NULL AUTO_INCREMENT,
+			acf_id bigint(20) NOT NULL DEFAULT '0',
+			order_no int(9) NOT NULL DEFAULT '0',
+			param text NOT NULL,
+			operator text NOT NULL,
+			value text NOT NULL,
+			UNIQUE KEY id (id)
+		) ".$charset_collate.";";
+		dbDelta($sql);
+		
+	}
+	
+	
+	// 2. SAVE LOCATION DATA AS RULES
+	
+	$table_name = $wpdb->prefix.'acf_options';
+	$rules = array();
+	
+	 	
+ 	// get fields and add them to $options
+ 	$locations = $wpdb->get_results("SELECT * FROM $table_name WHERE type = 'location'");
+ 	
+ 	
+ 	// rewrite into new format
+ 	if($locations)
+ 	{
+	 	foreach($locations as $location)
+	 	{
+
+	 		$values = unserialize($location->value);
+	 		
+	 		foreach($values as $value)
+	 		{
+	 		
+	 			$rules[] = array(
+	 				'acf_id' 	=>	$location->acf_id,
+	 				'order_no'	=>	0,
+	 				'param'		=>	substr($location->name, 0, -1),
+	 				'operator'	=>	'==',
+	 				'value'		=>	$value,
+	 			);
+	 			
+	 		}
+	 	}
+ 	}
+ 	
+ 	
+ 	// 3. SAVE USER TYPE OPTION DATA AS RULES
+	
+	
+ 	// get fields and add them to $options
+ 	$locations = $wpdb->get_results("SELECT * FROM $table_name WHERE type = 'option' AND name = 'user_roles'");
+ 	
+ 	
+ 	// rewrite into new format
+ 	if($locations)
+ 	{
+ 		
+ 		$user_roles = array(
+ 			'10'	=>	'administrator',
+ 			'7'		=>	'editor',
+ 			'4'		=>	'author',
+ 			'1'		=>	'contributor',
+ 		);
+ 		
+ 		
+	 	foreach($locations as $location)
+	 	{
+
+	 		$values = unserialize($location->value);
+	 		
+	 		foreach($values as $value)
+	 		{
+	 			
+	 			$rules[] = array(
+	 				'acf_id' 	=>	$location->acf_id,
+	 				'order_no'	=>	0,
+	 				'param'		=>	'user_type',
+	 				'operator'	=>	'==',
+	 				'value'		=>	$user_roles[$value],
+	 			);
+	 			
+	 		}
+	 	}
+ 	}
+
+ 	
+ 	// 4. SAVE RULES INTO DATABASE
+ 	
+ 	$table_name = $wpdb->prefix.'acf_rules';
+ 	
+ 	foreach($rules as $rule)
+ 	{
+ 		$wpdb->insert($table_name, $rule);
+ 	}
+ 	
+ 	
+ 	// 5. SAVE OPTIONS
+ 	
+ 	$table_name = $wpdb->prefix.'acf_options';
+	$options = array();
+	
+ 	$options = $wpdb->get_results("SELECT * FROM $table_name WHERE type = 'option' AND name = 'show_on_page'");
+ 	
+ 	if($options)
+ 	{
+	 	foreach($options as $option)
+	 	{
+			update_post_meta($option->acf_id, 'show_on_page', $option->value);
+			
+	 	}
+ 	}
+ 	
+ 	
+ 	// 6. SAVE NEW POST META
+ 	
+ 	$options = $wpdb->get_results("SELECT DISTINCT acf_id FROM $table_name WHERE type = 'option'");
+ 	
+ 	
+ 	if($options)
+ 	{
+	 	foreach($options as $option)
+	 	{
+			update_post_meta($option->acf_id, 'allorany', 'any');
+			update_post_meta($option->acf_id, 'field_group_layout', 'default');	
+	 	}
+ 	}
+ 	
+ 	
+ 	// drop options table
+ 	$wpdb->query("DROP TABLE $table_name");
+ 	
+ 		
+	update_option('acf_version','2.0.2');
+	$version = '2.0.2';
+		
+	
+}
+
 ?>

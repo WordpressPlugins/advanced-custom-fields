@@ -504,39 +504,41 @@ class acf_Repeater
 		global $wpdb;
 		$table_name = $wpdb->prefix.'acf_values';
 		
-	 	
-	 	foreach($sub_fields as $sub_field)
+	 	if($sub_fields)
 	 	{
-	 		// get var
-		 	$db_values = $wpdb->get_results("SELECT value, order_no FROM $table_name WHERE field_id = '$sub_field->id' AND post_id = '$post_id' ORDER BY order_no ASC");
-		 	
-		 	if($db_values)
+		 	foreach($sub_fields as $sub_field)
 		 	{
-		 		foreach($db_values as $db_value)
+		 		// get var
+			 	$db_values = $wpdb->get_results("SELECT value, order_no FROM $table_name WHERE field_id = '$sub_field->id' AND post_id = '$post_id' ORDER BY order_no ASC");
+			 	
+			 	if($db_values)
 			 	{
-			 		
-			 		$value = $db_value->value;
-			 		// format if needed
-					if(method_exists($this->parent->fields[$sub_field->type], 'format_value_for_api'))
-					{
-						 $value = $this->parent->fields[$sub_field->type]->format_value_for_api($value);
-					}
-					
-					//echo 'db order no = '.$db_value->order_no;
-					$values[$db_value->order_no][$sub_field->name] = $value;
+			 		foreach($db_values as $db_value)
+				 	{
+				 		
+				 		$value = $db_value->value;
+				 		// format if needed
+						if(method_exists($this->parent->fields[$sub_field->type], 'format_value_for_api'))
+						{
+							 $value = $this->parent->fields[$sub_field->type]->format_value_for_api($value);
+						}
+						
+						//echo 'db order no = '.$db_value->order_no;
+						$values[$db_value->order_no][$sub_field->name] = $value;
+				 	}
+	
 			 	}
-
+			 	else
+			 	{
+			 		$values[0][$sub_field->name] = false;
+			 	}
+			 			 	
 		 	}
-		 	else
-		 	{
-		 		$values[0][$sub_field->name] = "";
-		 	}
-		 			 	
 	 	}
 	 	
 	 	if(empty($values))
 	 	{
-	 		$values = null;
+	 		$values = false;
 	 	}
 	 	
 	 	return $values;

@@ -2,8 +2,8 @@
 /*
 Plugin Name: Advanced Custom Fields
 Plugin URI: http://plugins.elliotcondon.com/advanced-custom-fields/
-Description: Completely Customise your edit pages with an assortment of field types: Wysiwyg, Repeater, text, textarea, image, file, select, checkbox post type, page link and more! Hide unwanted metaboxes and assign to any edit page!
-Version: 2.0.1
+Description: Comfpletely Customise your edit pages with an assortment of field types: Wysiwyg, Repeater, text, textarea, image, file, select, checkbox post type, page link and more! Hide unwanted metaboxes and assign to any edit page!
+Version: 2.0.2
 Author: Elliot Condon
 Author URI: http://www.elliotcondon.com/
 License: GPL
@@ -36,7 +36,7 @@ class Acf
 		$this->dir = plugins_url('',__FILE__);
 		$this->siteurl = get_bloginfo('url');
 		$this->wpadminurl = admin_url();
-		$this->version = '2.0.1';
+		$this->version = '2.0.2';
 		$this->activated_fields = $this->get_activated_fields();
 		
 		
@@ -493,45 +493,15 @@ class Acf
 
 	 	// set table name
 		global $wpdb;
-		$table_name = $wpdb->prefix.'acf_options';
+		$table_name = $wpdb->prefix.'acf_rules';
+	 	$location = new stdClass();
 	 	
 	 	
 	 	// get fields and add them to $options
-	 	$location = new stdClass();
-	 	$db_locations = $wpdb->get_results("SELECT name, value FROM $table_name WHERE acf_id = '$acf_id' AND type = 'location'");
+	 	$location->rules = $wpdb->get_results("SELECT * FROM $table_name WHERE acf_id = '$acf_id' ORDER BY order_no ASC");
+	 	$location->allorany = get_post_meta($acf_id, 'allorany', true) ? get_post_meta($acf_id, 'allorany', true) : 'all'; 
 	 	
-	 	foreach($db_locations as $db_location)
-	 	{
-	 		$key = $db_location->name;
-	 		$value = $db_location->value;
-	 		$location->$key = $value;
-	 	}
-	 	
-	 	
-	 	// if empty
-	 	if(empty($location->post_types)){$location->post_types = serialize(array());}
-	 	if(empty($location->page_titles)){$location->page_titles = serialize(array());}
-	 	if(empty($location->page_slugs)){$location->page_slugs = serialize(array());}
-	 	if(empty($location->post_ids)){$location->post_ids = serialize(array());}
-	 	if(empty($location->page_templates)){$location->page_templates = serialize(array());}
-	 	if(empty($location->page_parents)){$location->page_parents = serialize(array());}
-	 	if(empty($location->category_names)){$location->category_names = serialize(array());}
-		if(empty($location->ignore_other_acfs)){$location->ignore_other_acfs = '0';}
-		
-		
-	 	// unserialize values
-		$location->post_types = unserialize($location->post_types);
-		$location->page_titles = unserialize($location->page_titles);
-		$location->page_slugs = unserialize($location->page_slugs);
-		$location->post_ids = unserialize($location->post_ids);
-		$location->page_templates = unserialize($location->page_templates);
-		$location->page_parents = unserialize($location->page_parents);
-		$location->category_names = unserialize($location->category_names);
-	 	
-	 	
-	 	
-	 	
-	 	
+	 		 	
 	 	// return location
 	 	return $location;
 	 	
@@ -554,39 +524,29 @@ class Acf
 	 	if(!get_post_custom_keys($acf_id))
 	 	{
 	 		$options->show_on_page = array('the_content', 'discussion', 'custom_fields', 'comments', 'slug', 'author');
-			$options->user_roles = array();
-			
-			return $options;
 	 	}
-	 	
-	 	
-	 	// set table name
-		global $wpdb;
-		$table_name = $wpdb->prefix.'acf_options';
-	 	
-	 	
-	 	// get fields and add them to $options
-	 	$db_options = $wpdb->get_results("SELECT name, value FROM $table_name WHERE acf_id = '$acf_id' AND type = 'option'");
-	 	
-	 	foreach($db_options as $db_option)
+	 	else
 	 	{
-	 		$key = $db_option->name;
-	 		$value = $db_option->value;
-	 		$options->$key = $value;
+	 		if(@unserialize(get_post_meta($acf_id, 'show_on_page', true)))
+	 		{
+	 			$options->show_on_page = unserialize(get_post_meta($acf_id, 'show_on_page', true));
+	 		}
+	 		else
+	 		{
+	 			$options->show_on_page = array();
+	 		}
+	 		
+	 		if(get_post_meta($acf_id, 'field_group_layout', true))
+	 		{
+	 			$options->field_group_layout = get_post_meta($acf_id, 'field_group_layout', true);
+	 		}
+	 		else
+	 		{
+	 			$options->field_group_layout = "no_box";
+	 		}
+	 				
 	 	}
 	 	
-	 	
-	 	// if empty
-	 	if(empty($options->show_on_page)){$options->show_on_page = serialize(array());}
-	 	if(empty($options->user_roles)){$options->user_roles = serialize(array());}
-
-
-	 	// unserialize options
-		$options->show_on_page = unserialize($options->show_on_page);
-		$options->user_roles = unserialize($options->user_roles);
-
-	 	
-	 	// return fields
 	 	return $options;
 
 	 }
@@ -652,7 +612,7 @@ class Acf
 	
 	
 	/*---------------------------------------------------------------------------------------------
-	 * load_value_for_input
+	 * load_value_for_api
 	 *
 	 * @author Elliot Condon
 	 * @since 1.0.6
@@ -684,7 +644,10 @@ class Acf
 		}
 		
 		
-		
+		if(empty($value) || $value == null || $value == "")
+		{
+			$value = false;
+		}
 		
 		
 		// return value
@@ -718,6 +681,215 @@ class Acf
 		}
 		
 		return $activated;
+	}
+	
+	
+	
+	/*---------------------------------------------------------------------------------------------
+	 * match_location_rule
+	 *
+	 * @author Elliot Condon
+	 * @since 2.0.s
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
+	function match_location_rule($post, $rule)
+	{
+		switch ($rule->param) {
+		
+			// POST TYPE
+		    case "post_type":
+		        
+		        if($rule->operator == "==")
+		        {
+		        	if(get_post_type($post) == $rule->value)
+		        	{
+		        		return true; 
+		        	}
+		        	
+		        	return false;
+		        }
+		        elseif($rule->operator == "!=")
+		        {
+		        	if(get_post_type($post) != $rule->value)
+		        	{
+		        		return true; 
+		        	}
+		        	
+		        	return false;
+		        }
+		        
+		        break;
+		        
+		    // PAGE
+		    case "page":
+		        
+		        if($rule->operator == "==")
+		        {
+		        	if($post->ID == $rule->value)
+		        	{
+		        		return true; 
+		        	}
+		        	
+		        	return false;
+		        }
+		        elseif($rule->operator == "!=")
+		        {
+		        	if($post->ID != $rule->value)
+		        	{
+		        		return true; 
+		        	}
+		        	
+		        	return false;
+		        }
+		        
+		        break;
+		        
+			// PAGE
+		    case "page_type":
+		        
+		        if($rule->operator == "==")
+		        {
+		        	if($rule->value == "parent" && $post->post_parent == "0")
+		        	{
+		        		return true; 
+		        	}
+		        	
+		        	if($rule->value == "child" && $post->post_parent != "0")
+		        	{
+		        		return true; 
+		        	}
+		        	
+		        	return false;
+		        }
+		        elseif($rule->operator == "!=")
+		        {
+		        	if($rule->value == "parent" && $post->post_parent != "0")
+		        	{
+		        		return true; 
+		        	}
+		        	
+		        	if($rule->value == "child" && $post->post_parent == "0")
+		        	{
+		        		return true; 
+		        	}
+		        	
+		        	return false;
+		        }
+		        
+		        break;
+		    
+		    // PAGE
+		    case "page_template":
+		        
+		        if($rule->operator == "==")
+		        {
+		        	if(get_post_meta($post->ID,'_wp_page_template',true) == $rule->value)
+		        	{
+		        		return true; 
+		        	}
+		        	
+		        	return false;
+		        }
+		        elseif($rule->operator == "!=")
+		        {
+		        	if(get_post_meta($post->ID,'_wp_page_template',true) != $rule->value)
+		        	{
+		        		return true; 
+		        	}
+		        	
+		        	return false;
+		        }
+		        
+		        break;
+		       
+		    // POST
+		    case "post":
+		        
+		        if($rule->operator == "==")
+		        {
+		        	if($post->ID == $rule->value)
+		        	{
+		        		return true; 
+		        	}
+		        	
+		        	return false;
+		        }
+		        elseif($rule->operator == "!=")
+		        {
+		        	if($post->ID != $rule->value)
+		        	{
+		        		return true; 
+		        	}
+		        	
+		        	return false;
+		        }
+		        
+		        break;
+		        
+		    // POST CATEGORY
+		    case "post_category":
+		        
+		        // category names
+				$cats = get_the_category(); 
+				
+		        if($rule->operator == "==")
+		        {
+		        	if($cats)
+					{
+						foreach($cats as $cat)
+						{
+							if($cat->name == $rule->value)
+				        	{
+				        		return true; 
+				        	}
+						}
+					}
+		        	
+		        	return false;
+		        }
+		        elseif($rule->operator == "!=")
+		        {
+		        	if($cats)
+					{
+						foreach($cats as $cat)
+						{
+							if($cat->name != $rule->value)
+				        	{
+				        		return true; 
+				        	}
+						}
+					}
+		        	
+		        	return false;
+		        }
+		        
+		        break;
+			
+			// USER TYPE
+		    case "user_type":
+		        		
+		        if($rule->operator == "==")
+		        {
+		        	if(current_user_can($rule->value))
+		        	{
+		        		return true;
+		        	}
+		        	
+		        	return false;
+		        }
+		        elseif($rule->operator == "!=")
+		        {
+		        	if(!current_user_can($rule->value))
+		        	{
+		        		return true;
+		        	}
+		        	
+		        	return false;
+		        }
+		        
+		        break;
+
+		}
 	}
 
 	

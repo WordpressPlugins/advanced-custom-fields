@@ -45,7 +45,7 @@ class acf_File
 	 ---------------------------------------------------------------------------------------------*/
 	function popup_head()
 	{
-		if($_GET['acf_type'] == 'file')
+		if(isset($_GET["acf_type"]) && $_GET['acf_type'] == 'file')
 		{
 			?>
 			<style type="text/css">

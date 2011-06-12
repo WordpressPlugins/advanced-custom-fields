@@ -1,9 +1,18 @@
 <?php
+
+	/*---------------------------------------------------------------------------------------------
+		Input Meta Box
+	---------------------------------------------------------------------------------------------*/
 	
+	
+	// vars
 	global $post;
-	
 	$acfs = $args['args']['acfs'];
-	$acf_ids = array();
+	$adv_options = $this->get_acf_options($acfs[0]->ID);
+	
+	
+	
+	
 	
 	$fields = array();
 	
@@ -15,67 +24,122 @@
 		{
 			$fields[] = $this_field;
 		}
-
+	
 	}
 	
-	// get options from first (top level) acf
-	$adv_options = $this->get_acf_options($acfs[0]->ID);
-	
-
 ?>
 
 
 <input type="hidden" name="ei_noncename" id="ei_noncename" value="<?php echo wp_create_nonce('ei-n'); ?>" />
 <input type="hidden" name="input_meta_box" value="true" />
-<?php 
 
 
-// hide the_content with style (faster than waiting for jquery to load)
-if(!in_array('the_content',$adv_options->show_on_page)): ?>
-	<style type="text/css">
+<style type="text/css">
+	<?php if(!in_array('the_content',$adv_options->show_on_page)): ?>
 		#postdivrich {display: none;}
-	</style>
-<?php endif; ?>
+	<?php endif; ?>
+	
+	<?php if(!in_array('custom_fields',$adv_options->show_on_page)): ?>
+		#postcustom,
+		#screen-meta label[for=postcustom-hide] {display: none;}
+	<?php endif; ?>
+	
+	<?php if(!in_array('discussion',$adv_options->show_on_page)): ?>
+		#commentstatusdiv,
+		#screen-meta label[for=commentstatusdiv-hide] {display: none;}
+	<?php endif; ?>
+	
+	<?php if(!in_array('comments',$adv_options->show_on_page)): ?>
+		#commentsdiv,
+		#screen-meta label[for=commentsdiv-hide] {display: none;}
+	<?php endif; ?>
+	
+	<?php if(!in_array('slug',$adv_options->show_on_page)): ?>
+		#slugdiv,
+		#screen-meta label[for=slugdiv-hide] {display: none;}
+	<?php endif; ?>
+	
+	<?php if(!in_array('author',$adv_options->show_on_page)): ?>
+		#authordiv,
+		#screen-meta label[for=authordiv-hide] {display: none;}
+	<?php endif; ?>
+	
+	#screen-meta label[for=acf_input-hide] {display: none;}
+</style>
 
-
-<?php foreach($adv_options->show_on_page as $option): ?>
-	<input type="hidden" name="show_<?php echo $option; ?>" value="true" />
-<?php endforeach; ?>
 
 <div class="acf_fields_input">
-	<?php $i = -1; ?>
-	<?php foreach($fields as $field): $i++ ?>
-	<?php 
-		
-		// if they didn't select a type, skip this field
-		if($field->type == 'null')
-		{
-			continue;
-		}
-		
-	
-		// set value, id and name for field
-		$value = $this->load_value_for_input($post->ID, $field);
 
-		$field->value = $value;
-		$field->input_id = 'acf['.$i.'][value]';
-		$field->input_name = 'acf['.$i.'][value]';
-		$field->input_class = '';
+	<?php 
+	
+	$i = 0;
+	foreach($acfs as $acf)
+	{
+	
+		// load acf data
+		$options = $this->get_acf_options($acf->ID);
+		$fields = $this->get_fields($acf->ID);
+		$html = '';
 		
+		
+		if($options->field_group_layout == "in_box")
+		{
+			echo '<div class="postbox"><div title="Click to toggle" class="handlediv"><br></div><h3 class="hndle"><span>'.$acf->post_title.'</span></h3><div class="inside">';
+		}
+
+
+		foreach($fields as $field)
+		{
+		
+			// if they didn't select a type, skip this field
+			if($field->type == 'null')
+			{
+				continue;
+			}
+			
+			
+			// set value, id and name for field
+			$field->value = $this->load_value_for_input($post->ID, $field);
+			$field->input_id = 'acf['.$i.'][value]';
+			$field->input_name = 'acf['.$i.'][value]';
+			$field->input_class = '';
+			
+			
+			echo '<div class="field">';
+			
+				echo '<input type="hidden" name="acf['.$i.'][field_id]" value="'.$field->id.'" />';
+				echo '<input type="hidden" name="acf['.$i.'][field_type]" value="'.$field->type.'" />';
+				
+				
+				if($field->save_as_cf == 1)
+				{
+					echo '<input type="hidden" name="acf['.$i.'][save_as_cf]" value="'.$field->name.'" />';	
+				}
+				
+				
+				echo '<label for="'.$field->input_id.'">'.$field->label.'</label>';
+			
+				
+				if($field->instructions)
+				{
+					echo '<p class="instructions">'.$field->instructions.'</p>';
+				}
+				
+				
+				$this->create_field($field);
+		
+			echo '</div>';
+			
+			$i++;
+		} 
+		
+		
+		if($options->field_group_layout == "in_box")
+		{
+			echo '</div></div>';
+		}
+	}
+
 	?>
-	<div class="field">
-		<?php //print_r($value); ?>
-		<input type="hidden" name="acf[<?php echo $i; ?>][field_id]" value="<?php echo $field->id; ?>" />
-		<input type="hidden" name="acf[<?php echo $i; ?>][field_type]" value="<?php echo $field->type; ?>" />
-		
-		<?php if($field->save_as_cf == 1): ?>
-		<input type="hidden" name="acf[<?php echo $i; ?>][save_as_cf]" value="<?php echo $field->name; ?>" />
-		<?php endif; ?>
-		
-		<label for="<?php echo $field->input_id ?>"><?php echo $field->label ?></label>
-		<?php if($field->instructions): ?><p class="instructions"><?php echo $field->instructions; ?></p><?php endif; ?>
-		<?php $this->create_field($field); ?>
-		
-	</div>
-	<?php endforeach; ?>
+	
 </div>
