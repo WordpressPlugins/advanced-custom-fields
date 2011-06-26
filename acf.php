@@ -3,7 +3,7 @@
 Plugin Name: Advanced Custom Fields
 Plugin URI: http://plugins.elliotcondon.com/advanced-custom-fields/
 Description: Comfpletely Customise your edit pages with an assortment of field types: Wysiwyg, Repeater, text, textarea, image, file, select, checkbox post type, page link and more! Hide unwanted metaboxes and assign to any edit page!
-Version: 2.0.2
+Version: 2.0.3
 Author: Elliot Condon
 Author URI: http://www.elliotcondon.com/
 License: GPL
@@ -36,7 +36,7 @@ class Acf
 		$this->dir = plugins_url('',__FILE__);
 		$this->siteurl = get_bloginfo('url');
 		$this->wpadminurl = admin_url();
-		$this->version = '2.0.2';
+		$this->version = '2.0.3';
 		$this->activated_fields = $this->get_activated_fields();
 		
 		
@@ -250,8 +250,8 @@ class Acf
 		$array['text'] = new acf_Text(); 
 		$array['textarea'] = new acf_Textarea(); 
 		$array['wysiwyg'] = new acf_Wysiwyg(); 
-		$array['image'] = new acf_Image(); 
-		$array['file'] = new acf_File(); 
+		$array['image'] = new acf_Image($this); 
+		$array['file'] = new acf_File($this); 
 		$array['select'] = new acf_Select($this); 
 		$array['checkbox'] = new acf_Checkbox();
 		$array['true_false'] = new acf_True_false();
@@ -777,6 +777,31 @@ class Acf
 		        }
 		        
 		        break;
+		        
+		    // PAGE PARENT
+		    case "page_parent":
+		        
+		        if($rule->operator == "==")
+		        {
+		        	if($post->post_parent == $rule->value)
+		        	{
+		        		return true; 
+		        	}
+		        	
+		        	return false;
+		        	
+		        }
+		        elseif($rule->operator == "!=")
+		        {
+		        	if($post->post_parent != $rule->value)
+		        	{
+		        		return true; 
+		        	}
+		        	
+		        	return false;
+		        }
+		        
+		        break;
 		    
 		    // PAGE
 		    case "page_template":
@@ -831,14 +856,14 @@ class Acf
 		        
 		        // category names
 				$cats = get_the_category(); 
-				
+
 		        if($rule->operator == "==")
 		        {
 		        	if($cats)
 					{
 						foreach($cats as $cat)
 						{
-							if($cat->name == $rule->value)
+							if($cat->term_id == $rule->value)
 				        	{
 				        		return true; 
 				        	}
@@ -853,7 +878,7 @@ class Acf
 					{
 						foreach($cats as $cat)
 						{
-							if($cat->name != $rule->value)
+							if($cat->term_id != $rule->value)
 				        	{
 				        		return true; 
 				        	}
@@ -864,6 +889,32 @@ class Acf
 		        }
 		        
 		        break;
+			
+			// PAGE PARENT
+		    case "post_format":
+		        
+		        if($rule->operator == "==")
+		        {
+		        	if(get_post_format() == $rule->value)
+		        	{
+		        		return true; 
+		        	}
+		        	
+		        	return false;
+		        	
+		        }
+		        elseif(get_post_format() == "!=")
+		        {
+		        	if($post->post_parent != $rule->value)
+		        	{
+		        		return true; 
+		        	}
+		        	
+		        	return false;
+		        }
+		        
+		        break;
+			
 			
 			// USER TYPE
 		    case "user_type":

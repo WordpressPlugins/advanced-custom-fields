@@ -588,4 +588,6 @@ if(version_compare($version,'2.0.2') < 0)
 	
 }
 
+update_option('acf_version',$this->version);
+
 ?>

@@ -1,5 +1,6 @@
-.postbox#acf_options .inner {
-	background: none repeat scroll 0 0 #F9F9F9;
+.postbox#acf_options .inside {
+	margin: 0;
+	padding: 0;
 }
 
 .postbox#acf_options h3 span.description {

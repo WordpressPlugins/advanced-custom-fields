@@ -106,6 +106,8 @@
 			var fields = field.closest('.fields');
 			
 			field.remove();
+			update_order_numbers();
+			
 			if(!fields.children('.field').exists())
 			{
 				// no more fields, show the message
@@ -185,7 +187,8 @@
 			
 			
 			// append to table
-			fields.append(new_field);
+			fields.children('.field_clone').before(new_field);
+			//fields.append(new_field);
 			
 			
 			// remove no fields message

@@ -81,6 +81,17 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 == Changelog ==
 
+= 2.0.3 =
+* Added Option: Repeater Layout (Row / Table)
+* Fixed bug: Now you can search for media in the image / file fields
+* Added Option: Image field save format (image url / attachment id)
+* Added Option: File field save format (file url / attachment id)
+* Fixed bug: Location rules for post categories now work
+* Added rule: Page parent
+* Fixed bug: "what's new" button now shows the changelog
+* included new css style to fit in with WordPress 3.2
+* minor JS improvements
+
 = 2.0.2 =
 * Added new database table "acf_rules"
 * Removed database table "ac_options"
@@ -90,7 +101,7 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 * Added new option "Field group layout" - you can now wrap your fields in a metabox!
 * General housekeeping
 
-=2.0.1=
+= 2.0.1 =
 * Added Field Option: Field Instructions
 * Added Field Option: Is field searchable? (saves field value as a normal custom field so you can use the field against wp queries)
 * Added Media Search / Pagination to Image / File thickbox
@@ -98,7 +109,7 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 * Fixed "Select Image" / "Select File" text on thickbox buttons after upload
 * Repeater field now returns null if no data was added
 
-=2.0.0=
+= 2.0.0 =
 * Completely re-designed the ACF edit page
 * Added repeater field (unlocked through external purchase)
 * Fixed minor js bugs

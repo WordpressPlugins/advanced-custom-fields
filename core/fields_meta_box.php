@@ -30,7 +30,7 @@
 <input type="hidden" name="ei_noncename" id="ei_noncename" value="<?php echo wp_create_nonce('ei-n'); ?>" />
 
 
-<table class="acf">
+<table class="acf widefat">
 	<thead>
 		<tr>
 			<th class="field_order"><?php _e('Field Order','acf'); ?></th>
@@ -50,13 +50,13 @@
 		<div class="<?php if($key == 999){echo "field_clone";}else{echo "field";} ?>">
 			<input type="hidden" name="acf[fields][<?php echo $key; ?>][id]'" value="<?php echo $field->id; ?>" />
 			
-			<table class="acf">
+			<table class="acf widefat">
 				<tr>
 					<td class="field_order"><?php echo ($key+1); ?></td>
 					<td class="field_label">
 						
 						<strong>
-							<a class="acf_edit_field" title="Edit this Field" href="javascript:;"><?php echo $field->label; ?></a>
+							<a class="acf_edit_field row-title" title="Edit this Field" href="javascript:;"><?php echo $field->label; ?></a>
 						</strong>
 						<div class="row_options">
 							<span><a class="acf_edit_field" title="Edit this Field" href="javascript:;"><?php _e("Edit",'acf'); ?></a> | </span>
@@ -80,7 +80,7 @@
 			<div class="field_form_mask">
 			<div class="field_form">
 				
-				<table class="acf_input">
+				<table class="acf_input widefat">
 					<tbody>
 						<tr class="field_label">
 							<td class="label">
@@ -93,7 +93,6 @@
 								
 								$temp_field->type = 'text';
 								$temp_field->input_name = 'acf[fields]['.$key.'][label]';
-								$temp_field->input_id = 'acf[fields]['.$key.'][label]';
 								$temp_field->input_class = 'label';
 								$temp_field->value = $field->label;
 								
@@ -112,7 +111,6 @@
 							
 								$temp_field->type = 'text';
 								$temp_field->input_name = 'acf[fields]['.$key.'][name]';
-								$temp_field->input_id = 'acf[fields]['.$key.'][name]';
 								$temp_field->input_class = 'name';
 								$temp_field->value = $field->name;
 								
@@ -129,7 +127,6 @@
 							
 								$temp_field->type = 'select';
 								$temp_field->input_name = 'acf[fields]['.$key.'][type]';
-								$temp_field->input_id = 'acf[fields]['.$key.'][type]';
 								$temp_field->input_class = 'type';
 								$temp_field->value = $field->type;
 								$temp_field->options = array('choices' => $fields_names);
@@ -147,7 +144,6 @@
 							
 								$temp_field->type = 'textarea';
 								$temp_field->input_name = 'acf[fields]['.$key.'][instructions]';
-								$temp_field->input_id = 'acf[fields]['.$key.'][instructions]';
 								$temp_field->input_class = 'instructions';
 								$temp_field->value = $field->instructions;
 								
@@ -164,7 +160,6 @@
 								<?php 
 									$temp_field->type = 'true_false';
 									$temp_field->input_name = 'acf[fields]['.$key.'][save_as_cf]';
-									$temp_field->input_id = 'acf[fields]['.$key.'][save_as_cf]';
 									$temp_field->input_class = 'save_as_cf';
 									$temp_field->value = $field->save_as_cf;
 									$temp_field->options = array('message' => __("Save this field's value as a standard WordPress Custom Field",'acf'));

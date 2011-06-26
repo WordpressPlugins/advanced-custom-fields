@@ -4,12 +4,14 @@ class acf_Image
 {
 	var $name;
 	var $title;
-
-	function acf_Image()
+	var $parent;
+	
+	function acf_Image($parent)
 	{
 		$this->name = 'image';
 		$this->title = __('Image','acf');
-
+		$this->parent = $parent;
+		
 		add_action('admin_head-media-upload-popup', array($this, 'popup_head'));
 		add_filter('media_send_to_editor', array($this, 'media_send_to_editor'), 15, 2 );
 		//add_action('admin_init', array($this, 'admin_init'));
@@ -18,6 +20,44 @@ class acf_Image
 		add_action('admin_print_styles', array($this, 'my_admin_styles'));
 
 	}
+	
+	
+	/*---------------------------------------------------------------------------------------------
+	 * Options HTML
+	 * - called from fields_meta_box.php
+	 * - displays options in html format
+	 *
+	 * @author Elliot Condon
+	 * @since 2.0.3
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
+	function options_html($key, $options)
+	{
+		?>
+		<tr class="field_option field_option_image">
+			<td class="label">
+				<label><?php _e("Save Format",'acf'); ?></label>
+			</td>
+			<td>
+				<?php 
+					$temp_field = new stdClass();	
+					$temp_field->type = 'select';
+					$temp_field->input_name = 'acf[fields]['.$key.'][options][save_format]';
+					$temp_field->input_class = '';
+					$temp_field->value = $options['save_format'];
+					$temp_field->options = array('choices' => array(
+						'url'	=>	'Image URL',
+						'id'	=>	'Attachment ID'
+					));
+					$this->parent->create_field($temp_field);
+				?>
+			</td>
+		</tr>
+
+		<?php
+	}
+
+	
 	
 	/*---------------------------------------------------------------------------------------------
 	 * admin_print_scripts / admin_print_styles
@@ -83,6 +123,11 @@ class acf_Image
 						});
 					}).trigger('DOMNodeInserted');
 					
+					$('form#filter').each(function(){
+						
+						$(this).append('<input type="hidden" name="acf_type" value="image" />');
+						
+					});
 				});
 							
 			})(jQuery);
@@ -134,8 +179,17 @@ class acf_Image
 		
 			?>
 			<script type="text/javascript">
-			
-				self.parent.acf_div.find('input.value').val('<?php echo $file_src; ?>');
+				
+				if(self.parent.acf_div.find('input.value').hasClass('id'))
+				{
+					self.parent.acf_div.find('input.value').val('<?php echo $id; ?>');
+				}
+				else
+				{
+					self.parent.acf_div.find('input.value').val('<?php echo $file_src; ?>');
+				}
+				
+				
 			 	self.parent.acf_div.find('img').attr('src','<?php echo $file_src; ?>');
 			 	self.parent.acf_div.addClass('active');
 			 	
@@ -165,11 +219,22 @@ class acf_Image
 		{
 			$class = " active";
 		}
+		
+		if(!isset($field->options['save_format'])){$field->options['save_format'] = 'url';}
 
 		echo '<div class="acf_image_uploader'.$class.'">';
 			echo '<a href="#" class="remove_image"></a>';
-			echo '<img src="'.$field->value.'" alt=""/>';
-			echo '<input class="value" type="hidden" name="'.$field->input_name.'" value="'.$field->value.'" />';
+			if($field->options['save_format'] == 'id')
+			{
+				$file_src = wp_get_attachment_url($field->value);
+				echo '<img src="'.$file_src.'" alt=""/>';
+			}
+			else
+			{
+				echo '<img src="'.$field->value.'" alt=""/>';
+			}
+			
+			echo '<input class="value '.$field->options['save_format'].'" type="hidden" name="'.$field->input_name.'" value="'.$field->value.'" />';
 			echo '<p>'.__('No image selected','acf').'. <input type="button" class="button" value="'.__('Add Image','acf').'" /></p>';
 		echo '</div>';
 

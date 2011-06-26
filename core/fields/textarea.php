@@ -15,7 +15,7 @@ class acf_Textarea
 	{
 		// remove unwanted <br /> tags
 		$field->value = str_replace('<br />','',$field->value);
-		echo '<textarea id="'.$field->input_id.'" rows="4" class="'.$field->input_class.'" name="'.$field->input_name.'" >'.$field->value.'</textarea>';
+		echo '<textarea id="'.$field->input_name.'" rows="4" class="'.$field->input_class.'" name="'.$field->input_name.'" >'.$field->value.'</textarea>';
 	}
 	
 	function format_value_for_input($value)

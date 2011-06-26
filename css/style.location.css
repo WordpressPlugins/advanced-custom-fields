@@ -1,3 +1,12 @@
+.postbox#acf_location .inside {
+	margin: 0;
+	padding: 0;
+}
+
+.postbox#acf_location .widefat {
+	border: 0 none;
+}
+
 .postbox#acf_location h3 span.description {
 	font-size: 11px;
 	color: #666;
@@ -10,20 +19,6 @@ table.acf_input > tbody > tr > td > select[multiple="multiple"] {
     height: auto !important;
 }
 
-.postbox#acf_location a.help {
-	width: 16px;
-	height: 17px;
-	background: url(../images/help.png) 0 0 no-repeat;
-	position: absolute;
-	top: 5px; 
-	right: 5px;
-}
-
-.postbox#acf_location .handlediv {
-	display: none;
-}
-
-
 td.param {
 	width: 40%;
 }
@@ -35,7 +30,7 @@ td.operator {
 	Location Rules
 ---------------------------------------------------------------------------------------------*/
 .location_rules {
-
+	
 }
 
 table#location_rules {
@@ -48,19 +43,20 @@ table#location_rules tr {
 
 table#location_rules tr td {
 	padding: 4px;
-	border-right: 0 none;
+	border: 0 none;
 }
 
-table#location_rules tr:nth-child(odd) {
-	background: #F9F9F9
+table#location_rules tr td:first-child {
+	padding-left: 0;
 }
 
-table#location_rules tr:nth-child(even) {
-	background: transparent;
+table#location_rules tr td:last-child {
+	padding-right: 0;
 }
 
 table#location_rules tr td.buttons {
 	width: 40px;
+	vertical-align: middle;
 }
 
 table#location_rules a.remove {

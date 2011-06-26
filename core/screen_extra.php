@@ -1,25 +1,25 @@
 <div id="screen-meta-activate-acf-wrap" class="screen-meta-wrap hidden acf">
 	<div class="screen-meta-content">
 		
-		<h5>Unlock Special Fields.</h5>
-		<p>Special Fields can be unlocked by purchasing an activation code. Each activation code can be used on multiple sites. <a href="http://plugins.elliotcondon.com/shop/">Visit the Plugin Store</a></p>
-		<table class="acf_activate">
+		<h5><?php _e("Unlock Special Fields.",'acf'); ?></h5>
+		<p><?php _e("Special Fields can be unlocked by purchasing an activation code. Each activation code can be used on multiple sites.",'acf'); ?> <a href="http://plugins.elliotcondon.com/shop/"><?php _e("Visit the Plugin Store",'acf'); ?></a></p>
+		<table class="acf_activate widefat">
 			<thead>
 				<tr>
-					<th>Field Type</th>
-					<th>Status</th>
-					<th>Activation Code</th>
+					<th><?php _e("Field Type",'acf'); ?></th>
+					<th><?php _e("Status",'acf'); ?></th>
+					<th><?php _e("Activation Code",'acf'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td>Repeater</td>
+					<td><?php _e("Repeater",'acf'); ?></td>
 					<td><?php if(array_key_exists('repeater', $this->activated_fields)){
-						echo 'Active';
+						_e("Active",'acf');
 					}
 					else
 					{
-						echo 'Not Active';
+						_e("Inactive",'acf');
 					} ?></td>
 					<td>
 						<form action="" method="post">
@@ -42,7 +42,7 @@
 	</div>
 </div>
 <div id="screen-meta-activate-acf-link-wrap" class="hide-if-no-js screen-meta-toggle acf">
-	<a href="#screen-meta-activate-acf" id="screen-meta-activate-acf-link" class="show-settings">Unlock Fields</a>
+	<a href="#screen-meta-activate-acf" id="screen-meta-activate-acf-link" class="show-settings"><?php _e("Unlock Fields",'acf'); ?></a>
 </div>
 
 
@@ -59,60 +59,31 @@ if($currentFile == 'edit.php'):
 <div class="acf_col_right hidden metabox-holder" id="poststuff" >
 
 	<div class="postbox">
-		<div title="Click to toggle" class="handlediv"><br></div>
-		<h3 class="hndle"><span><?php _e("Advanced Custom Fields v",'acf'); ?><?php echo $this->version; ?></span>
-		<a class="thickbox button" href="http://localhost:8888/acf/wp-admin/plugin-install.php?tab=plugin-information&amp;plugin=advanced-custom-fields&amp;section=changelog&amp;TB_iframe=true&amp;width=640&amp;height=570"><?php _e("see what's new",'acf'); ?></a>
-		</h3>
+		<div class="handlediv"><br></div>
+		<h3 class="hndle"><span><?php _e("Advanced Custom Fields v",'acf'); ?><?php echo $this->version; ?></span></h3>
 		<div class="inside">
+			<div class="field">
+				<h4><?php _e("Changelog",'acf'); ?></h4>
+				<p><?php _e("See what's new in",'acf'); ?> <a class="thickbox" href="<?php bloginfo('url'); ?>/wp-admin/plugin-install.php?tab=plugin-information&plugin=advanced-custom-fields&section=changelog&TB_iframe=true&width=640&height=559">v<?php echo $this->version; ?></a>
+			</div>
+			<div class="field">
+				<h4><?php _e("Resources",'acf'); ?></h4>
+				<p><?php _e("Watch tutorials, read documentation, learn the API code and find some tips &amp; tricks for your next web project.",'acf'); ?><br />
+				<a href="http://plugins.elliotcondon.com/advanced-custom-fields/"><?php _e("View the plugins website",'acf'); ?></a></p>
+			</div>
+			<div class="field">
+				<h4><?php _e("Support",'acf'); ?></h4>
+				<p><?php _e("Join the growing community over at the support forum to share ideas, report bugs and keep up to date with ACF",'acf'); ?><br />
+				<a href="http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/"><?php _e("View the Support Forum",'acf'); ?></a></p>
+			</div>
+			<div class="field">
+				<h4><?php _e("Developed by",'acf'); ?> Elliot Condon</h4>
+				<p><a href="http://wordpress.org/extend/plugins/advanced-custom-fields/"><?php _e("Vote for ACF",'acf'); ?></a> | <a href="http://twitter.com/elliotcondon"><?php _e("Twitter",'acf'); ?></a> | <a href="http://blog.elliotcondon.com"><?php _e("Blog",'acf'); ?></a></p>
+			</div>
 			
 		
-			<table cellpadding="0" cellspacing="0" class="author">
-				<tr>	
-					<td style="width:24px;">
-						<img src="<?php echo $this->dir ?>/images/resources.png" />
-					</td>
-					<td>
-						<?php _e("User Guide + Code Examples",'acf'); ?> <a href="http://plugins.elliotcondon.com/advanced-custom-fields/"><?php _e("Visit the Plugin Website",'acf'); ?></a>
-					</td>
-				</tr>
-			</table>
-			<table cellpadding="0" cellspacing="0" class="author">
-				<tr>	
-					<td style="width:24px;">
-						<img src="<?php echo $this->dir ?>/images/need_help.png" />
-					</td>
-					<td>
-						<?php _e("Need Help?",'acf'); ?> <a href="http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/"><?php _e("Visit the Support Forum",'acf'); ?></a>
-					</td>
-				</tr>
-			</table>
-			<table cellpadding="0" cellspacing="0" class="author">
-				<tr>
-					<td style="width:24px;">
-						<img src="<?php echo $this->dir ?>/images/donate.png" />
-					</td>
-					<td>
-						<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-						<input type="hidden" name="cmd" value="_s-xclick">
-						<input type="hidden" name="hosted_button_id" value="4C9N2WFW6B9QL">
-						<span><?php _e("Help fund future development",'acf'); ?></span><input type="image" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_AU/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online.">
-						<img alt="" border="0" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_AU/i/scr/pixel.gif" width="1" height="1">
-						</form>
-						<!-- Help fund future development <a href="http://www.elliotcondon.com">Donate here</a> -->
-					</td>
-				</tr>
-			</table>
-			<table cellpadding="0" cellspacing="0" class="author">
-				<tr>
-					<td style="width:24px;">
-						<img src="<?php echo $this->dir ?>/images/elliot_condon.png" />
-					</td>
-					<td>
-						<?php _e("Created by",'acf'); ?> <a href="http://www.elliotcondon.com">Elliot Condon</a>
-					</td>
-				</tr>
-			</table>
 		</div>
 	</div>
 </div>
+
 <?php endif; ?>

@@ -39,11 +39,11 @@ class acf_Post_object
 		if(isset($field->options['multiple']) && $field->options['multiple'] == '1')
 		{
 			$name_extra = '[]';
-			echo '<select id="'.$field->input_id.'" class="'.$field->input_class.'" name="'.$field->input_name.$name_extra.'" multiple="multiple" size="5" >';
+			echo '<select id="'.$field->input_name.'" class="'.$field->input_class.'" name="'.$field->input_name.$name_extra.'" multiple="multiple" size="5" >';
 		}
 		else
 		{
-			echo '<select id="'.$field->input_id.'" class="'.$field->input_class.'" name="'.$field->input_name.'" >';	
+			echo '<select id="'.$field->input_name.'" class="'.$field->input_class.'" name="'.$field->input_name.'" >';	
 			// add top option
 			echo '<option value="null">- '.__("Select Option",'acf').' -</option>';
 		}
@@ -151,7 +151,6 @@ class acf_Post_object
 				$temp_field->type = 'select';
 				$temp_field->input_name = 'acf[fields]['.$key.'][options][post_type]';
 				$temp_field->input_class = '';
-				$temp_field->input_id = 'acf[fields]['.$key.'][options][post_type]';
 				$temp_field->value = $options['post_type'];
 				$temp_field->options = array('choices' => $post_types, 'multiple' => '1');
 				$this->parent->create_field($temp_field); 
@@ -170,7 +169,6 @@ class acf_Post_object
 					$temp_field->type = 'true_false';
 					$temp_field->input_name = 'acf[fields]['.$key.'][options][multiple]';
 					$temp_field->input_class = '';
-					$temp_field->input_id = 'acf[fields]['.$key.'][options][multiple]';
 					$temp_field->value = $options['multiple'];
 					$temp_field->options = array('message' => '');
 					$this->parent->create_field($temp_field); 

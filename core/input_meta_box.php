@@ -100,7 +100,6 @@
 			
 			// set value, id and name for field
 			$field->value = $this->load_value_for_input($post->ID, $field);
-			$field->input_id = 'acf['.$i.'][value]';
 			$field->input_name = 'acf['.$i.'][value]';
 			$field->input_class = '';
 			
@@ -117,7 +116,7 @@
 				}
 				
 				
-				echo '<label for="'.$field->input_id.'">'.$field->label.'</label>';
+				echo '<label for="'.$field->input_name.'">'.$field->label.'</label>';
 			
 				
 				if($field->instructions)

@@ -1,4 +1,19 @@
 <?php 
+
+/*---------------------------------------------------------------------------------------------
+ * Global Vars for Groovy Repeater while loop
+ *
+ * @author Elliot Condon
+ * @since 2.0.3
+ * 
+ ---------------------------------------------------------------------------------------------*/
+global $repeater_row_count, $repeater_row;
+
+$repeater_row_count = 0;
+$repeater_row = null;
+
+
+
 /*---------------------------------------------------------------------------------------------
  * acf_object
  *
@@ -161,9 +176,58 @@ function get_field($field_name, $post_id = false)
 	return $acf_fields[$post_id]->$field_name;
 }
 
-// get sub field
-function get_sub_field($field_name, $field)
+
+// the field
+function the_field($field_name, $post_id = false)
 {
+	//echo 'field name: '.$field_name.', post id: '.$post_id;
+	echo get_field($field_name, $post_id);
+}
+
+
+/*---------------------------------------------------------------------------------------------
+ * Repeater Field functions
+ *
+ * @author Elliot Condon
+ * @since 2.0.3
+ * 
+ ---------------------------------------------------------------------------------------------*/
+
+function the_repeater_field($field_name, $post_id = false)
+{
+	global $repeater_row_count, $repeater_row;
+	
+	$rows = get_field($field_name, $post_id);
+
+	if(isset($rows[$repeater_row_count]))
+	{
+		$repeater_row = $rows[$repeater_row_count];
+		$repeater_row_count ++;
+		return true;
+	}
+	
+	
+	// reset the vars and return false to end the loop
+	
+	$repeater_row_count = 0;
+	$repeater_row = null;
+	
+	return false;
+	
+}
+
+
+// get sub field
+function get_sub_field($field_name, $field = false)
+{
+	
+	
+	if($field == false)
+	{
+		global $repeater_row;
+		$field = $repeater_row;
+	}
+	
 	if(isset($field[$field_name]))
 	{
 		return $field[$field_name];
@@ -174,19 +238,14 @@ function get_sub_field($field_name, $field)
 	}
 }
 
+
 // get sub field
-function the_sub_field($field_name, $field)
+function the_sub_field($field_name, $field = false)
 {
 	echo get_sub_field($field_name, $field);
 }
 
 
-// the field
-function the_field($field_name, $post_id = false)
-{
-	//echo 'field name: '.$field_name.', post id: '.$post_id;
-	echo get_field($field_name, $post_id);
-}
 
 /*---------------------------------------------------------------------------------------------
  * ACF_WP_Query

@@ -12,7 +12,7 @@
 <input type="hidden" name="options_meta_box" value="true" />
 <input type="hidden" name="ei_noncename" id="ei_noncename" value="<?php echo wp_create_nonce('ei-n'); ?>" />
 
-<table class="acf_input" id="acf_options">
+<table class="acf_input widefat" id="acf_options">
 	<tr>
 		<td class="label">
 			<label for="post_type"><?php _e("Show on page",'acf'); ?></label>
@@ -25,7 +25,6 @@
 			$temp_field->type = 'checkbox';
 			$temp_field->input_name = 'acf[options][show_on_page]';
 			$temp_field->input_class = '';
-			$temp_field->input_id = 'acf[options][show_on_page]';
 			$temp_field->value = $options->show_on_page;
 			$temp_field->options = array(
 				'choices' => array(
@@ -56,12 +55,11 @@
 			$temp_field->type = 'select';
 			$temp_field->input_name = 'acf[options][field_group_layout]';
 			$temp_field->input_class = '';
-			$temp_field->input_id = '';
 			$temp_field->value = $options->field_group_layout;
 			$temp_field->options = array(
 				'choices' => array(
 					'in_box'	=>	'In a postbox',
-					'default'	=>	'No Box',
+					'default'	=>	'No box',
 				)
 			);
 			

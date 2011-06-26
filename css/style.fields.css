@@ -3,7 +3,7 @@
 ---------------------------------------------------------------------------------------------*/
 
 .postbox#acf_fields {
-	background: #fff;
+
 }
 
 .postbox#acf_fields .handlediv {
@@ -25,21 +25,22 @@
 .fields {
 	position: relative;
 	overflow: hidden;
-	background: #F4F4F4;
+	background: #F5F5F5;
 }
 
 .fields .field {
 	position: relative;
 	overflow: hidden;
+	border-top: #fff solid 1px;;
 	border-bottom: #DFDFDF solid 1px;
 }
 
 .fields .field:nth-child(even) {
-	background: #fefefe;
+	background: #FCFCFC;
 }
 
 .fields .field:nth-child(odd) {
-	background: #F9F9F9;
+	
 }
 
 .fields .field:hover {
@@ -62,8 +63,14 @@
 	border-bottom: 0 none;
 }
 
-#acf_fields table{border-collapse:separate; border-spacing:0; vertical-align:top; width: 100%;}
+table.widefat.acf {
+	border: 0 none;
+	background: transparent none;
+}
 
+table.widefat.acf td {
+	border: 0 none;
+}
 
 .acf,
 .acf tr,
@@ -75,7 +82,7 @@
 /*---------------------------------------------------------------------------------------------
 	Table Heading
 ---------------------------------------------------------------------------------------------*/
-.acf tr th {
+/*.acf tr th {
 	background: url("../../../../wp-admin/images/gray-grad.png") repeat-x scroll left top #DFDFDF;
     text-shadow: 0 1px 0 #FFFFFF;
     color: #333;
@@ -84,7 +91,7 @@
 	line-height: 1.3;
 	padding: 8px;
     text-align: left;
-}
+}*/
 
 .acf tr th span {
 	color: #666;

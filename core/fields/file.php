@@ -4,11 +4,13 @@ class acf_File
 {
 	var $name;
 	var $title;
+	var $parent;
 	
-	function acf_File()
+	function acf_File($parent)
 	{
 		$this->name = 'file';
 		$this->title = __('File','acf');
+		$this->parent = $parent;
 		
 		add_action("admin_head-media-upload-popup", array($this, 'popup_head'));
 		add_filter('media_send_to_editor', array($this, 'media_send_to_editor'), 15, 2 );
@@ -16,6 +18,42 @@ class acf_File
 		
 		add_action('admin_print_scripts', array($this, 'my_admin_scripts'));
 		add_action('admin_print_styles', array($this, 'my_admin_styles'));
+	}
+	
+	
+	/*---------------------------------------------------------------------------------------------
+	 * Options HTML
+	 * - called from fields_meta_box.php
+	 * - displays options in html format
+	 *
+	 * @author Elliot Condon
+	 * @since 2.0.3
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
+	function options_html($key, $options)
+	{
+		?>
+		<tr class="field_option field_option_file">
+			<td class="label">
+				<label><?php _e("Save Format",'acf'); ?></label>
+			</td>
+			<td>
+				<?php 
+					$temp_field = new stdClass();	
+					$temp_field->type = 'select';
+					$temp_field->input_name = 'acf[fields]['.$key.'][options][save_format]';
+					$temp_field->input_class = '';
+					$temp_field->value = $options['save_format'];
+					$temp_field->options = array('choices' => array(
+						'url'	=>	'File URL',
+						'id'	=>	'Attachment ID'
+					));
+					$this->parent->create_field($temp_field);
+				?>
+			</td>
+		</tr>
+
+		<?php
 	}
 	
 	
@@ -84,6 +122,11 @@ class acf_File
 						});
 					}).trigger('DOMNodeInserted');
 					
+					$('form#filter').each(function(){
+						
+						$(this).append('<input type="hidden" name="acf_type" value="file" />');
+						
+					});
 				});
 							
 			})(jQuery);
@@ -112,8 +155,16 @@ class acf_File
 		
 			?>
 			<script type="text/javascript">
-			
-				self.parent.acf_div.find('input.value').val('<?php echo $file_src; ?>');
+				
+				if(self.parent.acf_div.find('input.value').hasClass('id'))
+				{
+					self.parent.acf_div.find('input.value').val('<?php echo $id; ?>');
+				}
+				else
+				{
+					self.parent.acf_div.find('input.value').val('<?php echo $file_src; ?>');
+				}
+				
 			 	self.parent.acf_div.find('p.file span').html('<?php echo $file_src; ?>');
 			 	self.parent.acf_div.addClass('active');
 			 	
@@ -145,11 +196,22 @@ class acf_File
 			$file = $field->value;
 			$class = " active";
 		}
-
+		
+		if(!isset($field->options['save_format'])){$field->options['save_format'] = 'url';}
+		
 		echo '<div class="acf_file_uploader'.$class.'">';
 			echo '<a href="#" class="remove_file"></a>';
-			echo '<p class="file"><span>'.$file.'</span> <input type="button" class="button" value="'.__('Remove File','acf').'" /></p>';
-			echo '<input class="value" type="hidden" name="'.$field->input_name.'" value="'.$field->value.'" />';
+			if($field->options['save_format'] == 'id')
+			{
+				$file_src = wp_get_attachment_url($field->value);
+				echo '<p class="file"><span>'.$file_src.'</span> <input type="button" class="button" value="'.__('Remove File','acf').'" /></p>';
+			}
+			else
+			{
+				echo '<p class="file"><span>'.$field->value.'</span> <input type="button" class="button" value="'.__('Remove File','acf').'" /></p>';
+			}
+			
+			echo '<input class="value '.$field->options['save_format'].'" type="hidden" name="'.$field->input_name.'" value="'.$field->value.'" />';
 			echo '<p class="no_file">'.__('No File selected','acf').'. <input type="button" class="button" value="'.__('Add File','acf').'" /></p>';
 		echo '</div>';
 

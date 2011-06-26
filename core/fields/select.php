@@ -22,11 +22,11 @@ class acf_Select
 			{
 				$name_extra = '';
 			}
-			echo '<select id="'.$field->input_id.'" class="'.$field->input_class.'" name="'.$field->input_name.$name_extra.'" multiple="multiple" size="5" >';
+			echo '<select id="'.$field->input_name.'" class="'.$field->input_class.'" name="'.$field->input_name.$name_extra.'" multiple="multiple" size="5" >';
 		}
 		else
 		{
-			echo '<select id="'.$field->input_id.'" class="'.$field->input_class.'" name="'.$field->input_name.'" >';	
+			echo '<select id="'.$field->input_name.'" class="'.$field->input_class.'" name="'.$field->input_name.'" >';	
 			// add top option
 			//echo '<option value="null">- Select Option -</option>';
 		}
@@ -112,7 +112,6 @@ class acf_Select
 					$temp_field->type = 'true_false';
 					$temp_field->input_name = 'acf[fields]['.$key.'][options][multiple]';
 					$temp_field->input_class = '';
-					$temp_field->input_id = 'acf[fields]['.$key.'][options][multiple]';
 					$temp_field->value = $options['multiple'];
 					$temp_field->options = array('message' => '');
 					$this->parent->create_field($temp_field); 

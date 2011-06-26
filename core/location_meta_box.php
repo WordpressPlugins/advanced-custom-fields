@@ -21,7 +21,7 @@
 <input type="hidden" name="location_meta_box" value="true" />
 <input type="hidden" name="ei_noncename" id="ei_noncename" value="<?php echo wp_create_nonce('ei-n'); ?>" />
 
-<table class="acf_input" id="acf_location">
+<table class="acf_input widefat" id="acf_location">
 	<tbody>
 	<tr>
 		<td class="label">
@@ -32,7 +32,7 @@
 			
 			<div class="location_rules">
 				<?php if($location->rules): ?>
-				<table class="acf_input" id="location_rules">
+				<table class="acf_input widefat" id="location_rules">
 					<tbody>
 						<?php foreach($location->rules as $k => $rule): ?>
 						<tr>
@@ -42,13 +42,12 @@
 							$temp_field->type = 'select';
 							$temp_field->input_name = 'acf[location][rules]['.$k.'][param]';
 							$temp_field->input_class = '';
-							$temp_field->input_id = '';
 							$temp_field->value = $rule->param;
 							$temp_field->options = array('choices' => array(
 								'post_type'		=>	'Post Type',
 								'page'			=>	'Page',
 								'page_type'		=>	'Page Type',
-								//'page_parent'	=>	'Page Parent',
+								'page_parent'	=>	'Page Parent',
 								'page_template'	=>	'Page Template',
 								'post'			=>	'Post',
 								'post_category'	=>	'Post Category',
@@ -66,7 +65,6 @@
 							$temp_field->type = 'select';
 							$temp_field->input_name = 'acf[location][rules]['.$k.'][operator]';
 							$temp_field->input_class = '';
-							$temp_field->input_id = '';
 							$temp_field->value = $rule->operator;
 							$temp_field->options = array('choices' => array(
 								'=='	=>	'is equal to',
@@ -90,7 +88,6 @@
 								$temp_field->type = 'select';
 								$temp_field->input_name = 'acf[location][rules]['.$k.'][value]';
 								$temp_field->input_class = '';
-								$temp_field->input_id = '';
 								$temp_field->value = $rule->value;
 								$temp_field->options = array(
 									'choices' => $choices, 
@@ -139,7 +136,7 @@
 								
 								?>
 							</div>
-							<?php /*<div rel="page_parent">
+							<div rel="page_parent">
 								<?php 
 								$choices = array();
 								foreach(get_pages('parent=0&sort_column=menu_order&sort_order=desc') as $page)
@@ -153,7 +150,7 @@
 								$this->create_field($temp_field); 
 								
 								?>
-							</div> */ ?>
+							</div>
 							<div rel="page_template">
 							
 								<?php 
@@ -191,17 +188,21 @@
 							<div rel="post_category">
 							
 								<?php 
-									
 								$choices = array();
-								foreach(get_categories() as $v);
+								$category_ids = get_all_category_ids();
+								
+								foreach($category_ids as $cat_id) 
 								{
-									$choices[$v->term_id] = $v->name;
+								  $cat_name = get_cat_name($cat_id);
+								  $choices[$cat_id] = $cat_name;
 								}
+								
+								
 								$temp_field->options = array(
 									'choices' => $choices, 
 								);
 								
-								$this->create_field($temp_field); 
+								$this->create_field($temp_field);
 								
 								?>
 							</div>
@@ -240,7 +241,6 @@
 							$temp_field->type = 'select';
 							$temp_field->input_name = 'acf[location][allorany]';
 							$temp_field->input_class = '';
-							$temp_field->input_id = '';
 							$temp_field->value = $location->allorany;
 							$temp_field->options = array('choices' => array(
 								'all'	=>	'all',

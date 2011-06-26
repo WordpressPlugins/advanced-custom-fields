@@ -164,7 +164,11 @@
 		});
 		
 		div.add_remove_buttons();
-		div.make_sortable();
+		
+		if(row_limit > 1){
+			div.make_sortable();
+		}
+		
 		
 		if(div.children('table').children('tbody').children('tr').length == 1)
 		{
@@ -297,6 +301,10 @@
 				// do nothing, we want to keep this hidden field with it's current values
 			}
 			else if(name.indexOf("[field_type]") != -1)
+			{
+				// do nothing, we want to keep this hidden field with it's current values
+			}
+			else if(name.indexOf("date_format") != -1)
 			{
 				// do nothing, we want to keep this hidden field with it's current values
 			}

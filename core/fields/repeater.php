@@ -19,20 +19,26 @@ class acf_Repeater
 	{
 		$sub_fields = $field->options['sub_fields'];
 		
+		$row_limit = 999;
 		if(isset($field->options['row_limit']) && $field->options['row_limit'] != "")
 		{
 			$row_limit = intval($field->options['row_limit']);
 		}
-		else
+		
+		$layout = 'table';
+		if(isset($field->options['layout']) && $field->options['layout'] != "")
 		{
-			$row_limit = 999;
+			$layout = $field->options['layout'];
 		}
+		
+		
 		
 		
 		?>
 		<div class="repeater">
 			<input type="hidden" name="row_limit" value="<?php echo $row_limit; ?>" />
-			<table class="">
+			<table class="widefat <?php if($layout == 'row'): ?>row_layout<?php endif; ?>">
+			<?php if($layout == 'table'): ?>
 			<thead>
 				<tr>
 					<th class="order"><!-- order --></th>
@@ -42,17 +48,29 @@ class acf_Repeater
 					<th class="remove"></th>
 				</tr>
 			</thead>
+			<?php endif; ?>
 			<tbody>
 				<?php foreach($field->value as $i => $value):?>
 				<?php if(($i+1) > $row_limit){continue;} ?>
 				<tr>
-					<td class="order">
-					<?php echo $i+1; ?>
-					</td>
+					
+					<?php if($row_limit > 1): ?>
+						<td class="order">
+						<?php echo $i+1; ?>
+						</td>
+					<?php endif; ?>
+					
+					<?php if($layout == 'row'): ?><td><?php endif; ?>
+					
+					
 					<?php foreach($sub_fields as $j => $sub_field):?>
 					
+					<?php if($layout == 'table'): ?>
 					<td>
-						
+					<?php else: ?>
+					<label><?php echo $sub_fields[$j]->label; ?></label>
+					<?php endif; ?>	
+					
 						<input type="hidden" name="<?php echo $field->input_name.'['.$i.']['.$j.'][row_id]'; ?>" value="<?php echo $field->value[$i][$j]->id; ?>" />
 						<input type="hidden" name="<?php echo $field->input_name.'['.$i.']['.$j.'][field_id]'; ?>" value="<?php echo $sub_field->id; ?>" />
 						<input type="hidden" name="<?php echo $field->input_name.'['.$i.']['.$j.'][field_type]' ?>" value="<?php echo $sub_field->type; ?>" />
@@ -61,17 +79,25 @@ class acf_Repeater
 						$temp_field = new stdClass();
 						$temp_field->type = $sub_field->type;
 						$temp_field->input_name = $field->input_name.'['.$i.']['.$j.'][value]';
-						$temp_field->input_id = $field->input_name.'['.$i.']['.$j.'][value]';
 						$temp_field->input_class = $sub_field->type;
 						$temp_field->options = $sub_field->options;
 						$temp_field->value = $field->value[$i][$j]->value;
 						$this->parent->create_field($temp_field); 
 						
 						?>
+					<?php if($layout == 'table'): ?>
 					</td>
+					<?php else: ?>
+
+					<?php endif; ?>	
 					
 					<?php endforeach; ?>
-					<td class="remove"><a class="remove_field" href="javascript:;"></a></td>
+					
+					<?php if($layout == 'row'): ?></td><?php endif; ?>
+					
+					<?php if($row_limit > 1): ?>
+						<td class="remove"><a class="remove_field" href="javascript:;"></a></td>
+					<?php endif; ?>
 				</tr>
 				<?php endforeach; ?>
 			</tbody>
@@ -134,7 +160,7 @@ class acf_Repeater
 </td>
 <td>
 <div class="repeater">
-	<table class="acf">
+	<table class="acf widefat">
 		<thead>
 			<tr>
 				<th class="field_order"><?php _e('Field Order','acf'); ?></th>
@@ -155,7 +181,7 @@ class acf_Repeater
 			<div class="<?php if($key2 == 999){echo "field_clone";}else{echo "field";} ?> sub_field">
 				
 				<input type="hidden" name="acf[fields][<?php echo $key; ?>][sub_fields][<?php echo $key2; ?>][id]'" value="<?php echo $field->id; ?>" />
-				<table class="acf">
+				<table class="acf widefat">
 					<tr>
 						<td class="field_order"><?php echo ($key2+1); ?></td>
 						<td class="field_label">
@@ -175,7 +201,7 @@ class acf_Repeater
 				<div class="field_form_mask">
 				<div class="field_form">
 					
-					<table class="acf_input">
+					<table class="acf_input widefat">
 						<tbody>
 							<tr class="field_label">
 								<td class="label">
@@ -188,7 +214,6 @@ class acf_Repeater
 									
 									$temp_field->type = 'text';
 									$temp_field->input_name = 'acf[fields]['.$key.'][sub_fields]['.$key2.'][label]';
-									$temp_field->input_id = 'acf[fields]['.$key.'][sub_fields]['.$key2.'][label]';
 									$temp_field->input_class = 'label';
 									$temp_field->value = $field->label;
 									
@@ -207,7 +232,6 @@ class acf_Repeater
 								
 									$temp_field->type = 'text';
 									$temp_field->input_name = 'acf[fields]['.$key.'][sub_fields]['.$key2.'][name]';
-									$temp_field->input_id = 'acf[fields]['.$key.'][sub_fields]['.$key2.'][name]';
 									$temp_field->input_class = 'name';
 									$temp_field->value = $field->name;
 									
@@ -224,7 +248,6 @@ class acf_Repeater
 								
 									$temp_field->type = 'select';
 									$temp_field->input_name = 'acf[fields]['.$key.'][sub_fields]['.$key2.'][type]';
-									$temp_field->input_id = 'acf[fields]['.$key.'][sub_fields]['.$key2.'][type]';
 									$temp_field->input_class = 'type';
 									$temp_field->value = $field->type;
 									$temp_field->options = array('choices' => $fields_names);
@@ -268,13 +291,36 @@ class acf_Repeater
 </td>
 </tr>
 <tr class="field_option field_option_repeater">
-<td class="label">
-	<label for="acf[fields][<?php echo $key; ?>][options][row_limit]"><?php _e("Row Limit",'acf'); ?></label>
-</td>
-<td>
+	<td class="label">
+		<label for="acf[fields][<?php echo $key; ?>][options][row_limit]"><?php _e("Row Limit",'acf'); ?></label>
+	</td>
+	<td>
 	<input type="text" name="acf[fields][<?php echo $key; ?>][options][row_limit]" id="acf[fields][<?php echo $key; ?>][options][row_limit]" value="<?php echo $options['row_limit']; ?>" />
 	
-</td>
+	</td>
+</tr>
+<tr class="field_option field_option_repeater">
+	<td class="label">
+		<label for="acf[fields][<?php echo $key; ?>][options][layout]"><?php _e("Layout",'acf'); ?></label>
+	</td>
+	<td>
+		
+		<?php 
+								
+		$temp_field->type = 'select';
+		$temp_field->input_name = 'acf[fields]['.$key.'][options][layout]';
+		$temp_field->input_class = 'type';
+		$temp_field->value = $options['layout'];
+		$temp_field->options = array('choices' => array(
+			'table'	=>	'Table (default)',
+			'row'	=>	'Row'
+		));
+		
+		$this->parent->create_field($temp_field);
+	
+		?>
+	
+	</td>
 </tr>
 <?php
 }
@@ -310,6 +356,13 @@ class acf_Repeater
 				continue;
 			}
 			
+			// defaults
+			if(!isset($field['label'])) { $field['label'] = ""; }
+			if(!isset($field['name'])) { $field['label'] = ""; }
+			if(!isset($field['type'])) { $field['label'] = "text"; }
+			if(!isset($field['options'])) { $field['options'] = array(); }
+			
+			
 			// format options if needed
 			if(method_exists($this->parent->fields[$field['type']], 'format_options'))
 			{
@@ -328,6 +381,8 @@ class acf_Repeater
 				'options'	=>	serialize($field['options']),
 				
 			);
+			
+			
 			// options does save. Choices is being overriden by other field options that use the same key name
 			// update js to disable all other options
 			
