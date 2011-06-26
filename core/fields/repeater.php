@@ -41,11 +41,17 @@ class acf_Repeater
 			<?php if($layout == 'table'): ?>
 			<thead>
 				<tr>
+					<?php if($row_limit > 1): ?>
 					<th class="order"><!-- order --></th>
+					<?php endif; ?>
+					
 					<?php foreach($sub_fields as $sub_field):?>
 					<th class="<?php echo $sub_field->name; ?>"><span><?php echo $sub_field->label; ?></span></th>
 					<?php endforeach; ?>
+					
+					<?php if($row_limit > 1): ?>
 					<th class="remove"></th>
+					<?php endif; ?>
 				</tr>
 			</thead>
 			<?php endif; ?>
