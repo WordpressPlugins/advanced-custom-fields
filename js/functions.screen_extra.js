@@ -20,15 +20,20 @@
 		});
 		
 		$('#screen-meta-links a#screen-meta-activate-acf-link').unbind('click').click(function() {
+			
 			var a = $(this);
+			var div = a.parent();
+			
 			$(a.attr('href')+'-wrap').slideToggle('fast', function() {
-				if (a.hasClass('screen-meta-shown')) {
-					a.css({'background-position':'right top'}).removeClass('screen-meta-shown');
-					$('.screen-meta-toggle').css('visibility', 'visible');
+				if (div.hasClass('screen-meta-active')) {
+					div.removeClass('screen-meta-active');
+					//a.css({'background-position':'right top'}).removeClass('screen-meta-shown');
+					div.siblings().css('visibility', 'visible');
 				}
 				else {
-					$('.screen-meta-toggle').css('visibility', 'hidden');
-					a.css({'background-position':'right bottom'}).addClass('screen-meta-shown').parent().css('visibility', 'visible');
+					div.addClass('screen-meta-active');
+					div.siblings().css('visibility', 'hidden');
+					//a.css({'background-position':'right bottom'}).addClass('screen-meta-shown').parent().css('visibility', 'visible');
 				}
 			});
 			return false;

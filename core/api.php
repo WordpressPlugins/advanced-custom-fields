@@ -61,6 +61,10 @@ function get_acf($post_id = false)
 	{
 		$post_id = $post->ID;
 	}
+	elseif($post_id == "options")
+	{
+		$post_id = 0;
+	}
 	
 
     global $wpdb;
@@ -181,7 +185,16 @@ function get_field($field_name, $post_id = false)
 function the_field($field_name, $post_id = false)
 {
 	//echo 'field name: '.$field_name.', post id: '.$post_id;
-	echo get_field($field_name, $post_id);
+	$value = get_field($field_name, $post_id);
+	
+	if(is_array($value))
+	{
+		$value = @implode(', ',$value);
+	}
+	
+	echo $value;
+	
+	
 }
 
 
@@ -242,7 +255,14 @@ function get_sub_field($field_name, $field = false)
 // get sub field
 function the_sub_field($field_name, $field = false)
 {
-	echo get_sub_field($field_name, $field);
+	$value = get_sub_field($field_name, $field);
+	
+	if(is_array($value))
+	{
+		$value = implode(', ',$value);
+	}
+	
+	echo $value;
 }
 
 

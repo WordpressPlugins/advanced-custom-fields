@@ -15,9 +15,6 @@ class acf_Image
 		add_action('admin_head-media-upload-popup', array($this, 'popup_head'));
 		add_filter('media_send_to_editor', array($this, 'media_send_to_editor'), 15, 2 );
 		//add_action('admin_init', array($this, 'admin_init'));
-		
-		add_action('admin_print_scripts', array($this, 'my_admin_scripts'));
-		add_action('admin_print_styles', array($this, 'my_admin_styles'));
 
 	}
 	
@@ -57,23 +54,7 @@ class acf_Image
 		<?php
 	}
 
-	
-	
-	/*---------------------------------------------------------------------------------------------
-	 * admin_print_scripts / admin_print_styles
-	 *
-	 * @author Elliot Condon
-	 * @since 2.0.1
-	 * 
-	 ---------------------------------------------------------------------------------------------*/
-	function my_admin_scripts() {
-		wp_enqueue_script('media-upload');
-		wp_enqueue_script('thickbox');
-	}
-	
-	function my_admin_styles() {
-		wp_enqueue_style('thickbox');
-	}
+
 	 
 	/*---------------------------------------------------------------------------------------------
 	 * popup_head - STYLES MEDIA THICKBOX

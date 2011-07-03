@@ -12,6 +12,13 @@
 				</tr>
 			</thead>
 			<tbody>
+				<?php
+				/*--------------------------------------------------------------------------------------
+				*
+				*	Repeater Field
+				*
+				*-------------------------------------------------------------------------------------*/
+				?>
 				<tr>
 					<td><?php _e("Repeater",'acf'); ?></td>
 					<td><?php if(array_key_exists('repeater', $this->activated_fields)){
@@ -32,6 +39,38 @@
 							{
 								echo '<input type="text" name="acf_ac" value="" />';
 								echo '<input type="hidden" name="acf_field_activate" value="repeater" />';
+								echo '<input type="submit" class="button" value="Activate" />';
+							} ?>
+						</form>
+					</td>
+				</tr>
+				<?php
+				/*--------------------------------------------------------------------------------------
+				*
+				*	Options Page
+				*
+				*-------------------------------------------------------------------------------------*/
+				?>
+				<tr>
+					<td><?php _e("Options Page",'acf'); ?></td>
+					<td><?php if(array_key_exists('options_page', $this->activated_fields)){
+						_e("Active",'acf');
+					}
+					else
+					{
+						_e("Inactive",'acf');
+					} ?></td>
+					<td>
+						<form action="" method="post">
+							<?php if(array_key_exists('options_page', $this->activated_fields)){
+								echo '<span class="activation_code">XXXX-XXXX-XXXX-'.substr($this->activated_fields['options_page'],-4) .'</span>';
+								echo '<input type="hidden" name="acf_field_deactivate" value="options_page" />';
+								echo '<input type="submit" class="button" value="Deactivate" />';
+							}
+							else
+							{
+								echo '<input type="text" name="acf_ac" value="" />';
+								echo '<input type="hidden" name="acf_field_activate" value="options_page" />';
 								echo '<input type="submit" class="button" value="Activate" />';
 							} ?>
 						</form>

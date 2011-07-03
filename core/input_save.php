@@ -46,9 +46,9 @@ if(isset($_POST['input_meta_box']) && $_POST['input_meta_box'] == 'true')
 			);
 			
 			// if there is an id, this value already exists, so save it in the same ID spot
-			if($field['row_id'])
+			if($field['value_id'])
 			{
-				$data['id']	= $field['row_id'];
+				$data['id']	= $field['value_id'];
 			}
 			
 			

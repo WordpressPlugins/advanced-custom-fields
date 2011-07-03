@@ -16,11 +16,20 @@ if(isset($_POST['acf_field_deactivate']))
 	$this->fields = $this->_get_field_types();
 	
 	global $acf_message_field;
-	$acf_message_field = ucfirst($field);
+	
+	$acf_message_field = "";
+	if($field == "repeater")
+	{
+		$acf_message_field = "Repeater Field";
+	}
+	elseif($field == "options_page")
+	{
+		$acf_message_field = "Options Page";
+	}
 	
 	function my_admin_notice(){
 		global $acf_message_field;
-	    echo '<div class="updated below-h2" id="message"><p>'.$acf_message_field.' field deactivated</p></div>';
+	    echo '<div class="updated below-h2" id="message"><p>'.$acf_message_field.' deactivated</p></div>';
 	}
 	add_action('admin_notices', 'my_admin_notice');
 
@@ -44,7 +53,15 @@ if(isset($_POST['acf_field_activate']))
 	$new_count = count($this->activated_fields);
 	
 	global $acf_message_field;
-	$acf_message_field = ucfirst($field);
+	$acf_message_field = "";
+	if($field == "repeater")
+	{
+		$acf_message_field = "Repeater Field";
+	}
+	elseif($field == "options_page")
+	{
+		$acf_message_field = "Options Page";
+	}
 	
 	if($new_count == $old_count)
 	{
@@ -58,10 +75,16 @@ if(isset($_POST['acf_field_activate']))
 	{
 		function my_admin_notice(){
 			global $acf_message_field;
-		    echo '<div class="updated below-h2" id="message"><p>'.$acf_message_field.' field activated</p></div>';
+		    echo '<div class="updated below-h2" id="message"><p>'.$acf_message_field.' activated</p></div>';
 		}
 		add_action('admin_notices', 'my_admin_notice',$m);
 		
+		
+		// re make the optiosn page object
+		if($field == "options_page")
+		{
+			
+		}
 	}
 	
 	
@@ -69,7 +92,16 @@ if(isset($_POST['acf_field_activate']))
 }
 
 
-
+if(!array_key_exists('options_page', $this->activated_fields))
+{
+	?>
+	<style type="text/css">
+		#adminmenu li.menu-top#toplevel_page_acf-options {
+			display: none;
+		}
+	</style>
+	<?php
+}
 
 
 
@@ -82,6 +114,10 @@ $currentFile = $parts[count($parts) - 1];
 // only add html to post.php and post-new.php pages
 if($currentFile == 'post.php' || $currentFile == 'post-new.php')
 {
+	
+	// create tyn mce instance for wysiwyg
+	wp_tiny_mce();
+		
 		
 	if(get_post_type($post) == 'acf')
 	{

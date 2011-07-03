@@ -16,6 +16,16 @@
 			var tr = $(this).closest('tr');
 			var val = $(this).val();
 			
+			
+			// does it have options?
+			if(!$(this).find('option[value="options_page"]').exists())
+			{
+				//console.log('select: '+type+'. parent length: '+$(this).closest('.repeater').length);
+				$(this).append('<option value="options_page" disabled="true">Options Page (Unlock field with activation code)</option>');
+				
+			}
+			
+			
 			tr.find('td.value div').hide();
 			tr.find('td.value div [name]').attr('disabled', 'true');
 			

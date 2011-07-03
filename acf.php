@@ -2,8 +2,8 @@
 /*
 Plugin Name: Advanced Custom Fields
 Plugin URI: http://plugins.elliotcondon.com/advanced-custom-fields/
-Description: Comfpletely Customise your edit pages with an assortment of field types: Wysiwyg, Repeater, text, textarea, image, file, select, checkbox post type, page link and more! Hide unwanted metaboxes and assign to any edit page!
-Version: 2.0.3
+Description: Completely Customise your edit pages with an assortment of field types: Wysiwyg, Repeater, text, textarea, image, file, select, checkbox post type, page link and more! Hide unwanted metaboxes and assign to any edit page!
+Version: 2.0.4
 Author: Elliot Condon
 Author URI: http://www.elliotcondon.com/
 License: GPL
@@ -13,8 +13,15 @@ Copyright: Elliot Condon
 //ini_set('display_errors',1);
 //error_reporting(E_ALL|E_STRICT);
 
+
+include('core/options_page.php');
+
+
 $acf = new Acf();
+
+
 include('core/api.php');
+
 
 class Acf
 { 
@@ -26,6 +33,7 @@ class Acf
 	var $version;
 	var $fields;
 	var $activated_fields;
+	var $options_page;
 	
 	function Acf()
 	{
@@ -36,8 +44,9 @@ class Acf
 		$this->dir = plugins_url('',__FILE__);
 		$this->siteurl = get_bloginfo('url');
 		$this->wpadminurl = admin_url();
-		$this->version = '2.0.3';
+		$this->version = '2.0.4';
 		$this->activated_fields = $this->get_activated_fields();
+		$this->options_page = new Acf_options_page($this);
 		
 		
 		// set text domain
@@ -83,6 +92,7 @@ class Acf
 	{
 		include('core/update.php');
 	}
+	
 	 
 	/*---------------------------------------------------------------------------------------------
 	 * Init
@@ -103,9 +113,23 @@ class Acf
 		$parts = Explode('/', $currentFile);
 		$currentFile = $parts[count($parts) - 1];
 		
-		if($currentFile == 'edit.php' && $_GET['post_type'] == 'acf')
+		
+		if($currentFile == 'post.php' || $currentFile == 'post-new.php' || $currentFile == 'edit.php')
 		{
+			wp_enqueue_script('jquery');
+			wp_enqueue_script('jquery-ui-core');
+			
+			
+			// wysiwyg
+			wp_enqueue_script('media-upload');
 			wp_enqueue_script('thickbox');
+			wp_enqueue_script('word-count');
+			wp_enqueue_script('post');
+			wp_enqueue_script('editor');
+			
+			
+			// repeater
+			wp_enqueue_script('jquery-ui-sortable');
 		}
 	}
 	
@@ -115,7 +139,7 @@ class Acf
 		$parts = Explode('/', $currentFile);
 		$currentFile = $parts[count($parts) - 1];
 		
-		if($currentFile == 'edit.php' && $_GET['post_type'] == 'acf')
+		if($currentFile == 'post.php' || $currentFile == 'post-new.php' || $currentFile == 'edit.php')
 		{
 			wp_enqueue_style('thickbox');
 		}
@@ -608,6 +632,28 @@ class Acf
 		// return value
 		return $value;
 	}
+	
+	
+	/*---------------------------------------------------------------------------------------------
+	 * load_value_id_input
+	 *
+	 * @author Elliot Condon
+	 * @since 2.0.4
+	 * 
+	 ---------------------------------------------------------------------------------------------*/
+	 
+	function load_value_id_input($post_id, $field)
+	{
+		// set table name
+		global $wpdb;
+		$table_name = $wpdb->prefix.'acf_values';
+	 	
+	 	
+	 	// get row
+	 	$value = $wpdb->get_var("SELECT id FROM $table_name WHERE field_id = '$field->id' AND post_id = '$post_id'");
+	 	
+	 	return $value;
+	}
 
 	
 	
@@ -677,6 +723,17 @@ class Acf
 			if($md5 == "44146dd6d0f8873f34e4a0b75e5639f7")
 			{
 				$activated['repeater'] = get_option("acf_repeater_ac")." (Testing License)";
+			}
+		}
+		
+		
+		// options
+		if(get_option("acf_options_page_ac"))
+		{
+			$md5 = md5(get_option("acf_options_page_ac"));
+			if($md5 == "1fc8b993548891dc2b9a63ac057935d8")
+			{
+				$activated['options_page'] = get_option("acf_options_page_ac");
 			}
 		}
 		
@@ -813,6 +870,12 @@ class Acf
 		        		return true; 
 		        	}
 		        	
+		        	if($rule->value == "default" && !get_post_meta($post->ID,'_wp_page_template',true))
+		        	{
+		        		return true;
+		        	}
+		        	
+		        	
 		        	return false;
 		        }
 		        elseif($rule->operator == "!=")
@@ -939,6 +1002,32 @@ class Acf
 		        }
 		        
 		        break;
+		    
+		    // Options Page
+		    case "options_page":
+		        
+
+		        if($rule->operator == "==")
+		        {
+		        	if(get_admin_page_title() == $rule->value)
+		        	{
+		        		return true;
+		        	}
+		        	
+		        	return false;
+		        }
+		        elseif($rule->operator == "!=")
+		        {
+		        	if(get_admin_page_title() != $rule->value)
+		        	{
+		        		return true;
+		        	}
+		        	
+		        	return false;
+		        }
+		        
+		        break;
+		    
 
 		}
 	}

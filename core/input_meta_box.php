@@ -99,6 +99,7 @@
 			
 			
 			// set value, id and name for field
+			$field->value_id = $this->load_value_id_input($post->ID, $field);
 			$field->value = $this->load_value_for_input($post->ID, $field);
 			$field->input_name = 'acf['.$i.'][value]';
 			$field->input_class = '';
@@ -108,7 +109,7 @@
 			
 				echo '<input type="hidden" name="acf['.$i.'][field_id]" value="'.$field->id.'" />';
 				echo '<input type="hidden" name="acf['.$i.'][field_type]" value="'.$field->type.'" />';
-				
+				echo '<input type="hidden" name="acf['.$i.'][value_id]" value="'.$field->value_id.'" />';
 				
 				if($field->save_as_cf == 1)
 				{

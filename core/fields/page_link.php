@@ -54,7 +54,7 @@ class acf_Page_link
 		{
 			echo '<select id="'.$field->input_name.'" class="'.$field->input_class.'" name="'.$field->input_name.'" >';	
 			// add top option
-			echo '<option value="null">- '.__("Select Option",'acf').' -</option>';
+			//echo '<option value="null">- '.__("Select Option",'acf').' -</option>';
 		}
 		
 		

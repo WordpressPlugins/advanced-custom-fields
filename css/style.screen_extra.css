@@ -47,21 +47,31 @@
 /*--------------------------------------------------------------------------------------------
 	Unlock Fields
 --------------------------------------------------------------------------------------------*/
-.screen-meta-toggle.acf {
+#screen-meta-links .screen-meta-toggle.acf {
 	float: right;
-	background: none repeat scroll 0 0 #EAF2FA;
+	background: none repeat scroll 0 0 #F9F9F9;
     border-radius: 0 0 3px 3px;
     float: right;
     font-family: "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
     height: 22px;
     margin: 0 6px 0 0;
-    padding: 0;
+    position: relative;
+    border: #DFDFDF solid 1px;
+    border-top: 0 none;
+    padding: 0 3px;
+   
 }
 
 #screen-meta-links .acf a.show-settings {
 	padding: 0 16px;
-	background: 0 none;
 	border-top: 0 none;
+	color: #21759B;
+	padding: 0 20px 0 10px;
+	text-shadow: #fff 0 1px 0;
+}
+
+#screen-meta-links .acf.screen-meta-active {
+	margin-top: -1px;
 }
 
 .screen-meta-wrap h5 {
@@ -69,8 +79,8 @@
 	font-size: 13px;
 }
 .screen-meta-wrap {
-	background: #EAF2FA;
-	border: #ccdbea solid 1px;
+	background-color: #F9F9F9;
+	border: #DFDFDF solid 1px;
 	border-top: 0 none;
 	margin: 0 15px;
 	padding: 8px 12px 12px;

@@ -51,8 +51,13 @@
 								'page_template'	=>	'Page Template',
 								'post'			=>	'Post',
 								'post_category'	=>	'Post Category',
-								'user_type'		=>	'User Type'
+								'user_type'		=>	'User Type',
 							));		
+							
+							if(array_key_exists('options_page', $this->activated_fields))
+							{
+								$temp_field->options['choices']['options_page'] = "Options Page";
+							}
 							
 							$this->create_field($temp_field); 
 							
@@ -215,6 +220,22 @@
 									'editor' => 'Editor', 
 									'author' => 'Author', 
 									'contributor' => 'contributor'
+								);
+								
+								$temp_field->options = array(
+									'choices' => $choices, 
+								);
+								
+								$this->create_field($temp_field); 
+								
+								?>
+							</div>
+							<div rel="options_page">
+							
+								<?php 
+									
+								$choices = array(
+									'acf_options' => 'Options', 
 								);
 								
 								$temp_field->options = array(

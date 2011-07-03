@@ -81,6 +81,14 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 == Changelog ==
 
+= 2.0.4 = 
+* New Addon: Options Page (available on the plugins store: http://plugins.elliotcondon.com/shop/) 
+* API: all functions now accept 'options' as a second parameter to target the options page
+* API: the_field() now implodes array's and returns as a string separated by comma's
+* Fixed Bug: Image upload should now work on post types without editor
+* Fixed Bug: Location rule now returns true if page_template is set to 'Default' and a new page is created
+* General Housekeeping
+
 = 2.0.3 =
 * Added Option: Repeater Layout (Row / Table)
 * Fixed bug: Now you can search for media in the image / file fields

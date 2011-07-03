@@ -398,14 +398,22 @@
 	-------------------------------------------*/
 	$(document).ready(function(){
 		
+		
 		post_id = $('form#post input#post_ID').val();
-		var div = $('.postbox#acf_input');
+		var div = $('#acf_input');
 		
 		
 		if(typeof(tinyMCE) != "undefined")
 		{
-			tinyMCE.settings.theme_advanced_buttons1 += ",|,add_image,add_video,add_audio,add_media";
-			tinyMCE.settings.theme_advanced_buttons2 += ",code";
+			if(tinyMCE.settings.theme_advanced_buttons1)
+			{
+				tinyMCE.settings.theme_advanced_buttons1 += ",|,add_image,add_video,add_audio,add_media";
+			}
+			
+			if(tinyMCE.settings.theme_advanced_buttons2)
+			{
+				tinyMCE.settings.theme_advanced_buttons2 += ",code";
+			}
 		}
 
 		
