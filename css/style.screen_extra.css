@@ -131,3 +131,11 @@ table.acf_activate input[type="submit"] {
 	margin-left: 5px;
 	margin-right: 5px;
 }
+
+
+/*--------------------------------------------------------------------------------------------
+	Import / Export
+--------------------------------------------------------------------------------------------*/
+#wpcontent select[multiple="multiple"] {
+    height: auto;
+}

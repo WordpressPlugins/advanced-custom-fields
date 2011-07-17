@@ -19,7 +19,7 @@
 			$('#screen-meta-links').before($(this));
 		});
 		
-		$('#screen-meta-links a#screen-meta-activate-acf-link').unbind('click').click(function() {
+		$('#screen-meta-links a.show-settings').unbind('click').click(function() {
 			
 			var a = $(this);
 			var div = a.parent();

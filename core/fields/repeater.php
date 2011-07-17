@@ -46,7 +46,7 @@ class acf_Repeater
 					<?php endif; ?>
 					
 					<?php foreach($sub_fields as $sub_field):?>
-					<th class="<?php echo $sub_field->name; ?>"><span><?php echo $sub_field->label; ?></span></th>
+					<th class="<?php echo $sub_field->name; ?>" style="width:<?php echo 100/count($sub_fields); ?>%;"><span><?php echo $sub_field->label; ?></span></th>
 					<?php endforeach; ?>
 					
 					<?php if($row_limit > 1): ?>

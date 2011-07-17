@@ -16,9 +16,7 @@ Copyright: Elliot Condon
 
 include('core/options_page.php');
 
-
 $acf = new Acf();
-
 
 include('core/api.php');
 
@@ -59,6 +57,8 @@ class Acf
 		
 		// add actions
 		add_action('init', array($this, '_init'));
+		add_action('init', array($this, 'import'));
+		add_action('init', array($this, 'export'));
 		add_action('admin_head', array($this,'_admin_head'));
 		add_action('admin_menu', array($this,'_admin_menu'));
 		add_action('save_post', array($this, '_save_post'));
@@ -105,6 +105,7 @@ class Acf
 	{	
 		// create acf post type
 		$this->_acf_post_type();
+		
 	}
 	
 	function _admin_print_scripts()
@@ -165,11 +166,12 @@ class Acf
 		if ($flag != 0) return $post_id;
 		$flag = 1;
 		
+
 		// set post ID if is a revision
-		if(wp_is_post_revision($post_id)) 
+		/*if(wp_is_post_revision($post_id)) 
 		{
 			$post_id = wp_is_post_revision($post_id);
-		}
+		}*/
 		
 		// delete _acf custom fields if needed
 		if(isset($_POST['fields_meta_box']) || isset($_POST['location_meta_box']) || isset($_POST['input_meta_box']))
@@ -1033,5 +1035,189 @@ class Acf
 	}
 
 	
+	
+	/*----------------------------------------------------------------------
+	*
+	*	export
+	*
+	*---------------------------------------------------------------------*/
+	
+	function export()
+	{
+		if(!isset($_POST['acf_export']))
+		{
+			return;
+		}
+		
+		
+		// get the acfs to save
+		$acfs =  isset($_POST['acf_objects']) ? $_POST['acf_objects'] : null;
+		
+		
+		// quick function for writing an array
+		function echo_value_xml($value)
+		{
+			if(!is_array($value))
+			{
+				echo $value;
+			}
+			else
+			{
+				echo '<array>';
+				foreach($value as $k => $v)
+				{
+					echo '<piece key="'.$k.'">'.$v.'</piece>';
+				}
+				echo '</array>';
+			}
+		}
+		
+		// save as file
+		header( 'Content-Description: File Transfer' );
+		header( 'Content-Disposition: attachment; filename=advanced-custom-fields.xml' );
+		header( 'Content-Type: text/xml; charset=' . get_option( 'blog_charset' ), true );
+		
+		
+		
+		// display document in browser as plain text
+		//header("Content-Type: text/plain");
+		echo '<?xml version="1.0"?> ';
+		?>
+
+<?php if($acfs): ?>
+<posts>
+<?php 
+	foreach($acfs as $acf): 
+	$post = get_post($acf); 
+	$fields = $this->get_fields($post->ID);
+	$location = $this->get_acf_location($post->ID);
+	$options = $this->get_acf_options($post->ID);	
+	
+?>
+	<post>
+		<title><?php echo apply_filters( 'the_title_rss', $post->post_title ); ?></title>
+		<post_status><?php echo $post->post_status; ?></post_status>
+		<post_parent><?php echo $post->post_parent; ?></post_parent>
+		<menu_order><?php echo $post->menu_order; ?></menu_order>
+		<fields>
+<?php		if($fields):
+			foreach($fields as $field): ?>
+			<field>
+				<label><?php echo $field->label; ?></label>
+				<name><?php echo $field->name; ?></name>
+				<type><?php echo $field->type; ?></type>
+				<options>
+<?php				if($field->options):
+					foreach($field->options as $k => $option):
+					if($k == 'sub_fields'): ?>
+					<<?php echo $k; ?>>
+<?php					foreach($field->options['sub_fields'] as $sub_field): ?>
+						<field>
+							<label><?php echo $sub_field->label; ?></label>
+							<name><?php echo $sub_field->name; ?></name>
+							<type><?php echo $sub_field->type; ?></type>
+							<options>
+<?php							if($sub_field->options):
+								foreach($sub_field->options as $k2 => $option2): ?>
+								<<?php echo $k2; ?>><?php echo_value_xml($option2); ?></<?php echo $k2; ?>>
+<?php							endforeach;
+								endif; ?>
+							</options>
+						</field>
+<?php 					endforeach; ?>
+					</<?php echo $k; ?>>
+<?php				else: ?>
+					<<?php echo $k; ?>><?php echo_value_xml($option); ?></<?php echo $k; ?>>
+<?php				endif;
+					endforeach;
+					endif; ?>
+				</options>
+				<instructions><?php echo $field->instructions ?></instructions>
+				<save_as_cf><?php echo $field->save_as_cf; ?></save_as_cf>
+			</field>
+<?php 		endforeach;
+			endif; ?>
+		</fields>
+		<location>
+<?php		if($location->rules):
+			foreach($location->rules as $k => $rule): ?>
+			<rule>
+				<param><?php echo $rule->param; ?></param>
+				<operator><?php echo $rule->operator; ?></operator>
+				<value><?php echo $rule->value; ?></value>
+			</rule>
+<?php		endforeach;
+			endif; ?>
+			<allorany><?php echo $location->allorany; ?></allorany>
+		</location>
+		<options>
+			<show_on_page><?php echo_value_xml($options->show_on_page); ?></show_on_page>
+			<field_group_layout><?php echo $options->field_group_layout; ?></field_group_layout>
+		</options>
+	</post>
+<?php endforeach; ?>
+</posts>
+<?php 	
+		endif;
+				
+		die;
+	}
+	
+	
+	
+	/*----------------------------------------------------------------------
+	*
+	*	import
+	*
+	*---------------------------------------------------------------------*/
+	
+	function import()
+	{
+		// Checkpoint: Did someone submit the form
+		if(isset($_POST['acf_import']))
+		{
+			include('core/import.php');
+		}
+	}
+	
+
+	/*----------------------------------------------------------------------
+	*
+	*	Admin Error
+	*
+	*---------------------------------------------------------------------*/
+	
+	function admin_error($message = "")
+	{
+		global $acf_mesage;
+		$acf_mesage = $message;
+
+		function my_admin_notice()
+		{
+			global $acf_mesage;
+		    echo '<div class="error fade" id="message"><p>'.$acf_mesage.'</p></div>';
+		}
+		add_action('admin_notices', 'my_admin_notice');
+	}
+	
+	
+	/*----------------------------------------------------------------------
+	*
+	*	Admin Message
+	*
+	*---------------------------------------------------------------------*/
+	
+	function admin_message($message = "")
+	{
+		global $acf_mesage;
+		$acf_mesage = $message;
+		
+		function my_admin_notice()
+		{
+			global $acf_mesage;
+		    echo '<div class="updated fade" id="message"><p>'.$acf_mesage.'</p></div>';
+		}
+		add_action('admin_notices', 'my_admin_notice');
+	}
 }
 

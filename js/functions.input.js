@@ -40,6 +40,8 @@
 		$(this).datepicker({ 
 			dateFormat: format 
 		});
+		
+		$('#ui-datepicker-div').wrap('<div class="acf_datepicker" />');
 	};
 	
 	
@@ -57,7 +59,7 @@
 			
 			
 			// show the thickbox
-			tb_show('Add Image to field', 'media-upload.php?post_id='+post_id+'&type=image&acf_type=image&TB_iframe=1');
+			tb_show('Add Image to field', 'media-upload.php?type=image&acf_type=image&TB_iframe=1');
 			
 				
 			return false;
@@ -89,7 +91,7 @@
 			
 			
 			// show the thickbox
-			tb_show('Add File to field', 'media-upload.php?post_id='+post_id+'&type=file&acf_type=file&TB_iframe=1');
+			tb_show('Add File to field', 'media-upload.php?type=file&acf_type=file&TB_iframe=1');
 			
 			
 			return false;

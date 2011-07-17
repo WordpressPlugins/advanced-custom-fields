@@ -268,6 +268,9 @@ table.acf_input tr td .acf tr td {
 ---------------------------------------------------------------------------------------------*/
 .field_form_mask {
 	display: none;
+	width: 100%;
+	position: relative;
+	overflow: hidden;
 }
 
 .field_form {

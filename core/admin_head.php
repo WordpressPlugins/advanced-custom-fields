@@ -3,20 +3,27 @@
 global $post;
 
 
-// deactivate field
+
+/*----------------------------------------------------------------------
+*
+*	deactivate_field
+*
+*---------------------------------------------------------------------*/
+
 if(isset($_POST['acf_field_deactivate']))
 {
-	// a field was deactivated
+	// delete field
 	$field = $_POST['acf_field_deactivate'];
 	$option = 'acf_'.$field.'_ac';
 	delete_option($option);
+	
 	
 	// update activated fields
 	$this->activated_fields = $this->get_activated_fields();
 	$this->fields = $this->_get_field_types();
 	
-	global $acf_message_field;
 	
+	//set message
 	$acf_message_field = "";
 	if($field == "repeater")
 	{
@@ -27,24 +34,31 @@ if(isset($_POST['acf_field_deactivate']))
 		$acf_message_field = "Options Page";
 	}
 	
-	function my_admin_notice(){
-		global $acf_message_field;
-	    echo '<div class="updated below-h2" id="message"><p>'.$acf_message_field.' deactivated</p></div>';
-	}
-	add_action('admin_notices', 'my_admin_notice');
-
+	
+	// show message on page
+	$this->admin_message($acf_message_field.' deactivated');
+	
 }
 
 
-// activate field
-if(isset($_POST['acf_field_activate']))
+
+/*----------------------------------------------------------------------
+*
+*	activate_field
+*
+*---------------------------------------------------------------------*/
+
+if(isset($_POST['acf_field_activate']) && isset($_POST['acf_ac']))
 {
-	// a field was deactivated
+	
 	$field = $_POST['acf_field_activate'];
 	$ac = $_POST['acf_ac'];
 	
+	
+	// update option
 	$option = 'acf_'.$field.'_ac';
 	update_option($option, $ac);
+	
 	
 	// update activated fields
 	$old_count = count($this->activated_fields);
@@ -52,6 +66,8 @@ if(isset($_POST['acf_field_activate']))
 	$this->fields = $this->_get_field_types();
 	$new_count = count($this->activated_fields);
 	
+	
+	// set message
 	global $acf_message_field;
 	$acf_message_field = "";
 	if($field == "repeater")
@@ -63,34 +79,28 @@ if(isset($_POST['acf_field_activate']))
 		$acf_message_field = "Options Page";
 	}
 	
+	
+	// show message
 	if($new_count == $old_count)
 	{
-		function my_admin_notice(){
-		    echo '<div class="updated below-h2" id="message"><p>Activation code unrecognized</p></div>';
-		}
-		add_action('admin_notices', 'my_admin_notice');
-		
+		$this->admin_message('Activation code unrecognized');
 	}
 	else
 	{
-		function my_admin_notice(){
-			global $acf_message_field;
-		    echo '<div class="updated below-h2" id="message"><p>'.$acf_message_field.' activated</p></div>';
-		}
-		add_action('admin_notices', 'my_admin_notice',$m);
-		
-		
-		// re make the optiosn page object
-		if($field == "options_page")
-		{
-			
-		}
+		$this->admin_message($acf_message_field.' activated');
 	}
 	
 	
 	
 }
 
+
+
+/*----------------------------------------------------------------------
+*
+*	Options
+*
+*---------------------------------------------------------------------*/
 
 if(!array_key_exists('options_page', $this->activated_fields))
 {
@@ -104,7 +114,6 @@ if(!array_key_exists('options_page', $this->activated_fields))
 }
 
 
-
 // get current page
 $currentFile = $_SERVER["SCRIPT_NAME"];
 $parts = Explode('/', $currentFile);
@@ -115,10 +124,6 @@ $currentFile = $parts[count($parts) - 1];
 if($currentFile == 'post.php' || $currentFile == 'post-new.php')
 {
 	
-	// create tyn mce instance for wysiwyg
-	wp_tiny_mce();
-		
-		
 	if(get_post_type($post) == 'acf')
 	{
 	
@@ -193,54 +198,6 @@ if($currentFile == 'post.php' || $currentFile == 'post-new.php')
 						}
 					}
 				}
-				
-				//$options = $this->get_acf_options($acf->ID);
-				/*
-				
-				// post type
-				if(in_array(get_post_type($post), $location->post_types)) {$add_box = true; }
-				
-				
-				// page title
-				if(in_array($post->post_title, $location->page_titles)) {$add_box = true; }
-				
-				
-				// page slug
-				if(in_array($post->post_name, $location->page_slugs)) {$add_box = true; }
-				
-				
-				// post id
-				if(in_array($post->ID, $location->post_ids)) {$add_box = true; }
-				
-				
-				// page template
-				if(in_array(get_post_meta($post->ID,'_wp_page_template',true), $location->page_templates)) {$add_box = true; }
-				
-				
-				// page parents
-				if(in_array($post->post_parent, $location->page_parents)) {$add_box = true; }
-				
-				// category names
-				$cats = get_the_category(); 
-				if($cats)
-				{
-					foreach($cats as $cat)
-					{
-						if(in_array($cat->name, $location->category_names)) {$add_box = true; }
-					}
-				}
-				
-				
-				
-				// current user role
-				global $current_user;
-				get_currentuserinfo();
-				if(!empty($options->user_roles))
-				{
-					if(!in_array($current_user->user_level, $options->user_roles)) {$add_box = false; }
-				}
-				
-				*/
 							
 				if($add_box == true)
 				{
@@ -251,16 +208,26 @@ if($currentFile == 'post.php' || $currentFile == 'post-new.php')
 			
 			if(!empty($add_acf))
 			{
+			
+				// create tyn mce instance for wysiwyg
+				$post_type = get_post_type($post);
+				if(!post_type_supports($post_type, 'editor'))
+				{
+					wp_tiny_mce();
+				}
+
+
 				// add these acf's to the page
 				echo '<link rel="stylesheet" type="text/css" href="'.$this->dir.'/css/style.global.css" />';
 				echo '<link rel="stylesheet" type="text/css" href="'.$this->dir.'/css/style.input.css" />';
 				echo '<script type="text/javascript" src="'.$this->dir.'/js/functions.input.js" ></script>';
 				
+				
 				// date picker!
 				echo '<link rel="stylesheet" type="text/css" href="'.$this->dir.'/core/fields/date_picker/style.date_picker.css" />';
 				echo '<script type="text/javascript" src="'.$this->dir.'/core/fields/date_picker/jquery.ui.datepicker.js" ></script>';
 					
-				add_meta_box('acf_input', 'ACF Fields', array($this, '_input_meta_box'), get_post_type($post), 'normal', 'high', array('acfs' => $add_acf));
+				add_meta_box('acf_input', 'ACF Fields', array($this, '_input_meta_box'), $post_type, 'normal', 'high', array('acfs' => $add_acf));
 			}
 			
 		}// end if

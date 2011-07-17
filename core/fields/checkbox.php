@@ -104,7 +104,7 @@ class acf_Checkbox
 	function format_options($options)
 	{	
 		// if no choices, dont do anything
-		if($options['choices'] == '')
+		if(!$options['choices'] || is_array($options['choices']))
 		{
 			return $options;
 		}

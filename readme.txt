@@ -81,6 +81,12 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 == Changelog ==
 
+= 2.0.5 =
+* New Feature: Import / Export
+* Bug Fixed: Wysiwyg javascript conflicts
+* Bug Fixed: Wysiwyg popups conflicting with the date picker field
+* New style for the date picker field
+
 = 2.0.4 = 
 * New Addon: Options Page (available on the plugins store: http://plugins.elliotcondon.com/shop/) 
 * API: all functions now accept 'options' as a second parameter to target the options page
