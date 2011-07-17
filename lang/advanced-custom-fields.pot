@@ -1,0 +1,402 @@
+# Copyright (C) 2010 
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version:  \n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/advanced-custom-fields\n"
+"POT-Creation-Date: 2011-06-04 05:22:03+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2010-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: acf.php:187
+msgid "Adv Custom Fields"
+msgstr ""
+
+#: acf.php:191 core/acf_post_type.php:4
+msgid "Advanced&nbsp;Custom&nbsp;Fields"
+msgstr ""
+
+#: acf.php:282 acf.php:300
+msgid "Error: Field Type does not exist!"
+msgstr ""
+
+#: core/fields_meta_box.php:36 core/fields/repeater.php:140
+msgid "Field Order"
+msgstr ""
+
+#: core/fields_meta_box.php:37 core/fields_meta_box.php:87
+#: core/fields/repeater.php:141
+msgid "Field Label"
+msgstr ""
+
+#: core/fields_meta_box.php:38 core/fields_meta_box.php:107
+#: core/fields/repeater.php:142
+msgid "Field Name"
+msgstr ""
+
+#: core/fields_meta_box.php:39 core/fields_meta_box.php:126
+#: core/fields/repeater.php:143
+msgid "Field Type"
+msgstr ""
+
+#: core/fields_meta_box.php:46
+msgid "No fields. Click the \"+ Add Field button\" to create your first field."
+msgstr ""
+
+#: core/fields_meta_box.php:62
+msgid "Edit"
+msgstr ""
+
+#: core/fields_meta_box.php:63
+msgid "Delete"
+msgstr ""
+
+#: core/fields_meta_box.php:88
+msgid "This is the name which will appear on the EDIT page"
+msgstr ""
+
+#: core/fields_meta_box.php:108
+msgid "Single word, no spaces. Underscores and dashes allowed"
+msgstr ""
+
+#: core/fields_meta_box.php:143
+msgid "Field Instructions"
+msgstr ""
+
+#: core/fields_meta_box.php:144
+msgid "Instructions for authors. Shown when submitting data"
+msgstr ""
+
+#: core/fields_meta_box.php:161
+msgid "Is field searchable?"
+msgstr ""
+
+#: core/fields_meta_box.php:170
+msgid "Save this field's value as a standard WordPress Custom Field"
+msgstr ""
+
+#: core/fields_meta_box.php:205
+msgid "+ Add Field"
+msgstr ""
+
+#: core/options_meta_box.php:18
+msgid "Show on page"
+msgstr ""
+
+#: core/options_meta_box.php:43
+msgid ""
+"Select the metaboxes you wish to keep on your edit screen.<br />\n"
+"\t\t\tTip: This is useful to customise the edit screen"
+msgstr ""
+
+#: core/options_meta_box.php:49
+msgid "Show only for specific users"
+msgstr ""
+
+#: core/options_meta_box.php:71
+msgid ""
+"Select user types to give them access to this ACF<br />\n"
+"\t\t\tTip: If no user types are selected, all user's will have access to "
+"this ACF"
+msgstr ""
+
+#: core/screen_extra.php:63
+msgid "Advanced Custom Fields v"
+msgstr ""
+
+#: core/screen_extra.php:64
+msgid "see what's new"
+msgstr ""
+
+#: core/screen_extra.php:75
+msgid "User Guide + Code Examples"
+msgstr ""
+
+#: core/screen_extra.php:75
+msgid "Visit the Plugin Website"
+msgstr ""
+
+#: core/screen_extra.php:85
+msgid "Need Help?"
+msgstr ""
+
+#: core/screen_extra.php:85
+msgid "Visit the Support Forum"
+msgstr ""
+
+#: core/screen_extra.php:98
+msgid "Help fund future development"
+msgstr ""
+
+#: core/screen_extra.php:111
+msgid "Created by"
+msgstr ""
+
+#: core/acf_post_type.php:5
+msgid "Advanced Custom Fields"
+msgstr ""
+
+#: core/acf_post_type.php:6
+msgid "Add New"
+msgstr ""
+
+#: core/acf_post_type.php:7
+msgid "Add New Advanced Custom Field Group"
+msgstr ""
+
+#: core/acf_post_type.php:8
+msgid "Edit Advanced Custom Field Group"
+msgstr ""
+
+#: core/acf_post_type.php:9
+msgid "New Advanced Custom Field Group"
+msgstr ""
+
+#: core/acf_post_type.php:10
+msgid "View Advanced Custom Field Group"
+msgstr ""
+
+#: core/acf_post_type.php:11
+msgid "Search Advanced Custom Field Groups"
+msgstr ""
+
+#: core/acf_post_type.php:12
+msgid "No Advanced Custom Field Groups found"
+msgstr ""
+
+#: core/acf_post_type.php:13
+msgid "No Advanced Custom Field Groups found in Trash"
+msgstr ""
+
+#: core/location_meta_box.php:16
+msgid "Enter values in the fields below to add this ACF to an edit screen"
+msgstr ""
+
+#: core/location_meta_box.php:18
+msgid "The values you enter bellow will be used to match against edit screens"
+msgstr ""
+
+#: core/location_meta_box.php:19
+msgid ""
+"If <strong>any</strong> of the values match the edit screen, this ACF will "
+"be used"
+msgstr ""
+
+#: core/location_meta_box.php:20
+msgid "Blank fields will be ignored"
+msgstr ""
+
+#: core/location_meta_box.php:21
+msgid ""
+"Use the override to remove all previous ACF's form an edit screen. This is "
+"useful for creating an ACF for all normal pages, and then creating a custom "
+"ACF for a home page (page title = 'Home'). Please note that the home page "
+"ACF needs a higher page order to remove ACF's before it"
+msgstr ""
+
+#: core/location_meta_box.php:32
+msgid "Post Type's"
+msgstr ""
+
+#: core/location_meta_box.php:33
+msgid ""
+"Selecting a post type here will add this ACF to <strong>all</strong> edit "
+"screens of that post type."
+msgstr ""
+
+#: core/location_meta_box.php:67
+msgid "Page Title's"
+msgstr ""
+
+#: core/location_meta_box.php:68
+msgid "eg. Home, About Us"
+msgstr ""
+
+#: core/location_meta_box.php:88
+msgid "Page Slug's"
+msgstr ""
+
+#: core/location_meta_box.php:89
+msgid "eg. home, about-us"
+msgstr ""
+
+#: core/location_meta_box.php:109
+msgid "Post ID's"
+msgstr ""
+
+#: core/location_meta_box.php:110 core/location_meta_box.php:152
+msgid "eg. 1, 2, 3"
+msgstr ""
+
+#: core/location_meta_box.php:130
+msgid "Page Template's"
+msgstr ""
+
+#: core/location_meta_box.php:131
+msgid "eg. home_page.php"
+msgstr ""
+
+#: core/location_meta_box.php:151
+msgid "Page Parent ID's"
+msgstr ""
+
+#: core/location_meta_box.php:172
+msgid "Category Names's"
+msgstr ""
+
+#: core/location_meta_box.php:173
+msgid "eg. News, Media, Uncategoriazed"
+msgstr ""
+
+#: core/location_meta_box.php:193
+msgid "Overrides"
+msgstr ""
+
+#: core/location_meta_box.php:194
+msgid ""
+"Tick this box to remove all other ACF's (from the edit screen where this ACF "
+"appears)"
+msgstr ""
+
+#: core/fields/post_object.php:12
+msgid "Post Object"
+msgstr ""
+
+#: core/fields/post_object.php:48 core/fields/page_link.php:57
+msgid "Select Option"
+msgstr ""
+
+#: core/fields/post_object.php:132 core/fields/page_link.php:144
+msgid "Post Type"
+msgstr ""
+
+#: core/fields/post_object.php:133 core/fields/page_link.php:145
+msgid ""
+"Filter posts by selecting a post type<br />\n"
+"\t\t\t\tTip: deselect all post types to show all post type's posts"
+msgstr ""
+
+#: core/fields/post_object.php:165
+msgid "Select multiple posts?"
+msgstr ""
+
+#: core/fields/date_picker/date_picker.php:12
+msgid "Date Picker"
+msgstr ""
+
+#: core/fields/date_picker/date_picker.php:32
+msgid "Date format"
+msgstr ""
+
+#: core/fields/date_picker/date_picker.php:33
+msgid "eg. dd/mm/yy. read more about"
+msgstr ""
+
+#: core/fields/text.php:11
+msgid "Text"
+msgstr ""
+
+#: core/fields/image.php:11
+msgid "Image"
+msgstr ""
+
+#: core/fields/image.php:82
+msgid "Select Image"
+msgstr ""
+
+#: core/fields/image.php:173
+msgid "No image selected"
+msgstr ""
+
+#: core/fields/image.php:173
+msgid "Add Image"
+msgstr ""
+
+#: core/fields/select.php:12
+msgid "Select"
+msgstr ""
+
+#: core/fields/select.php:89 core/fields/checkbox.php:74
+msgid "Choices"
+msgstr ""
+
+#: core/fields/select.php:90 core/fields/checkbox.php:75
+msgid ""
+"Enter your choices one per line<br />\n"
+"\t\t\t\t<br />\n"
+"\t\t\t\tRed<br />\n"
+"\t\t\t\tBlue<br />\n"
+"\t\t\t\t<br />\n"
+"\t\t\t\tor<br />\n"
+"\t\t\t\t<br />\n"
+"\t\t\t\tred : Red<br />\n"
+"\t\t\t\tblue : Blue"
+msgstr ""
+
+#: core/fields/select.php:107 core/fields/page_link.php:178
+msgid "Select multiple values?"
+msgstr ""
+
+#: core/fields/true_false.php:11
+msgid "True / False"
+msgstr ""
+
+#: core/fields/true_false.php:64
+msgid "Message"
+msgstr ""
+
+#: core/fields/true_false.php:65
+msgid "eg. Show extra content"
+msgstr ""
+
+#: core/fields/wysiwyg.php:11
+msgid "Wysiwyg Editor"
+msgstr ""
+
+#: core/fields/page_link.php:12
+msgid "Page Link"
+msgstr ""
+
+#: core/fields/repeater.php:13
+msgid "Repeater"
+msgstr ""
+
+#: core/fields/repeater.php:133
+msgid "Repeater Fields"
+msgstr ""
+
+#: core/fields/repeater.php:272
+msgid "Row Limit"
+msgstr ""
+
+#: core/fields/checkbox.php:11
+msgid "Checkbox"
+msgstr ""
+
+#: core/fields/textarea.php:11
+msgid "Text Area"
+msgstr ""
+
+#: core/fields/file.php:11
+msgid "File"
+msgstr ""
+
+#: core/fields/file.php:83
+msgid "Select File"
+msgstr ""
+
+#: core/fields/file.php:151
+msgid "Remove File"
+msgstr ""
+
+#: core/fields/file.php:153
+msgid "No File selected"
+msgstr ""
+
+#: core/fields/file.php:153
+msgid "Add File"
+msgstr ""
