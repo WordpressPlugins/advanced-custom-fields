@@ -168,16 +168,18 @@ class Acf
 		
 
 		// set post ID if is a revision
-		/*if(wp_is_post_revision($post_id)) 
+		if(wp_is_post_revision($post_id)) 
 		{
 			$post_id = wp_is_post_revision($post_id);
-		}*/
+		}
+		
 		
 		// delete _acf custom fields if needed
 		if(isset($_POST['fields_meta_box']) || isset($_POST['location_meta_box']) || isset($_POST['input_meta_box']))
 		{
 			$this->delete_acf_custom_fields($post_id);
 		}
+		
 		
 		// include meta box save files
 		include('core/fields_save.php');
