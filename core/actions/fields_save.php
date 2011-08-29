@@ -4,12 +4,6 @@
 ---------------------------------------------------------------------------------------------*/
 if(isset($_POST['fields_meta_box']) &&  $_POST['fields_meta_box'] == 'true')
 {
-	
-    //echo '<pre>';
-	//print_r($_POST['acf']);
-	//echo '</pre>';
-	//die;
-    
     
 	// set table name
 	global $wpdb;
@@ -37,7 +31,7 @@ if(isset($_POST['fields_meta_box']) &&  $_POST['fields_meta_box'] == 'true')
 		if(!isset($field['type'])) { $field['label'] = "text"; }
 		if(!isset($field['options'])) { $field['options'] = array(); }
 		if(!isset($field['instructions'])) { $field['instructions'] = ""; }
-		if(!isset($field['save_as_cf'])) { $field['save_as_cf'] = ""; }
+		if(!isset($field['default_value'])) { $field['default_value'] = ""; }
 		
 		
 		// clean field
@@ -45,7 +39,7 @@ if(isset($_POST['fields_meta_box']) &&  $_POST['fields_meta_box'] == 'true')
 		
 		
 		// format options if needed
-		if(method_exists($this->fields[$field['type']], 'format_options'))
+		if($this->field_method_exists($field['type'], 'format_options'))
 		{
 			$field['options'] = $this->fields[$field['type']]->format_options($field['options']);
 		}
@@ -60,14 +54,14 @@ if(isset($_POST['fields_meta_box']) &&  $_POST['fields_meta_box'] == 'true')
 			'type'			=>	$field['type'],
 			'options'		=>	serialize($field['options']),
 			'instructions'	=>	$field['instructions'],
-			'save_as_cf'	=>	$field['save_as_cf'],
+			'default_value'	=>	$field['default_value'],
 		);
 		
 		
 		// if there is an id, this field already exists, so save it in the same ID spot
 		if($field['id'])
 		{
-			$data['id']	= $field['id'];
+			$data['id']	= (int) $field['id'];
 		}
 		
 		
@@ -76,7 +70,7 @@ if(isset($_POST['fields_meta_box']) &&  $_POST['fields_meta_box'] == 'true')
 		
 		
 		// save field if needed (used to save sub fields)
-		if(method_exists($this->fields[$field['type']], 'save_field'))
+		if($this->field_method_exists($field['type'], 'save_field'))
 		{
 			if($field['id'])
 			{

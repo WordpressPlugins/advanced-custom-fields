@@ -51,6 +51,7 @@
 								'page_template'	=>	'Page Template',
 								'post'			=>	'Post',
 								'post_category'	=>	'Post Category',
+								'post_format'	=>	'Post Format',
 								'user_type'		=>	'User Type',
 							));		
 							
@@ -144,9 +145,17 @@
 							<div rel="page_parent">
 								<?php 
 								$choices = array();
-								foreach(get_pages('parent=0&sort_column=menu_order&sort_order=desc') as $page)
+								foreach(get_pages('sort_column=menu_order&sort_order=desc') as $page)
 								{
-									$choices[$page->ID] = $page->post_title;
+									if($page->post_parent != 0)
+									{
+										$choices[$page->ID] = '- '.$page->post_title;
+									}
+									else
+									{
+										$choices[$page->ID] = $page->post_title;
+									}
+									
 								}
 								$temp_field->options = array(
 									'choices' => $choices, 
@@ -209,6 +218,25 @@
 								
 								$this->create_field($temp_field);
 								
+								?>
+							</div>
+							<div rel="post_format">
+								<?php 
+								$choices = array(
+									'0'			=>	'Standard',
+									'aside'		=>	'Aside',
+									'link'		=>	'Link',
+									'gallery'	=>	'Gallery',
+									'status'	=>	'Status',
+									'quote'		=>	'Quote',
+									'image'		=>	'Image',
+								);
+								
+								$temp_field->options = array(
+									'choices' => $choices, 
+								);
+								
+								$this->create_field($temp_field); 
 								?>
 							</div>
 							<div rel="user_type">

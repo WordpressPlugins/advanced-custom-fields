@@ -11,6 +11,8 @@
 	$field->name = 'new_field';
 	$field->type = 'text';
 	$field->options = array();
+	$field->instructions = '';
+	$field->default_value = '';
 	$fields[999] = $field;
 	
 
@@ -26,20 +28,27 @@
 <input type="hidden" name="fields_meta_box" value="true" />
 <input type="hidden" name="total_fields" value="<?php echo count($fields); ?>" />
 <input type="hidden" name="fields_limit" value="99" />
-
 <input type="hidden" name="ei_noncename" id="ei_noncename" value="<?php echo wp_create_nonce('ei-n'); ?>" />
 
-
-<table class="acf widefat">
-	<thead>
-		<tr>
-			<th class="field_order"><?php _e('Field Order','acf'); ?></th>
-			<th class="field_label"><?php _e('Field Label','acf'); ?></th>
-			<th class="field_name"><?php _e('Field Name','acf'); ?></th>
-			<th class="field_type"><?php _e('Field Type','acf'); ?></th>
-		</tr>
-	</thead>
-</table>
+<?php
+/*--------------------------------------------------------------------------------------
+*
+*	Fields Header
+* 
+*-------------------------------------------------------------------------------------*/
+?>
+<div class="fields_header">
+	<table class="acf widefat">
+		<thead>
+			<tr>
+				<th class="field_order"><?php _e('Field Order','acf'); ?></th>
+				<th class="field_label"><?php _e('Field Label','acf'); ?></th>
+				<th class="field_name"><?php _e('Field Name','acf'); ?></th>
+				<th class="field_type"><?php _e('Field Type','acf'); ?></th>
+			</tr>
+		</thead>
+	</table>
+</div>
 <div class="fields">
 		
 	<div class="no_fields_message" <?php if(sizeof($fields) > 1){ echo 'style="display:none;"'; } ?>>
@@ -47,12 +56,21 @@
 	</div>
 	
 	<?php foreach($fields as $key => $field): ?>
-		<div class="<?php if($key == 999){echo "field_clone";}else{echo "field";} ?>">
-			<input type="hidden" name="acf[fields][<?php echo $key; ?>][id]'" value="<?php echo $field->id; ?>" />
-			
+	
+	
+	<div class="<?php if($key == 999){echo "field_clone";}else{echo "field";} ?>">
+		<input type="hidden" name="acf[fields][<?php echo $key; ?>][id]'" value="<?php echo $field->id; ?>" />
+		<?php
+		/*--------------------------------------------------------------------------------------
+		*
+		*	Field Meta
+		* 
+		*-------------------------------------------------------------------------------------*/
+		?>
+		<div class="field_meta">
 			<table class="acf widefat">
 				<tr>
-					<td class="field_order"><?php echo ($key+1); ?></td>
+					<td class="field_order"><span class="circle"><?php echo ($key+1); ?></span></td>
 					<td class="field_label">
 						
 						<strong>
@@ -76,8 +94,8 @@
 					</td>
 				</tr>
 			</table>
-			
-			<div class="field_form_mask">
+		</div>
+		<div class="field_form_mask">
 			<div class="field_form">
 				
 				<table class="acf_input widefat">
@@ -152,7 +170,8 @@
 								?>
 							</td>
 						</tr>
-						<tr class="field_save_as_cf">
+						<?php
+						/*<tr class="field_save_as_cf">
 							<td class="label">
 								<label><?php _e("Is field searchable?",'acf'); ?></label>
 							</td>
@@ -166,17 +185,19 @@
 									$this->create_field($temp_field); 
 								?>
 							</td>
-						</tr>
+						</tr>*/
+						?>
+						
 						<?php foreach($fields_names as $field_name => $field_title): ?>
 							<?php if(method_exists($this->fields[$field_name], 'options_html')): ?>
 
-								<?php $this->fields[$field_name]->options_html($key, $field->options); ?>
+								<?php $this->fields[$field_name]->options_html($key, $field); ?>
 
 							<?php endif; ?>
 						<?php endforeach; ?>
 						<tr class="field_save">
-							<td class="label"><label>Save Field</label>
-								<p class="description">This will save your data and reload the page</p>
+							<td class="label">
+								<label>Save Field</label>
 							</td>
 							<td><input type="submit" value="Save Field" class="button-primary" name="save" />
 								or <a class="acf_edit_field" title="Hide this edit screen" href="javascript:;">continue editing ACF</a>
@@ -187,10 +208,10 @@
 				</table>
 
 			</div>
-			</div>
-			
 		</div>
-		<?php endforeach; ?>
+			
+	</div>
+	<?php endforeach; ?>
 		
 
 </div>

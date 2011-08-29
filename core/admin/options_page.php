@@ -34,7 +34,7 @@ class Acf_options_page
 		$this->parent = $parent;
 		$this->dir = $parent->dir;
 		
-		
+
 		// Customize the Labels here 
 		$this->menu_name = __('Options','acf');
 		$this->menu_heading = __('Options','acf');
@@ -56,7 +56,12 @@ class Acf_options_page
 	*-------------------------------------------------------------------------------------*/
 	function admin_menu() 
 	{
-	
+		
+		if(!array_key_exists('options_page', $this->parent->activated_fields)){
+			return true;
+		}
+		
+		
 		// add page
 		$options_page = add_menu_page('acf_options', $this->menu_name, 'edit_posts', 'acf-options',array($this, 'options_page'));
 		
@@ -151,7 +156,6 @@ class Acf_options_page
 	{
 		if(!array_key_exists('options_page', $this->parent->activated_fields)){exit;}
 		
-		
 		// load acf's
 		$acfs = get_pages(array(
 			'numberposts' 	=> 	-1,
@@ -217,7 +221,7 @@ class Acf_options_page
 		
 		?>
 		
-		<div class="wrap">
+		<div class="wrap no_move">
 		
 			<div class="icon32" id="icon-options-general"><br></div>
 			<h2><?php echo $this->menu_heading; ?></h2>
@@ -250,10 +254,9 @@ class Acf_options_page
 				<div id="post-body">
 				<div id="post-body-content">
 				<div id="acf_input" class="postbox">
-				<div class="acf_fields_input">
+				<div class="acf_fields_input" id="acf_fields_ajax">
 				<?php 
 	
-				$i = 0;
 				if($add_acf)
 				{
 				foreach($add_acf as $acf)
@@ -267,7 +270,11 @@ class Acf_options_page
 					
 					if($options->field_group_layout == "in_box")
 					{
-						echo '<div class="postbox"><div title="Click to toggle" class="handlediv"><br></div><h3 class="hndle"><span>'.$acf->post_title.'</span></h3><div class="inside">';
+						echo '<div class="acf_ajax_fields postbox" data-acf_id="'.$acf->ID.'"><h3><span>'.$acf->post_title.'</span></h3><div class="inside">';
+					}
+					else
+					{
+						echo '<div class="acf_ajax_fields" data-acf_id="'.$acf->ID.'">';
 					}
 			
 			
@@ -282,19 +289,31 @@ class Acf_options_page
 						
 						
 						// set value, id and name for field
-						$field->value_id = $this->parent->load_value_id_input($post->ID, $field);
 						$field->value = $this->parent->load_value_for_input($post->ID, $field);
-						$field->input_name = 'acf['.$i.'][value]';
-						$field->input_class = '';
+						$field->input_name = isset($field->input_name) ? $field->input_name : '';
+						
+						$temp_field = new stdClass();
 						
 						
 						echo '<div class="field">';
 						
-							echo '<input type="hidden" name="acf['.$i.'][field_id]" value="'.$field->id.'" />';
-							echo '<input type="hidden" name="acf['.$i.'][field_type]" value="'.$field->type.'" />';
-							echo '<input type="hidden" name="acf['.$i.'][value_id]" value="'.$field->value_id.'" />';
+							echo '<input type="hidden" name="acf['.$field->id.'][field_id]" value="'.$field->id.'" />';
+							echo '<input type="hidden" name="acf['.$field->id.'][field_type]" value="'.$field->type.'" />';
+							echo '<input type="hidden" name="acf['.$field->id.'][field_name]" value="'.$field->name.'" />';	
 							
-							
+							if($field->type != 'repeater')
+							{
+								echo '<input type="hidden" name="acf['.$field->id.'][value_id]" value="'.$field->value->value_id.'" />';
+								echo '<input type="hidden" name="acf['.$field->id.'][meta_id]" value="'.$field->value->meta_id.'" />';
+								
+								$temp_field->value = $field->value->value;
+							}
+							else
+							{
+								$temp_field->value = $field->value;
+							}
+		
+		
 							echo '<label for="'.$field->input_name.'">'.$field->label.'</label>';
 						
 							
@@ -302,19 +321,28 @@ class Acf_options_page
 							{
 								echo '<p class="instructions">'.$field->instructions.'</p>';
 							}
+						
+							$temp_field->type = $field->type;
+							$temp_field->input_name = 'acf['.$field->id.'][value]';
+							$temp_field->input_class = $field->type;
+							$temp_field->options = $field->options;
 							
-							
-							$this->parent->create_field($field);
+							$this->parent->create_field($temp_field); 
+						
 					
 						echo '</div>';
 						
-						$i++;
+
 					} 
 					
 					
 					if($options->field_group_layout == "in_box")
 					{
 						echo '</div></div>';
+					}
+					else
+					{
+						echo '</div>';
 					}
 				}
 				}
@@ -335,6 +363,7 @@ class Acf_options_page
 					
 					<?php
 				}
+				
 				
 				
 				?>
@@ -359,21 +388,36 @@ class Acf_options_page
 	*-------------------------------------------------------------------------------------*/
 	function update_options()
 	{
-		// vars
+		// tables
 		global $wpdb;
-		$table_name = $wpdb->prefix.'acf_values';
+		$acf_values = $wpdb->prefix.'acf_values';
+		$wp_postmeta = $wpdb->prefix.'postmeta';
 		$post_id = 0;
 		
 		
-		// remove all old values from the database
-		$wpdb->query("DELETE FROM $table_name WHERE post_id = '$post_id'");
-			
-		
+		// add the new values to the database
 	    foreach($_POST['acf'] as $field)
 	    {	
-	    	if(method_exists($this->parent->fields[$field['field_type']], 'save_input'))
+	    	
+	    	// remove all old values from the database
+	    	$field_id = $field['field_id'];
+			$values = $wpdb->get_results("SELECT v.id, m.meta_id FROM $acf_values v LEFT JOIN $wp_postmeta m ON v.value = m.meta_id WHERE v.field_id = '$field_id' AND m.post_id = '$post_id'");
+			
+			
+			if($values)
 			{
-				$this->parent->fields[$field['field_type']]->save_input($post_id, $field);
+				foreach($values as $value)
+				{	
+					$wpdb->query("DELETE FROM $acf_values WHERE id = '$value->id'");
+					$wpdb->query("DELETE FROM $wp_postmeta WHERE meta_id = '$value->meta_id'");
+				}
+			}
+	    	
+	    	
+	    	
+	    	if(method_exists($this->fields[$field['field_type']], 'save_input'))
+			{
+				$this->fields[$field['field_type']]->save_input($post_id, $field);
 			}
 			else
 			{
@@ -387,29 +431,43 @@ class Acf_options_page
 					$field['value'] = serialize($field['value']);
 				}
 				
-				
-				// create data object to save
-				$data = array(
-					'post_id'	=>	$post_id,
-					'field_id'	=>	$field['field_id'],
-					'value'		=>	$field['value']
+	
+				// create data: wp_postmeta
+				$data1 = array(
+					'meta_id'		=>	isset($field['meta_id']) ? $field['meta_id'] : null,
+					'post_id'		=>	$post_id,
+					'meta_key'		=>	$field['field_name'],
+					'meta_value'	=>	$field['value']
 				);
 				
-				// if there is an id, this value already exists, so save it in the same ID spot
-				if($field['value_id'])
+				$wpdb->insert($wp_postmeta, $data1);
+				
+				$new_id = $wpdb->insert_id;
+				
+				// create data: acf_values
+				if($new_id && $new_id != 0)
 				{
-					$data['id']	= $field['value_id'];
+	
+					$data2 = array(
+						'id'		=>	isset($field['value_id']) ? $field['value_id'] : null,
+						'field_id'	=>	$field['field_id'],
+						'value'		=>	$new_id,
+						'post_id'	=>	$post_id,
+					);
+					
+					$wpdb->insert($acf_values, $data2);
+					
 				}
-				
-				
-				// insert new data
-				$new_id = $wpdb->insert($table_name, $data);
+	
 			}
+	
 			
-						
 	    }
-	    
+	    //foreach($_POST['acf'] as $field)
+    
 	}
+	
+
 	
 }
 
