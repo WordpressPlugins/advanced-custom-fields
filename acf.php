@@ -981,7 +981,7 @@ class Acf
 		        }
 		        else
 		        {
-		        	$all_cats = get_the_category();
+		        	$all_cats = get_the_category($post->ID);
 		        	foreach($all_cats as $cat)
 					{
 						$cats[] = $cat->term_id;
