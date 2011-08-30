@@ -185,7 +185,7 @@ class Acf_options_page
 						foreach($location->rules as $rule)
 						{
 							// if any rules dont return true, dont add this acf
-							if(!$this->parent->match_location_rule($post, $rule))
+							if(!$this->parent->match_location_rule(false, $rule))
 							{
 								$add_box = false;
 							}
@@ -204,7 +204,7 @@ class Acf_options_page
 						foreach($location->rules as $rule)
 						{
 							// if any rules return true, add this acf
-							if($this->parent->match_location_rule($post, $rule))
+							if($this->parent->match_location_rule(false, $rule))
 							{
 								$add_box = true;
 							}
@@ -289,7 +289,7 @@ class Acf_options_page
 						
 						
 						// set value, id and name for field
-						$field->value = $this->parent->load_value_for_input($post->ID, $field);
+						$field->value = $this->parent->load_value_for_input(0, $field);
 						$field->input_name = isset($field->input_name) ? $field->input_name : '';
 						
 						$temp_field = new stdClass();
@@ -413,11 +413,11 @@ class Acf_options_page
 				}
 			}
 	    	
+	    	//var_dump($field);
 	    	
-	    	
-	    	if(method_exists($this->fields[$field['field_type']], 'save_input'))
+	    	if(method_exists($this->parent->fields[$field['field_type']], 'save_input'))
 			{
-				$this->fields[$field['field_type']]->save_input($post_id, $field);
+				$this->parent->fields[$field['field_type']]->save_input($post_id, $field);
 			}
 			else
 			{
@@ -464,7 +464,7 @@ class Acf_options_page
 			
 	    }
 	    //foreach($_POST['acf'] as $field)
-    
+    	//die;
 	}
 	
 
