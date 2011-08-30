@@ -150,7 +150,11 @@ class acf_File
 			</script>
 			<?php
 			exit;
-		} 
+		}
+		else 
+		{
+			return $html;
+		}
 	}
 		
 	

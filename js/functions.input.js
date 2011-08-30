@@ -162,7 +162,7 @@ window.acf_div = null;
 		
 			var r = $(this);
 			var row_limit = parseInt(r.attr('data-row_limit'));
-			var row_count = r.find('table > tbody > tr').length;
+			var row_count = r.children('table').children('tbody').children('tr').length;
 			
 			// has limit been reached?
 			if(row_count >= row_limit)
@@ -188,8 +188,8 @@ window.acf_div = null;
 		$('.repeater #add_field').live('click', function(){
 			
 			var r = $(this).closest('.repeater');
-			var row_limit = parseInt(r.attr('data-row_limit'));
-			var row_count = r.find('table > tbody > tr').length;
+			var row_limit = parseInt(r.attr('data-row_limit'));			
+			var row_count = r.children('table').children('tbody').children('tr').length;
 			
 			// row limit
 			if(row_count >= row_limit)
@@ -200,8 +200,9 @@ window.acf_div = null;
 			}
 			
 			// create and add the new field
-			var new_field = r.find('table > tbody > tr:last-child').clone(false);
-			r.find('table > tbody').append(new_field);
+			var new_field = r.children('table').children('tbody').children('tr:last-child').clone(false);
+			r.children('table').children('tbody').append(new_field); 
+
 			new_field.reset_values();
 			
 			// setup sub fields
@@ -237,7 +238,7 @@ window.acf_div = null;
 		$('.repeater a.remove_field').live('click', function(){
 			
 			var r = $(this).closest('.repeater');
-			var row_count = r.find('table > tbody > tr').length;
+			var row_count = r.children('table').children('tbody').children('tr').length;
 						
 			// needs at least one
 			if(row_count <= 1)
@@ -275,8 +276,8 @@ window.acf_div = null;
 	*---------------------------------------------------------------------*/
 
 	$.fn.update_order_numbers = function(){
-
-		$(this).find('table > tbody > tr').each(function(i){
+		
+		$(this).children('table').children('tbody').children('tr').each(function(i){
 			$(this).children('td.order').html(i+1);
 		});
 	
@@ -300,29 +301,33 @@ window.acf_div = null;
 			return ui;
 		};
 		
-		r.find('table > tbody').unbind('sortable').sortable({
+		r.children('table').children('tbody').unbind('sortable').sortable({
 			update: function(event, ui){
 				r.update_order_numbers();
-				r.make_all_fields();
+				r.setup_wysiwyg();
+				r.setup_datepicker();
+				r.setup_image();
+				r.setup_file();
 			},
 			handle: 'td.order',
 			helper: fixHelper,
 		    start: function(event, ui)
 		    {
 				//console.log(ui.item);
-				if(ui.item.find('.acf_wysiwyg').exists())
+				/*if(ui.item.find('.acf_wysiwyg').exists())
 				{
 					var id = ui.item.find('.acf_wysiwyg textarea').attr('id');
 					tinyMCE.execCommand("mceRemoveControl", false, id);
-				}
+				}*/
 		    },
 		    stop: function(event, ui)
 		    {
-				if(ui.item.find('.acf_wysiwyg').exists())
+		    	ui.item.setup_wysiwyg();
+				/*if(ui.item.find('.acf_wysiwyg').exists())
 				{
 					var id = ui.item.find('.acf_wysiwyg textarea').attr('id');
 					tinyMCE.execCommand("mceAddControl", false, id);
-				}
+				}*/
 		    }
 		});
 	}

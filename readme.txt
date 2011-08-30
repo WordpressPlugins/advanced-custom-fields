@@ -81,6 +81,9 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 == Changelog ==
 
+= 2.1.1 =
+* Fixed Javascript bugs on edit pages
+
 = 2.1.0 =
 * Integrate acf_values and wp_postmeta! Values are now saved as custom fields!
 * Ajax load in fields + update fields when the page / post is modified
