@@ -81,6 +81,13 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 == Changelog ==
 
+= 2.1.2 =
+* Fixed repeater sortable bug on options page
+* Fixed wysiwyg image insert on options page
+* Fixed checkbox value error
+* Tidied up javascript + wysiwyg functions
+
+
 = 2.1.1 =
 * Fixed Javascript bugs on edit pages
 
