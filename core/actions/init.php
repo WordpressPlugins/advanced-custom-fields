@@ -15,7 +15,7 @@ if(isset($_POST['acf_upgrade']))
 else
 {
 	// if current version is less than the latest upgrade version, show the upgrade message
-	if(version_compare($version,'2.1.0') < 0)
+	if(version_compare($version,$this->upgrade_version) < 0)
 	{
 		global $acf_temp_mesage;
 		$acf_temp_mesage = '<form method="post"><p>Advanced Custom Fields v' . $this->version . ' requires a database upgrade. Please <a href="http://codex.wordpress.org/Backing_Up_Your_Database">backup your database</a> then click <input type="submit" class="button" name="acf_upgrade" value="Upgrade Database" /></p></form>';

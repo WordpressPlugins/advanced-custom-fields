@@ -121,15 +121,26 @@ function get_field($field_name, $post_id = false)
 	}
 	
 	
-	// repeater field
-	if(count($results) > 1)
-	{
-		return true;
-	}
-	
 	
 	// normal field
 	$field = $results[0];
+	
+	
+	// repeater field
+	if($field->type == 'repeater')
+	{
+		$has_values = false;
+		foreach($results as $result)
+		{
+			if($result->value)
+			{
+				$has_values = true;
+			}
+		}
+		return $has_values;
+	}
+	
+	
 	$value = $field->value;
 	
 	

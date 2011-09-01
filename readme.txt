@@ -81,6 +81,12 @@ http://support.plugins.elliotcondon.com/categories/advanced-custom-fields/
 
 == Changelog ==
 
+= 2.1.3 =
+* Fixed API returning true for repeater fields with no data
+* Added get_fields back into the api!
+* Fixed field type select from showing multiple repeater activation messages 
+
+
 = 2.1.2 =
 * Fixed repeater sortable bug on options page
 * Fixed wysiwyg image insert on options page
