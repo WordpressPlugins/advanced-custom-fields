@@ -293,6 +293,8 @@ switch($_POST['version'])
 				
 					delete_post_meta($post_id, $field_name);
 					update_post_meta($post_id, $field_name, $row_count);
+					update_post_meta($post_id, '_' . $field_name, 'field_' . $field_id);
+			
 				}
 			}
 			
