@@ -261,8 +261,8 @@ class acf_Relationship extends acf_Field
 
 		$field['max'] = isset($field['max']) ? $field['max'] : '-1';
 		$field['post_type'] = isset($field['post_type']) ? $field['post_type'] : false;
-		$field['meta_key'] = isset($field['meta_key']) ? $field['meta_key'] : false;
-		$field['meta_value'] = isset($field['meta_value']) ? $field['meta_value'] : false;
+		//$field['meta_key'] = isset($field['meta_key']) ? $field['meta_key'] : false;
+		//$field['meta_value'] = isset($field['meta_value']) ? $field['meta_value'] : false;
 		
 		if(!$field['post_type'] || !is_array($field['post_type']) || $field['post_type'][0] == "")
 		{
@@ -280,8 +280,8 @@ class acf_Relationship extends acf_Field
 			'post_type'		=>	$field['post_type'],
 			'orderby'		=>	'title',
 			'order'			=>	'ASC',
-			'meta_key'		=>	$field['meta_key'],
-			'meta_value'	=>	$field['meta_value'],
+			//'meta_key'		=>	$field['meta_key'],
+			//'meta_value'	=>	$field['meta_value'],
 		));
 		
 		$values_array = array();
@@ -387,8 +387,8 @@ class acf_Relationship extends acf_Field
 		// defaults
 		$field['post_type'] = isset($field['post_type']) ? $field['post_type'] : '';
 		$field['max'] = isset($field['max']) ? $field['max'] : '-1';
-		$field['meta_key'] = isset($field['meta_key']) ? $field['meta_key'] : '';
-		$field['meta_value'] = isset($field['meta_value']) ? $field['meta_value'] : '';
+		//$field['meta_key'] = isset($field['meta_key']) ? $field['meta_key'] : '';
+		//$field['meta_value'] = isset($field['meta_value']) ? $field['meta_value'] : '';
 		?>
 		<tr class="field_option field_option_<?php echo $this->name; ?>">
 			<td class="label">

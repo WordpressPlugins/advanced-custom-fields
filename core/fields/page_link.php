@@ -38,8 +38,8 @@ class acf_Page_link extends acf_Field
 		// vars
 		$field['multiple'] = isset($field['multiple']) ? $field['multiple'] : false;
 		$field['post_type'] = isset($field['post_type']) ? $field['post_type'] : false;
-		$field['meta_key'] = isset($field['meta_key']) ? $field['meta_key'] : false;
-		$field['meta_value'] = isset($field['meta_value']) ? $field['meta_value'] : false;
+		//$field['meta_key'] = isset($field['meta_key']) ? $field['meta_key'] : false;
+		//$field['meta_value'] = isset($field['meta_value']) ? $field['meta_value'] : false;
 		
 		
 		if(!$field['post_type'] || !is_array($field['post_type']) || $field['post_type'][0] == "")
@@ -84,8 +84,8 @@ class acf_Page_link extends acf_Field
 					'post_type' => $post_type,
 					'sort_column' => 'menu_order',
 					'order' => 'ASC',
-					'meta_key' => $field['meta_key'],
-					'meta_value' => $field['meta_value'],
+					//'meta_key' => $field['meta_key'],
+					//'meta_value' => $field['meta_value'],
 				));
 			}
 			else
@@ -96,8 +96,8 @@ class acf_Page_link extends acf_Field
 					'post_type' => $post_type,
 					'orderby' => 'title',
 					'order' => 'ASC',
-					'meta_key' => $field['meta_key'],
-					'meta_value' => $field['meta_value'],
+					//'meta_key' => $field['meta_key'],
+					//'meta_value' => $field['meta_value'],
 				));
 			}
 			
