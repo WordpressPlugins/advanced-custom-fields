@@ -247,6 +247,12 @@ switch($_POST['version'])
 				// options page
 				if($value['post_id'] == 0) $value['post_id'] = 999999999;
 				
+				// unserialize value (relationship, multi select, etc)
+				if(@unserialize($value['meta_value']))
+				{
+					$value['meta_value'] = unserialize($value['meta_value']);
+				}		
+				
 				update_post_meta($value['post_id'], $value['meta_key'], $value['meta_value']);
 				update_post_meta($value['post_id'], '_' . $value['meta_key'], 'field_' . $value['field_id']);
 			}
@@ -265,6 +271,12 @@ switch($_POST['version'])
 				
 				// options page
 				if($value['post_id'] == 0) $value['post_id'] = 999999999;
+				
+				// unserialize value (relationship, multi select, etc)
+				if(@unserialize($value['meta_value']))
+				{
+					$value['meta_value'] = unserialize($value['meta_value']);
+				}
 				
 				// current row
 				$current_row = isset($rows[$value['post_id']][$value['field_id']]) ? $rows[$value['post_id']][$value['field_id']] : 0;

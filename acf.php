@@ -50,7 +50,8 @@ class Acf
 		
 		
 		// set text domain
-		load_plugin_textdomain('acf', false, $this->path.'/lang' );
+		//load_plugin_textdomain('acf', false, $this->path.'/lang' );
+		load_plugin_textdomain('acf', false, basename(dirname(__FILE__)).'/lang' );
 		
 		// load options page
 		$this->setup_options_page();
