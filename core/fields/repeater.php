@@ -117,7 +117,7 @@ class acf_Repeater extends acf_Field
 					var row_count = div.children('table').children('tbody').children('tr.row').length;
 					
 					// has limit been reached?
-					if(row_count >= row_limit) r.find('#add_field').attr('disabled','true');
+					if(row_count >= row_limit) div.find('#add_field').attr('disabled','true');
 					
 					// sortable
 					if(row_limit > 1){
@@ -139,7 +139,7 @@ class acf_Repeater extends acf_Field
 				if(row_count >= row_limit)
 				{
 					// reached row limit!
-					r.find('#add_field').attr('disabled','true');
+					div.find('#add_field').attr('disabled','true');
 					return false;
 				}
 				
