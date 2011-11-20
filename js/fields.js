@@ -85,6 +85,13 @@
 	
 	function setup_fields()
 	{
+		
+		function uniqid()
+        {
+        	var newDate = new Date;
+        	return newDate.getTime();
+        }
+
 
 		// add edit button functionality
 		$('#acf_fields a.acf_edit_field').live('click', function(){
@@ -195,12 +202,12 @@
 				//alert(sub_field_length);
 				//alert('update numbers for sub field! field:'+field_length+', sub:'+sub_field_length);
 				
-				new_field.update_names(field_length, sub_field_length);
+				new_field.update_names(uniqid(), uniqid());
 			}
 			else
 			{
 				var field_length = fields.children('.field').length;
-				new_field.update_names(field_length, 0);
+				new_field.update_names(uniqid(), 0);
 				
 				//alert('update numbers for field! field:'+field_length);
 			}

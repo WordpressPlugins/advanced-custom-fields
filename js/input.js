@@ -15,7 +15,7 @@
 		page			:	false,
 		post			:	false,
 		post_category	:	false,
-		post_format		:	false,
+		post_format		:	false
 	};
 	
 	
