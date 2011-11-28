@@ -10,7 +10,7 @@ License: GPL
 Copyright: Elliot Condon
 */
 
-ini_set('error_reporting', E_ALL);
+//ini_set('error_reporting', E_ALL);
 
 include('core/api.php');
 
