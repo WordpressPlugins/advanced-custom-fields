@@ -92,7 +92,7 @@ if(empty($location['rules']))
 								<?php 
 								$choices = array();
 								
-								foreach(get_pages('sort_column=menu_order&sort_order=desc') as $page)
+								foreach(get_pages('sort_column=menu_order&sort_order=desc&number=25') as $page)
 								{
 									$value = '';
 									$ancestors = get_ancestors($page->ID, 'page');
@@ -136,7 +136,7 @@ if(empty($location['rules']))
 								
 								$choices = array();
 								
-								foreach(get_pages('sort_column=menu_order&sort_order=desc') as $page)
+								foreach(get_pages('sort_column=menu_order&sort_order=desc&number=25') as $page)
 								{
 									$value = '';
 									$ancestors = get_ancestors($page->ID, 'page');
@@ -243,17 +243,12 @@ if(empty($location['rules']))
 							</div>
 							<div rel="user_type">
 								<?php 
-								
+								global $wp_roles;
 								$this->create_field(array(
 									'type'	=>	'select',
 									'name'	=>	'location[rules]['.$k.'][value]',
 									'value'	=>	$rule['value'],
-									'choices' => array(
-										'administrator' => 'Administrator', 
-										'editor' => 'Editor', 
-										'author' => 'Author', 
-										'contributor' => 'contributor'
-									)
+									'choices' => $roles = $wp_roles->get_names()
 								));
 								
 								?>
