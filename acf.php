@@ -185,7 +185,7 @@ class Acf
 		// add acf page to options menu
 		add_menu_page(__("Custom Fields",'acf'), __("Custom Fields",'acf'), 'manage_options', 'edit.php?post_type=acf');
 		add_submenu_page('edit.php?post_type=acf', __('Settings','wp3i'), __('Settings','wp3i'), 'manage_options','settings',array($this,'admin_page_settings'));
-		add_submenu_page('edit.php?post_type=acf', __('Upgrade','wp3i'), __('Upgrade','wp3i'), 'install_plugins','upgrade',array($this,'admin_page_upgrade'));
+		add_submenu_page('edit.php?post_type=acf', __('Upgrade','wp3i'), __('Upgrade','wp3i'), 'manage_options','upgrade',array($this,'admin_page_upgrade'));
 		
 	}
 	
