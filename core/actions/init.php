@@ -18,7 +18,7 @@ if($version)
 {
 	if(version_compare($version,$this->upgrade_version) < 0)
 	{
-		$this->admin_message('<p>Advanced Custom Fields v' . $this->version . ' requires a database upgrade. Please <a href="http://codex.wordpress.org/Backing_Up_Your_Database">backup your database</a> then click <a href="' . admin_url() . 'options-general.php?page=acf-upgrade" class="button">Upgrade Database</a></p>');
+		$this->admin_message('<p>Advanced Custom Fields v' . $this->version . ' requires a database upgrade. Please <a href="http://codex.wordpress.org/Backing_Up_Your_Database">backup your database</a> then click <a href="' . admin_url() . 'edit.php?post_type=acf&page=acf-upgrade" class="button">Upgrade Database</a></p>');
 		
 	}
 }

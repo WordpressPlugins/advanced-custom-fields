@@ -92,7 +92,7 @@ if(empty($location['rules']))
 								<?php 
 								$choices = array();
 								
-								foreach(get_pages('sort_column=menu_order&sort_order=desc&number=25') as $page)
+								foreach(get_pages('sort_column=menu_order&sort_order=desc') as $page)
 								{
 									$value = '';
 									$ancestors = get_ancestors($page->ID, 'page');
@@ -136,7 +136,7 @@ if(empty($location['rules']))
 								
 								$choices = array();
 								
-								foreach(get_pages('sort_column=menu_order&sort_order=desc&number=25') as $page)
+								foreach(get_pages('sort_column=menu_order&sort_order=desc') as $page)
 								{
 									$value = '';
 									$ancestors = get_ancestors($page->ID, 'page');
