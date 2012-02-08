@@ -1,6 +1,5 @@
 === Advanced Custom Fields ===
 Contributors: Elliot Condon
-Donate link: https://www.paypal.com/au/cgi-bin/webscr?cmd=_flow&SESSION=-B2MHZ-ioHQb-z1o22AMmhjSI08rxFqQdljyfqVa1R-4QrbQWPNcfL37jYi&dispatch=5885d80a13c0db1f8e263663d3faee8d5fa8ff279e37c3d9d4e38bdbee0ede69
 Tags: custom, field, custom field, advanced, simple fields, magic fields, more fields, repeater, matrix, post, type, text, textarea, file, image, edit, admin
 Requires at least: 3.0
 Tested up to: 3.3
@@ -87,6 +86,11 @@ http://www.advancedcustomfields.com/support/
 
 
 == Changelog ==
+
+= 3.1.1 =
+* New Feature: Added shortcode support. usage: [acf field="field_name"]
+* Bug Fix: Fixed menu disappearing by changing the function "add_menu" to "add_utility_page"
+* Visual: Changed post object / page link fields to display post type label instead of post type name for the select optgroup label. Thanks to kevwaddell for the code
 
 = 3.1.0 =
 * New Field: Flexible Content Field (license required)
