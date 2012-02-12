@@ -88,6 +88,10 @@ http://www.advancedcustomfields.com/support/
 == Changelog ==
 
 = 3.1.2 =
+* Bug Fix: Options page fields were rendered invisible in v3.1.2 (now fixed)
+* Updated POT file with new texts
+
+= 3.1.2 =
 * New Feature: Required field validation. Note: Repeater / Flexible content fields can be required but their sub fields can not.
 * Field update: Select field: API now returns false when "null" is selected
 * Field update: Radio button: When editing a post / page, the radio button will select the first choice if there is no saved value for the field
