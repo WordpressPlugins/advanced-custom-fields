@@ -30,19 +30,16 @@
 	*/
 	
 	$(document).ready(function(){
-		
-		// vars
-		var post_id = $('input#post_ID').val();
 	
 		// show metaboxes for this post
 		acf.data = {
 			action 			:	'get_input_metabox_ids',
-			post_id			:	post_id,
+			post_id			:	acf.post_id,
 			page_template	:	false,
 			page_parent		:	false,
 			page_type		:	false,
-			page			:	post_id,
-			post			:	post_id,
+			page			:	acf.post_id,
+			post			:	acf.post_id,
 			post_category	:	false,
 			post_format		:	false,
 			taxonomy		:	false
@@ -89,7 +86,7 @@
 	*/
 	
 	function update_fields()
-	{		
+	{
 		$.ajax({
 			url: ajaxurl,
 			data: acf.data,
@@ -135,14 +132,14 @@
 	*  @created: 1/03/2011
 	*/
 		
-	$('#page_template').change(function(){
+	$('#page_template').live('change', function(){
 		
 		acf.data.page_template = $(this).val();
 		update_fields();
 	    
 	});
 	
-	$('#parent_id').change(function(){
+	$('#parent_id').live('change', function(){
 		
 		var page_parent = $(this).val();
 		
@@ -159,7 +156,7 @@
 	    
 	});
 	
-	$('#categorychecklist input[type="checkbox"]').change(function(){
+	$('#categorychecklist input[type="checkbox"]').live('change', function(){
 		
 		acf.data.post_category = ['0'];
 		
@@ -174,7 +171,7 @@
 	});	
 	
 	
-	$('#post-formats-select input[type="radio"]').change(function(){
+	$('#post-formats-select input[type="radio"]').live('change', function(){
 		
 		acf.data.post_format = $(this).val();
 		update_fields();
@@ -182,7 +179,7 @@
 	});	
 	
 	// taxonomy
-	$('div[id*="taxonomy-"] input[type="checkbox"]').change(function(){
+	$('div[id*="taxonomy-"] input[type="checkbox"]').live('change', function(){
 		
 		acf.data.taxonomy = ['0'];
 		
