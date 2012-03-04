@@ -474,7 +474,7 @@ var acf = {
 	};
 	
 	
-	$(document).ready(function(){
+	$(window).load(function(){
 		
 		if(typeof(tinyMCE) != "object")
 		{
