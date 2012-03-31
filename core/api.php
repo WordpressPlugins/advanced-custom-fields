@@ -105,7 +105,7 @@ function get_field($field_name, $post_id = false)
 	if($value == "") $value = false; 
 	 
 	// update cache 
-	wp_cache_get('acf_get_field_' . $post_id . '_' . $field_name, $value); 
+	wp_cache_set('acf_get_field_' . $post_id . '_' . $field_name, $value); 
 	 
 	return $value; 
 	 
