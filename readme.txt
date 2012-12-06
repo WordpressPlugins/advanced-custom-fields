@@ -13,7 +13,7 @@ Fully customise WordPress edit screens with powerful fields. Boasting a professi
 Advanced Custom Fields is the perfect solution for any wordpress website which needs more flexible data like other Content Management Systems. 
 
 * Visually create your Fields
-* Select from multiple input types (text, textarea, wysiwyg, image, file, page link, post object, relationship, select, checkbox, radio buttons, repeater, more to come)
+* Select from multiple input types (text, textarea, wysiwyg, image, file, page link, post object, relationship, select, checkbox, radio buttons, date picker, true / false, repeater, flexible content, gallery and more to come!)
 * Assign your fields to multiple edit pages (via custom location rules)
 * Easily load data through a simple and friendly API
 * Uses the native WordPress custom post type for ease of use and fast processing
@@ -31,9 +31,11 @@ Advanced Custom Fields is the perfect solution for any wordpress website which n
 * Post Object (select 1 or more page, post or custom post types, api returns post objects)
 * Date Picker (jquery date picker, options for format, api returns string)
 * True / False (tick box with message, api returns true or false)
-* Repeater (ability to create repeatable blocks of fields!)
 * Relationship	(select and order post objects with a tidy interface)
 * Color Picker (Farbtastic!)
+* Repeater (ability to create repeatable blocks of fields!)
+* Flexible Content (ability to create flexible blocks of fields!)
+* Gallery (Add, edit and order multiple images in 1 simple field)
 
 = Tested on =
 * Mac Firefox 	:)
