@@ -1029,7 +1029,11 @@ class Acf
 				
 				
 				// set value
-				$field['value'] = $this->get_value($post_id, $field);
+				if( ! isset($field['value']) )
+				{	
+					$field['value'] = $this->get_value($post_id, $field);
+				}
+				
 				
 				$required_class = "";
 				$required_label = "";
