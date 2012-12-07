@@ -89,7 +89,11 @@ http://support.advancedcustomfields.com/
 
 == Changelog ==
 
+= 3.5.4.1 =
+* [Fixed] Fix bug preventing options pages from appearing in the field group's location rules
+
 = 3.5.4 =
+* [Added] Add new filter for ACF settings - http://www.advancedcustomfields.com/docs/filters/acf_settings/
 * [Updated] Updated field keys to look nicer. eg field_12
 * [Added] Update admin_head to use hooks / enque all scripts / styles
 * [Added] Add duplicate function for flexible content layouts

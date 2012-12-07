@@ -484,12 +484,13 @@ class acf_field_group
 			
 			case "options_page" :
 				
+				$defaults = $this->parent->defaults['options_page'];
+				
 				$choices = array(
-					'acf-options' => apply_filters( 'acf_options_page_title', __('Options','acf') )
+					'acf-options' => $defaults['title']
 				);
 				
-				
-				$titles = apply_filters( 'acf_register_options_page', array() );
+				$titles = $defaults['pages'];
 				if( !empty($titles) )
 				{
 					$choices = array();
