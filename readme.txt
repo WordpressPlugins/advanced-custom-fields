@@ -91,22 +91,18 @@ http://support.advancedcustomfields.com/
 == Changelog ==
 
 = 3.5.5 =
+* [Added] Add new Tab field
+* [Fixed] Improve WYSIWYG code for better compatibility
 * [Fixed] Fix PHP / AJAX error during database update for older versions
 * [Fixed] WYSIWYG insert attachment focus bug - http://support.advancedcustomfields.com/discussion/4076/problem-with-upload-in-wysiwyg-editors-in-combination-with-flexible-content
 * [Fixed] Fix JS coma issues for IE - http://support.advancedcustomfields.com/discussion/4064/ie-javascript-issues-on-editing-field-group
 * [Added] Add no cache to relationship field results - http://support.advancedcustomfields.com/discussion/2325/serious-memory-issue-using-post-objectrelationship-field-with-only-5000-posts
-* Improve WYSIWYG code for better compatibility
 * [Added] Add retina support
 * [Fixed] Fix WYSIWYG validation for preview post - http://support.advancedcustomfields.com/discussion/4055/validation-failing-on-required-wysiwyg-field
 * [Fixed] Fix undefined index error in field's conditional logic - http://support.advancedcustomfields.com/discussion/4165/undefined-index-notice-on-php-export
-* [Added] Add Tab field
 * [Updated] Update post types in field options - http://support.advancedcustomfields.com/discussion/3656/acf-for-custom-post-type
 * [Added] Add filters to relationship field results
 * [Added] Add file name bellow title in popup for selecting a file
-
-= 3.5.4.2 (current git version) =
-* [Updated] Improve WYSIWYG code for better compatibility
-* [Added] Add tab field
 
 = 3.5.4.1 =
 * [Fixed] Fix bug preventing options pages from appearing in the field group's location rules
