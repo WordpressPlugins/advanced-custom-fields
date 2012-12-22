@@ -90,6 +90,9 @@ http://support.advancedcustomfields.com/
 
 == Changelog ==
 
+= 3.5.6.1 =
+* [Fixed] Fix bug causing field groups to not display on the options page.
+
 = 3.5.6 =
 * [Fixed] Fix content editor double in webkit browser - http://support.advancedcustomfields.com/discussion/4223/duplicate-editor-box-safari-bug-has-returned
 * [Fixed] Fix bug with post format location rule not working - http://support.advancedcustomfields.com/discussion/4264/not-recognizing-post-type-formats-following-upgrade-to-version-3-5-5
