@@ -3,7 +3,7 @@
 Plugin Name: Advanced Custom Fields
 Plugin URI: http://www.advancedcustomfields.com/
 Description: Fully customise WordPress edit screens with powerful fields. Boasting a professional interface and a powerfull API, it’s a must have for any web developer working with WordPress. Field types include: Wysiwyg, text, textarea, image, file, select, checkbox, page link, post object, date picker, color picker, repeater, flexible content, gallery and more!
-Version: 3.5.8.1
+Version: 1.0.0
 Author: Elliot Condon
 Author URI: http://www.elliotcondon.com/
 License: GPL
