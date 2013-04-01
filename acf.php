@@ -641,7 +641,7 @@ class Acf
 				$field = apply_filters('acf/load_field', false, $key );
 				
 				// update field
-				do_action('acf/update_value', $value, $field, $post_id );
+				do_action('acf/update_value', $value, $post_id, $field );
 				
 			}
 			// foreach($fields as $key => $value)

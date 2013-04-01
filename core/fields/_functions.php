@@ -184,7 +184,7 @@ class acf_field_functions
 	*  @created: 23/01/13
 	*/
 	
-	function update_value( $value, $field, $post_id )
+	function update_value( $value, $post_id, $field )
 	{
 		// strip slashes
 		// - not needed? http://support.advancedcustomfields.com/discussion/3168/backslashes-stripped-in-wysiwyg-filed
@@ -198,7 +198,7 @@ class acf_field_functions
 		foreach( array('type', 'name', 'key') as $key )
 		{
 			// run filters
-			$value = apply_filters('acf/update_value/' . $key . '=' . $field[ $key ], $value, $field, $post_id); // new filter
+			$value = apply_filters('acf/update_value/' . $key . '=' . $field[ $key ], $value, $post_id, $field); // new filter
 		}
 
 		

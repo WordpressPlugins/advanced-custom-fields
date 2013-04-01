@@ -1235,7 +1235,7 @@ function update_field( $field_key, $value, $post_id = false )
 	
 	
 	// save
-	do_action('acf/update_value', $value, $field, $post_id );
+	do_action('acf/update_value', $value, $post_id, $field );
 	
 	
 	return true;

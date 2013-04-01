@@ -106,7 +106,7 @@ class acf_field_dummy extends acf_field
 	*  @return	$value - the modified value
 	*/
 	
-	function update_value( $value, $field, $post_id )
+	function update_value( $value, $post_id, $field )
 	{
 		return $value;
 	}
